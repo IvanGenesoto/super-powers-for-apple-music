@@ -26,7 +26,9 @@ module.exports = function process(shouldReRateAllArtists) {
     tracksToSetDiscoveredByArtist
   })
 
-  // const playlist = app.playlists['Set Artist Genre']
+  // loopThroughChildPlaylists('1 Commands')
+
+  // const disableSongPlaylist = getPlaylist('Disable Song')
   // const tracks = playlist.tracks()
   // if (!tracks.length) return
   // const playlists = app.playlists()
