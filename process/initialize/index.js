@@ -1,6 +1,6 @@
+const validate = require('./validate')
+
 module.exports = function initialize(track) {
-  const shouldTrackBe = require('./should-track-be')
-  const label = require('./label')
   const {
     shouldRateByArtist,
     tracksToSetGenreByArtist,
@@ -22,8 +22,7 @@ module.exports = function initialize(track) {
     }
     if (!tracksToSetDiscoveredByArtist[artist]) tracksToSetDiscoveredByArtist[artist] = []
     tracksToSetDiscoveredByArtist[artist].push(track)
-    if (shouldTrackBe('disabled', track)) label('Disabled', 'Alternate', track)
-    if (shouldTrackBe('disregarded', track)) label('Disregarded', 'Interlude', track)
+    return validate(track)
   }
   catch (unused) { }
 }
