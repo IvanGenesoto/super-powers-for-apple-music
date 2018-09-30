@@ -9,20 +9,23 @@ module.exports = function initialize(track) {
   } = this
   try {
     const composer = track.composer()
-    if (composer) track.composer.set(`Composer: ${composer}`)
+    composer && track.composer.set(`Composer: ${composer}`)
     const delimiter = composer ? ', ' : ''
     track.composer.set(`${track.composer()}${delimiter}Ungenred: ${track.genre()}`)
     const artist = track.artist()
-    if (tracksToSetGenreByArtist[artist]) tracksToSetGenreByArtist[artist] = []
-    tracksToSetGenreByArtist[artist].push(track)
+    const existingTracksToSetGenre = tracksToSetGenreByArtist[artist]
+    const tracksToSetGenre = existingTracksToSetGenre || (tracksToSetGenreByArtist[artist] = [])
+    tracksToSetGenre.push(track)
     if (track.rating()) shouldRateByArtist[artist] = true
     else if (!shouldRateByArtist[artist]) {
-      if (!tracksToSetStatusByArtist[artist]) tracksToSetStatusByArtist[artist] = []
-      tracksToSetStatusByArtist[artist] = track
+      const existingTracksToSetStatus = tracksToSetStatusByArtist[artist]
+      const tracksToSetStatus = existingTracksToSetStatus || (tracksToSetStatusByArtist[artist] = [])
+      tracksToSetStatus.push(track)
     }
-    if (!tracksToSetDiscoveredByArtist[artist]) tracksToSetDiscoveredByArtist[artist] = []
-    tracksToSetDiscoveredByArtist[artist].push(track)
-    return validate(track)
+    const existingTracksToSetDiscovered = tracksToSetDiscoveredByArtist[artist]
+    const tracksToSetDiscovered = existingTracksToSetDiscovered || (tracksToSetDiscoveredByArtist[artist] = [])
+    tracksToSetDiscovered.push(track)
+    validate(track)
   }
   catch (unused) { }
 }
