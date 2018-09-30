@@ -4,6 +4,7 @@
   "description": "An app for iTunes and Apple Music users who want a \"power user\" experience with \"casual user\" interaction.",
   "scripts": {
     "bundle": "browserify index.js -vd -o main.js",
+    "bundle:test": "browserify test.js -vd -o test-main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

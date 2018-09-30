@@ -1,4 +1,4 @@
-const app = require('./app')
+const app = require('../app')
 module.exports = parentPlaylistName => {
   const childPlaylists = []
   const allPlaylists = app.playlists()
