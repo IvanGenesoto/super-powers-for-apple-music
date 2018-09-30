@@ -5,7 +5,7 @@ module.exports = function process(shouldReRateAllArtists) {
   const rate = require('./rate')
   const flag = require('./flag')
   const initialize = require('./initialize')
-  const allTracks = getPlaylist('Library')
+  const allTracks = getPlaylist('Library').tracks
 
   const shouldRateByArtist = {}
   const shouldInferGenreByArtist = {}
@@ -16,15 +16,15 @@ module.exports = function process(shouldReRateAllArtists) {
   const tracksToSetGenreByArtist = {}
 
   getPlaylist('Ambiguous Love').tracks().forEach(disambiguate)
-  allTracks.whose({loved: true}).forEach(rate, {shouldRateByArtist, isLoved: true})
-  allTracks.whose({disliked: true}).forEach(rate, {shouldRateByArtist})
-  allTracks.whose({unplayed: true}).forEach(flag, shouldRateByArtist)
-  getPlaylist('Uninitialized').tracks().forEach(initialize, {
-    shouldRateByArtist,
-    tracksToSetGenreByArtist,
-    tracksToSetStatusByArtist,
-    tracksToSetDiscoveredByArtist
-  })
+  allTracks.whose({loved: true})().forEach(rate, {shouldRateByArtist, isLoved: true})
+  allTracks.whose({disliked: true})().forEach(rate, {shouldRateByArtist})
+  // allTracks.whose({unplayed: false}).forEach(flag, shouldRateByArtist)
+  // getPlaylist('Uninitialized').tracks().forEach(initialize, {
+  //   shouldRateByArtist,
+  //   tracksToSetGenreByArtist,
+  //   tracksToSetStatusByArtist,
+  //   tracksToSetDiscoveredByArtist
+  // })
 
   // loopThroughChildPlaylists('1 Commands')
 

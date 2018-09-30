@@ -11,5 +11,5 @@ function processTracks(playlist) {
   const {label, antiLabel, enabled} = this
   const value = playlist.name()
   const tracks = playlist.tracks()
-  tracks.forEach(track => tag({label, antiLabel, value, track, enabled}))
+  tracks.forEach(track => tag(track, tagKit, value))
 }
