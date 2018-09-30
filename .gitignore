@@ -1,4 +1,6 @@
 node_modules
 main.js
+test.js
+main-test.js
 scratch.js
 .DS_Store

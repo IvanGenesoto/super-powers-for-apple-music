@@ -1,5 +1,5 @@
 const allTagKits = require('../../tag-kits')
-const tag = require('../tag')
+const tag = require('../multi-use/tag')
 
 module.exports = function validate(track) {
   const name = track.name().toLowerCase()
