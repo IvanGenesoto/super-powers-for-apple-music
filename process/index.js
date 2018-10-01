@@ -1,43 +1,35 @@
-module.exports = function process(shouldReRateAllArtists) {
+module.exports = function process(isTest) {
 
   const getPlaylist = require('../get/playlist')
   const disambiguate = require('./single-use/disambiguate')
-  const rate = require('./rate')
+  const rate = require('./multi-use/rate')
   const flag = require('./single-use/flag')
   const initialize = require('./single-use/initialize')
-  const allTracks = getPlaylist('Library').tracks
+  const executeAndRecurse = require('./single-use/execute-and-recurse')
+  const getSpecialKit = require('../get/special-kit')
 
-  const shouldRateByArtist = {}
-  const shouldInferGenreByArtist = {}
-  const shouldInferVocalistByArtist = {}
-  const tracksByArtist = {}
-  const tracksToSetStatusByArtist = {}
-  const tracksToSetDiscoveredByArtist = {}
-  const tracksToSetGenreByArtist = {}
+  const state = {
+    allTracks: getPlaylist(isTest ? 'Test' : 'Library').tracks,
+    folderCommandKitByName: getSpecialKit(),
+    playlistCommandKitByName: getSpecialKit(true),
+    shouldRateByArtist: {},
+    shouldInferGenreByArtist: {},
+    shouldInferVocalistByArtist: {},
+    wasUpdatadedByArtist: {},
+    tracksByArtist: {},
+    tracksToSetStatusByArtist: {},
+    tracksToSetDiscoveredByArtist: {},
+    tracksToSetGenreByArtist: {}
+  }
 
-  getPlaylist('Ambiguous Love').tracks().forEach(disambiguate)
-  allTracks.whose({loved: true})().forEach(rate, {shouldRateByArtist, isLoved: true})
-  allTracks.whose({disliked: true})().forEach(rate, {shouldRateByArtist})
-  allTracks.whose({unplayed: false})().forEach(flag, shouldRateByArtist)
-  getPlaylist('Uninitialized').tracks().forEach(initialize, {
-    shouldRateByArtist,
-    tracksToSetGenreByArtist,
-    tracksToSetStatusByArtist,
-    tracksToSetDiscoveredByArtist
-  })
+  const {allTracks} = state
 
-  // loopThroughChildPlaylists('1 Commands')
+  getPlaylist('Ambiguous Love').tracks().forEach(disambiguate)// #smart-playlist: Tracks whose love is not "loved," "disliked," nor "none."
+  allTracks.whose({loved: true})().forEach(rate, {...state, isLoved: true})
+  allTracks.whose({disliked: true})().forEach(rate, state)
+  allTracks.whose({unplayed: false})().forEach(flag, state)
+  getPlaylist('Uninitialized').tracks().forEach(initialize, state) // #smart-playlist: Tracks without an "Ungenred" tag.
 
-  // const disableSongPlaylist = getPlaylist('Disable Song')
-  // const tracks = playlist.tracks()
-  // if (!tracks.length) return
-  const playlists = app.playlists()
-  const childPlaylists = []
-  playlists.forEach(playlist => {
-    let parent
-    try { parent = playlist.parent() }
-    catch (error) { }
-    parent && parent.name() === 'Set Artist Genre' && childPlaylists.push(playlist)
-  })
-  display(childPlaylists.length)
+  const commandsFolder = getPlaylist('1 Commands')
+  executeAndRecurse.call(state, commandsFolder)
 }

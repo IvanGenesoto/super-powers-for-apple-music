@@ -1,5 +1,5 @@
-const getChildPlaylists = require('../get/child-playlists')
-const tag = require('./multi-use/tag')
+const getChildPlaylists = require('../../get/child-playlists')
+const tag = require('./tag')
 
 module.exports = function processPlaylistFolder(args) {
   const {folderName} = args
