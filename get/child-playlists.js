@@ -1,9 +1,9 @@
-const app = require('../app')
-module.exports = parentPlaylistName => {
+module.exports = folder => {
+  const {allPlaylists} = this
+  const name = folder.name()
   const childPlaylists = []
-  const allPlaylists = app.playlists()
   allPlaylists.forEach(playlist => {
-    try { playlist.parent.name() === parentPlaylistName && childPlaylists.push(playlist) }
+    try { playlist.parent.name() === name && childPlaylists.push(playlist) }
     catch (unused) { }
   })
   return childPlaylists

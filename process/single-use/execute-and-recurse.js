@@ -1,22 +1,31 @@
 const executeCommand = require('../multi-use/execute-command')
+const getChildPlaylists = require('../../get/child-playlists')
 
 module.exports = function executeAndRecurse(playlist) {
 
-  const {parentName, folderCommandKitByName, playlistCommandKitByName} = this
+  const state = this
+  const {parentName, folderCommandKitByName, playlistCommandKitByName} = state
   const playlistName = playlist.name()
   const playlistCommandKit = playlistCommandKitByName[playlistName]
   const folderCommandKit = folderCommandKitByName[parentName]
+  const tracks = playlist.tracks()
 
-  if (playlistCommandKit) {
-    const tracks = playlist.tracks()
-    const {effects} = playlistCommandKit
-    const applyEffects = track => {
-      try { effects.forEach(executeCommand, {playlistName, track}) }
-      catch (unused) { }
-    }
-    tracks.forEach(applyEffects)
+  const applyEffects = track => {
+    const {effects} = this
+    try { effects.forEach(executeCommand, {track, playlistName}) }
+    catch (unused) { }
   }
-  else if (folderCommandKit) {
 
+  const getChildrenAndRecurse = () => {
+    const children = getChildPlaylists(playlist, state)
+    children.length && children.forEach(
+      executeAndRecurse, {...state, parentName: playlistName}
+    )
   }
+
+  if (!playlistCommandKit && !folderCommandKit) return getChildrenAndRecurse()
+  if (playlistCommandKit) tracks.forEach(applyEffects, playlistCommandKit)
+  else if (folderCommandKit) tracks.forEach(applyEffects, folderCommandKit)
+
+
 }
