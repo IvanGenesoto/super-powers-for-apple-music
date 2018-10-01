@@ -1,6 +1,7 @@
 const validate = require('./validate')
 
 module.exports = function initialize(track) {
+  const state = this
   const {
     shouldRateByArtist,
     tracksToSetGenreByArtist,
@@ -25,7 +26,7 @@ module.exports = function initialize(track) {
     const existingTracksToSetDiscovered = tracksToSetDiscoveredByArtist[artist]
     const tracksToSetDiscovered = existingTracksToSetDiscovered || (tracksToSetDiscoveredByArtist[artist] = [])
     tracksToSetDiscovered.push(track)
-    validate(track)
+    validate.call(state, track)
   }
   catch (unused) { }
 }

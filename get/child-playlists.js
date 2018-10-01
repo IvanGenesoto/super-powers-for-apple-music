@@ -6,5 +6,5 @@ module.exports = folder => {
     try { playlist.parent.name() === name && childPlaylists.push(playlist) }
     catch (unused) { }
   })
-  return childPlaylists
+  return childPlaylists.length && childPlaylists
 }

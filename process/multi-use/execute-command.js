@@ -1,23 +1,25 @@
-const commandKitByName = require('../../command-kit-by-name')
-const addTag = require('tag/add')
-const removeTag = require('tag/remove')
+const executeEffect = require('./execute-effect')
+const getArtistTracks = require('../../get/artist-tracks')
 
-module.exports = function executeCommand(effect) {
+module.exports = function executeCommand(track) {
 
-  const {field, label, value: givenValue, shouldTruncate, antiLabel, validationCommandName} = effect
-  const {track, playlistName} = this
-  const labels = [label, antiLabel]
-  const name = track.name().toLowerCase()
-  const value = givenValue || (shouldTruncate ? playlistName.slice(0, -5) : playlistName)
+  const artistName = track.artist.name()
+  const {state, commandKit, playlistName = commandKit.validation.playlistName} = this
+  const {effects} = commandKit
+  const {isArtistCommand, valueByArtist, value} = commandKit
 
-  const isActionWarranted = () => {
-    const {validation} = commandKitByName[validationCommandName]
-    const {words} = validation
-    return words.find(word => name.includes(word))
+  if (valueByArtist) {
+    if (value !== undefined) valueByArtist[artistName] = value
+    else if (!valueByArtist[artistName]) valueByArtist[artistName] = []
   }
 
-  labels.forEach(removeTag, track)
-  if (validationCommandName && !isActionWarranted()) return
-  if (label) addTag(track, label, value)
-  else track[field].set(value)
+  const execute = track => {
+    try { effects.forEach(executeEffect, {...state, track, playlistName, artistName}) }
+    catch (unused) { }
+  }
+
+  if (isArtistCommand) getArtistTracks.call(state, track).forEach(execute)
+  else execute(track)
+
+  track.delete()
 }

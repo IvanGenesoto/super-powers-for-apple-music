@@ -6,14 +6,12 @@ module.exports = function process(isTest) {
   const rate = require('./multi-use/rate')
   const flag = require('./single-use/flag')
   const initialize = require('./single-use/initialize')
-  const executeAndRecurse = require('./single-use/execute-and-recurse')
+  const executeAndRecurse = require('./multi-use/execute-and-recurse')
   const getSpecialKit = require('../get/special-kit')
+  const createCommandKitByName = require('../single-use/create-command-kit-by-name')
 
   const state = {
     allPlaylists: app.playlists(),
-    allTracks: getPlaylist(isTest ? 'test' : 'Library').tracks,
-    folderCommandKitByName: getSpecialKit(),
-    playlistCommandKitByName: getSpecialKit(true),
     shouldRateByArtist: {},
     shouldInferGenreByArtist: {},
     shouldInferVocalistByArtist: {},
@@ -24,12 +22,16 @@ module.exports = function process(isTest) {
     tracksToSetGenreByArtist: {}
   }
 
-  const {allTracks} = state
+  const $allTracks = state.$allTracks = getPlaylist(isTest ? 'test' : 'Library').tracks
+
+  state.commandKitByName = createCommandKitByName.call(state)
+  state.folderCommandKitByName = getSpecialKit.call(state)
+  state.folderCommandKitByName = getSpecialKit.call(state, true)
 
   getPlaylist('Ambiguous Love').tracks().forEach(disambiguate)// #smart-playlist: Tracks whose love is not "loved," "disliked," nor "none."
-  allTracks.whose({loved: true})().forEach(rate, {...state, isLoved: true})
-  allTracks.whose({disliked: true})().forEach(rate, state)
-  allTracks.whose({unplayed: false})().forEach(flag, state)
+  $allTracks.whose({loved: true})().forEach(rate, {...state, isLoved: true})
+  $allTracks.whose({disliked: true})().forEach(rate, state)
+  $allTracks.whose({unplayed: false})().forEach(flag, state)
   getPlaylist('Uninitialized').tracks().forEach(initialize, state) // #smart-playlist: Tracks without an "Ungenred" tag.
 
   const commandsFolder = getPlaylist('1 Commands')
