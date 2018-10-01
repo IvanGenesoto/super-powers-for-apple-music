@@ -1,5 +1,6 @@
 module.exports = function process(isTest) {
 
+  const app = require('../app')
   const getPlaylist = require('../get/playlist')
   const disambiguate = require('./single-use/disambiguate')
   const rate = require('./multi-use/rate')
@@ -9,7 +10,8 @@ module.exports = function process(isTest) {
   const getSpecialKit = require('../get/special-kit')
 
   const state = {
-    allTracks: getPlaylist(isTest ? 'Test' : 'Library').tracks,
+    allPlaylists: app.playlists(),
+    allTracks: getPlaylist(isTest ? 'test' : 'Library').tracks,
     folderCommandKitByName: getSpecialKit(),
     playlistCommandKitByName: getSpecialKit(true),
     shouldRateByArtist: {},
