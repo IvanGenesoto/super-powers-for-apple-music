@@ -1,6 +1,6 @@
-const commandKitByName = require('../command-kit-by-name')
-
 module.exports = function getSpecialKit(shouldBePlaylist) {
+
+  const {commandKitByName} = this
 
   const appendIfIsPlaylist = (result, [key, value]) => {
     const {isPlaylist} = value
