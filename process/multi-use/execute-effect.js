@@ -9,24 +9,21 @@ module.exports = function executeEffect(effect) {
     value: givenValue,
     shouldTruncate,
     antiLabel,
-    validationCommandName,
-    arrayToPushToByArtist
+    isActionWarranted,
+    valueByArtist,
+    valueByArtistValue
   } = effect
 
-  const {track, artistName, playlistName, commandKitByName} = this
+  const state = this
+  const {track, artistName, playlistName} = state
   const labels = [label, antiLabel]
-  const name = track.name().toLowerCase()
+  const trackName = track.name().toLowerCase()
   const value = givenValue || (shouldTruncate ? playlistName.slice(0, -5) : playlistName)
 
-  const isActionWarranted = () => {
-    const {validation} = commandKitByName[validationCommandName]
-    const {words} = validation
-    return words.find(word => name.includes(word))
-  }
-
   labels.forEach(removeTag, track)
-  if (validationCommandName && !isActionWarranted()) return
+  if (!isActionWarranted.call(state, {effect, trackName, artistName, track})) return
+
+  valueByArtist && (valueByArtist[artistName] = valueByArtistValue)
   if (label) addTag(track, label, value)
   else track[field].set(value)
-  arrayToPushToByArtist && arrayToPushToByArtist[artistName].push(track)
 }
