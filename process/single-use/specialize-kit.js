@@ -1,10 +1,10 @@
-module.exports = function getSpecialKit(shouldBePlaylist) {
+module.exports = function specializeKit(shouldBeFolder) {
 
   const {commandKitByName} = this
 
   const appendIfIsPlaylist = (result, [key, value]) => {
-    const {isPlaylist} = value
-    isPlaylist === shouldBePlaylist && (result[key] = value)
+    const {isFolder} = value
+    isFolder === shouldBeFolder && (result[key] = value)
     return result
   }
 

@@ -15,7 +15,6 @@ module.exports = function createCommandKitByName() {
 
   return ({
     'Protect Artist': {
-      isPlaylist: true,
       isArtistCommand: true,
       valueByArtist: tracksToDeriveStatusByArtist,
       value: null,
@@ -25,7 +24,6 @@ module.exports = function createCommandKitByName() {
       }]
     },
     'Reject Aritst': {
-      isPlaylist: true,
       isArtistCommand: true,
       valueByArtist: tracksToDeriveStatusByArtist,
       value: null,
@@ -35,7 +33,6 @@ module.exports = function createCommandKitByName() {
       }]
     },
     'Set Artist to Vocalist': {
-      isPlaylist: true,
       isArtistCommand: true,
       valueByArtist: shouldInferVocalistByArtist,
       value: false,
@@ -45,7 +42,6 @@ module.exports = function createCommandKitByName() {
       }]
     },
     'Set Artist to Instrumentalist': {
-      isPlaylist: true,
       isArtistCommand: true,
       valueByArtist: shouldInferVocalistByArtist,
       value: false,
@@ -55,7 +51,6 @@ module.exports = function createCommandKitByName() {
       }]
     },
     'Set Song to Vocals': {
-      isPlaylist: true,
       valueByArtist: shouldInferVocalistByArtist,
       value: true,
       effects: [{
@@ -64,7 +59,6 @@ module.exports = function createCommandKitByName() {
       }]
     },
     'Set Song to Instrumental': {
-      isPlaylist: true,
       valueByArtist: shouldInferVocalistByArtist,
       value: true,
       validation: {words: ['instrumental']},
@@ -88,12 +82,30 @@ module.exports = function createCommandKitByName() {
         }
       ]
     },
+    'Retire Artist': {
+      isArtistCommand: true,
+      effects: [{
+        field: 'grouping',
+        label: 'Retired',
+        value: 'true'
+      }]
+    },
+    'Unretire Artist': {
+      isArtistCommand: true,
+      effects: [{
+        field: 'grouping',
+        label: 'Retired',
+        value: 'false'
+      }]
+    },
     'Set Artist Genre': {
+      isFolder: true,
       isArtistCommand: true,
       valueByArtist: tracksToDeriveGenreByArtist,
       value: null,
       effects: [{field: 'genre'}]},
     'Set Artist Genre + Vocalist': {
+      isFolder: true,
       isArtistCommand: true,
       actions: [
         {
@@ -116,6 +128,7 @@ module.exports = function createCommandKitByName() {
       ]
     },
     'Set Artist Genre + Instrumentalist': {
+      isFolder: true,
       isArtistCommand: true,
       actions: [
         {
@@ -138,6 +151,7 @@ module.exports = function createCommandKitByName() {
       ]
     },
     'Set Song Genre': {
+      isFolder: true,
       actions: [{
         valueByArtist: shouldInferGenreByArtist,
         value: true
@@ -154,6 +168,7 @@ module.exports = function createCommandKitByName() {
       ]
     },
     'Set Song Genre + Vocals': {
+      isFolder: true,
       actions: [
         {
         },
@@ -182,6 +197,7 @@ module.exports = function createCommandKitByName() {
       ]
     },
     'Set Song Genre + Instrumental': {
+      isFolder: true,
       actions: [
         {
           valueByArtist: shouldInferGenreByArtist,
@@ -208,6 +224,7 @@ module.exports = function createCommandKitByName() {
       ]
     },
     'Disable Song': {
+      isFolder: true,
       validation: {
         words: ['alternate', 'version', 'acoustic', 'remix', 'mix', 'edition'],
         playlistName: 'Alternate'
@@ -225,6 +242,7 @@ module.exports = function createCommandKitByName() {
       ]
     },
     'Enable Song': {effects: [
+      isFolder: true,
       {
         field: 'enabled',
         value: true
@@ -237,6 +255,7 @@ module.exports = function createCommandKitByName() {
       }
     ]},
     'Disregard Song': {
+      isFolder: true,
       validation: {
         words: ['interlude', 'intro', 'outro'],
         playlistName: 'Interlude'
@@ -247,27 +266,12 @@ module.exports = function createCommandKitByName() {
       }]
     },
     'Regard Song': {effects: [{
+      isFolder: true,
       field: 'grouping',
       label: 'Regarded',
       antiLabel: 'Disregarded',
       validationCommandName: 'Disregard Song',
       isActionWarranted: doesNameIncludeWord
-    }]},
-    'Retire Artist': {
-      isArtistCommand: true,
-      effects: [{
-        field: 'grouping',
-        label: 'Retired',
-        value: 'true'
-      }]
-    },
-    'Unretire Artist': {
-      isArtistCommand: true,
-      effects: [{
-        field: 'grouping',
-        label: 'Retired',
-        value: 'false'
-      }]
-    }
+    }]}
   })
 }
