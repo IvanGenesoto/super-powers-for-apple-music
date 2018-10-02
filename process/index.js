@@ -9,7 +9,7 @@ module.exports = function process(isTest) {
   const setUnplayed = require('./single-use/set-unplayed')
   const initialize = require('./single-use/initialize')
   const executeAndRecurse = require('./multi-use/execute-and-recurse')
-  const getSpecialKit = require('../get/special-kit')
+  const specializeKit = require('./single-use/specialize-kit')
   const createCommandKitByName = require('../single-use/create-command-kit-by-name')
 
   const state = {
@@ -32,8 +32,8 @@ module.exports = function process(isTest) {
 
   state.getArtistTracks = getArtistTracks.bind(state)
   state.commandKitByName = createCommandKitByName.call(state)
-  state.folderCommandKitByName = getSpecialKit.call(state)
-  state.folderCommandKitByName = getSpecialKit.call(state, true)
+  state.playlistCommandKitByName = specializeKit.call(state)
+  state.folderCommandKitByName = specializeKit.call(state, true)
 
   getPlaylist('Ambiguous Love').tracks().forEach(disambiguate)// #smart-playlist: Tracks whose love is not "loved," "disliked," nor "none."
   $allTracks.whose({loved: true})().forEach(rate, {...state, isLoved: true})
