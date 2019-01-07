@@ -1,5 +1,5 @@
 module.exports = {
-  Artist: 'grouping',
+  '\u2605': 'grouping', // #note: ★ (artist rating)
   Vocalist: 'grouping',
   Vocals: 'grouping',
   Disabled: 'grouping',
@@ -16,5 +16,6 @@ module.exports = {
   Composer: 'composer',
   Mood: 'composer',
   Energy: 'composer',
-  Originally: 'composer'
+  Originally: 'composer',
+  Updated: 'composer'
 }

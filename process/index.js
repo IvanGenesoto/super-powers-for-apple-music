@@ -13,34 +13,37 @@ module.exports = function process(isTest) {
   const createCommandKitByName = require('../single-use/create-command-kit-by-name')
 
   const state = {
-    allPlaylists: app.playlists(),
+    playlists: app.playlists(),
     tracksToSetUnplayed: [],
-    shouldRateByArtist: {},
-    shouldInferGenreByArtist: {},
-    shouldInferVocalistByArtist: {},
+    shouldDeriveDiscoveredAtByArtist: {},
+    tracksToAdoptStatsByArtist: {}, // #note: Checks for coresponding property on "didSetStatusByArtists" and if present, does not run status adoption function, otherwise, tracks adopt first status found in artist. Likewise for genre, etc.
+    shouldDeriveRatingByArtist: {},
+    shouldDeriveStatusByArtist: {}, // #refactor: May be superflous as "rateArtist" function may also set status.
+    shouldDeriveHasVocalistByArtist: {},
+    shouldDeriveGenreByArtist: {},
+    didSetDiscoveredAtByArtist: {},
+    didSetRatingByArtist: {},
+    didSetStatusByArtist: {},
+    didSetHasVocalistByArtist: {},
+    didSetGenreByArtist: {},
     wasUpdatedByArtist: {},
-    hasVocalistByArtist: {},
-    genreByArtist: {},
-    tracksByArtist: {},
-    tracksToDeriveStatusByArtist: {},
-    tracksToDeriveGenreByArtist: {},
-    tracksToDeriveVocalistByArtist: {},
-    tracksToDeriveDiscoveredByArtist: {}
+    tracksByArtist: {}
   }
 
-  const $allTracks = state.$allTracks = getPlaylist(isTest ? 'test' : 'Library').tracks
+  const this_ = {state}
+  const _allTracks = state._allTracks = getPlaylist(isTest ? 'test' : 'Library').tracks
 
-  state.getArtistTracks = getArtistTracks.bind(state)
-  state.commandKitByName = createCommandKitByName.call(state)
-  state.playlistCommandKitByName = specializeKit.call(state)
-  state.folderCommandKitByName = specializeKit.call(state, true)
+  state.getArtistTracks = getArtistTracks.bind(this_)
+  state.commandKitByName = createCommandKitByName.call(this_)
+  state.folderCommandKitByName = specializeKit.call(this_)
+  state.playlistCommandKitByName = specializeKit.call(this_, true)
 
   getPlaylist('Ambiguous Love').tracks().forEach(disambiguate)// #smart-playlist: Tracks whose love is not "loved," "disliked," nor "none."
-  $allTracks.whose({loved: true})().forEach(rate, {...state, isLoved: true})
-  $allTracks.whose({disliked: true})().forEach(rate, state)
-  $allTracks.whose({unplayed: false})().forEach(handlePlayed, state)
-  getPlaylist('Uninitialized').tracks().forEach(initialize, state) // #smart-playlist: Tracks without an "Ungenred" tag.
+  _allTracks.whose({loved: true})().forEach(rate, {...this_, isLoved: true})
+  _allTracks.whose({disliked: true})().forEach(rate, this_)
+  _allTracks.whose({unplayed: false})().forEach(handlePlayed, this_)
+  getPlaylist('Uninitialized').tracks().forEach(initialize, this_) // #smart-playlist: Tracks without an "Original" tag.
 
-  const commandsFolder = getPlaylist('1 Commands')
-  executeAndRecurse.call(state, commandsFolder)
+  const commandsFolder = getPlaylist('1 Commands') // #feature: User can set name of commands folder in "Preferences" playlist.
+  executeAndRecurse.call(this_, commandsFolder)
 }

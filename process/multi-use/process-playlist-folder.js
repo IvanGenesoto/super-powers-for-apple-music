@@ -1,7 +1,7 @@
 const getChildPlaylists = require('../../get/child-playlists')
 const tag = require('./tag')
 
-module.exports = function processPlaylistFolder(args) {
+module.exports = function processPlaylistFolder(args) { // #refactor: unused
   const {folderName} = args
   const playlists = getChildPlaylists(folderName)
   playlists.forEach(processTracks, args)

@@ -1,9 +1,8 @@
-module.exports = function doesNameIncludeWord({effect, trackName}) {
+module.exports = function doesNameIncludeWord(antiLabel) { // #refactor: unused
 
-  const {commandKitByName} = this
-  const {validationCommandName} = effect
-  const {validation} = commandKitByName[validationCommandName]
-  const {words} = validation
+  const {state, trackName} = this
+  const {commandKitByName} = state
+  const {validationWords} = commandKitByName[antiLabel]
 
-  return !!words.find(word => trackName.includes(word))
+  return !!validationWords.find(word => trackName.includes(word))
 }

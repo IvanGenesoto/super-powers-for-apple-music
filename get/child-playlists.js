@@ -1,10 +1,13 @@
-module.exports = folder => {
-  const {allPlaylists} = this
-  const name = folder.name()
+module.exports = function getChildPlaylists(name) {
+
+  const {state} = this
+  const {playlists} = state
   const childPlaylists = []
-  allPlaylists.forEach(playlist => {
+
+  playlists.forEach(playlist => {
     try { playlist.parent.name() === name && childPlaylists.push(playlist) }
     catch (unused) { }
   })
+
   return childPlaylists.length && childPlaylists
 }
