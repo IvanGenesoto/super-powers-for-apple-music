@@ -2,18 +2,20 @@ const executeEffect = require('./execute-effect')
 
 module.exports = function executeCommand(track) {
 
-  const state = this
-  const {getArtistTracks, commandKit, playlistName = commandKit.validation.playlistName} = state
-  const {isArtistCommand, effects} = commandKit
+  const {state, commandKit} = this
+  const {getArtistTracks} = state
+  const {isArtistCommand, effects, valueByArtist, value = true} = commandKit
   const artistName = track.artist.name()
 
   const execute = track => {
-    try { effects.forEach(executeEffect, {...state, track, playlistName, artistName}) }
+    const this_ = {...this, artistName, track}
+    try { effects.forEach(executeEffect, this_) }
     catch (unused) { }
   }
 
-  if (isArtistCommand) getArtistTracks(track, artistName).forEach(execute)
-  else execute(track)
+  valueByArtist && (valueByArtist[artistName] = value)
+  isArtistCommand && getArtistTracks(track, artistName).forEach(execute)
+  isArtistCommand || execute(track)
 
   track.delete()
 }

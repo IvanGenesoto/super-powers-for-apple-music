@@ -1,29 +1,28 @@
 const addTag = require('tag/add')
 const removeTag = require('tag/remove')
+const validate = require('./validate')
 
 module.exports = function executeEffect(effect) {
 
+  const {track, playlistName, folderName} = this
+
   const {
     field,
-    label,
-    value: givenValue,
-    shouldTruncate,
+    shouldUseFolderNameAsLabel,
+    label = shouldUseFolderNameAsLabel && folderName,
+    value = playlistName, // (shouldTruncate ? playlistName.slice(0, -5) : playlistName) // #note: Value is the playist name minus " Song".
     antiLabel,
-    isActionWarranted,
-    valueByArtist,
-    valueByArtistValue
+    shouldAntiValidate
   } = effect
 
-  const state = this
-  const {track, artistName, playlistName} = state
   const labels = [label, antiLabel]
-  const trackName = track.name().toLowerCase()
-  const value = givenValue || (shouldTruncate ? playlistName.slice(0, -5) : playlistName)
 
   labels.forEach(removeTag, track)
-  if (!isActionWarranted.call(state, {effect, trackName, artistName, track})) return
 
-  valueByArtist && (valueByArtist[artistName] = valueByArtistValue)
-  if (label) addTag(track, label, value)
-  else track[field].set(value)
+  const isWarranted = !shouldAntiValidate || validate.call(this, track, antiLabel)
+
+  if (!isWarranted) return
+
+  label && addTag(track, label, value)
+  field && track[field].set(value)
 }

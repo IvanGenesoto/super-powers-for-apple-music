@@ -6,13 +6,13 @@ module.exports = function executeAndRecurse(playlist) {
   const tracks = playlist.tracks()
   if (!tracks.length) return
 
-  const state = this
-  const {parentName, folderCommandKitByName, playlistCommandKitByName} = state
+  const {state, folderName} = this
+  const {folderCommandKitByName, playlistCommandKitByName} = state
   const playlistName = playlist.name()
   const playlistCommandKit = playlistCommandKitByName[playlistName]
-  const commandKit = playlistCommandKit || folderCommandKitByName[parentName]
-  const children = getChildPlaylists(playlist, state)
+  const commandKit = playlistCommandKit || folderCommandKitByName[folderName]
+  const children = getChildPlaylists.call(this, playlistName)
 
-  commandKit && tracks.forEach(executeCommand, {...state, commandKit, playlistName})
-  children && children.forEach(executeAndRecurse, {...state, parentName: playlistName})
+  commandKit && tracks.forEach(executeCommand, {...this, commandKit, playlistName})
+  children && children.forEach(executeAndRecurse, {...this, folderName: playlistName})
 }

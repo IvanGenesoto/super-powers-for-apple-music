@@ -1,7 +1,9 @@
 module.exports = function handlePlayed(track) {
 
-  const {shouldRateByArtist, tracksToSetUnplayed} = this
+  const {state} = this
+  const {shouldDeriveRatingByArtist, tracksToSetUnplayed} = state
   const name = track.artist.name()
-  shouldRateByArtist[name] = true
+
+  shouldDeriveRatingByArtist[name] = true
   tracksToSetUnplayed.push(track)
 }

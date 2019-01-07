@@ -1,11 +1,18 @@
 const executeCommand = require('../multi-use/execute-effect')
 
-module.exports = function validate(track) {
-  const state = this
+module.exports = function validate(track, antiLabel) {
+
+  const {state} = this
   const {commandKitByName} = state
   const name = track.name().toLowerCase()
-  const filter = ({validation: {words}}) => words.find(find)
+  const filter = ([unused, {validationWords}]) => validationWords && validationWords.find(find)
   const find = word => name.includes(word)
-  const commandKits = Object.values(commandKitByName).filter(filter)
-  commandKits.forEach(commandKit => executeCommand.call({...state, commandKit}, track))
+
+  if (antiLabel) return !![null, commandKitByName[antiLabel]].filter(filter).length
+
+  const commandKitEntries = Object.entries(commandKitByName).filter(filter)
+
+  commandKitEntries.forEach(([folderName, commandKit]) => executeCommand.call({
+    ...this, folderName, commandKit, playlistName: commandKit.validationName // #note: "folderName" is actually a playlist name if commandKit.isPlaylist is true.
+  }, track))
 }

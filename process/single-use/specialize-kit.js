@@ -1,14 +1,15 @@
-module.exports = function specializeKit(shouldBeFolder) {
+module.exports = function specializeKit(shouldBePlaylist) {
 
-  const {commandKitByName} = this
+  const {state} = this
+  const {commandKitByName} = state
 
-  const appendIfIsPlaylist = (result, [key, value]) => {
-    const {isFolder} = value
-    isFolder === shouldBeFolder && (result[key] = value)
-    return result
+  const appendIfMatch = (specializedKit, [name, kit]) => {
+    const {isPlaylist} = kit
+    isPlaylist === shouldBePlaylist && (specializedKit[name] = kit)
+    return specializedKit
   }
 
   return Object
     .entries(commandKitByName)
-    .reduce(appendIfIsPlaylist, {})
+    .reduce(appendIfMatch, {})
 }

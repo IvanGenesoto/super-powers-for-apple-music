@@ -1,29 +1,32 @@
 const getTagValue = require('../tag/get-value')
 
-module.exports = function doesHasVocalsMatchArtist({effect, artistName, track}) {
+module.exports = function doesHasVocalsMatchArtist(effect) { // #refactor: unused
 
-  const {hasVocalistByArtist, getArtistTracks} = this
-  const {value: vocals} = effect
+  const {state, artistName, track} = this
+  const {hasVocalistByArtist, getArtistTracks} = state
+  const {value} = effect
 
-  const artistValue = hasVocalistByArtist[artistName]
-  if (artistValue !== undefined) return vocals !== artistValue
+  const hasVocalist = hasVocalistByArtist[artistName]
+  if (hasVocalist !== undefined) return value !== (hasVocalist ? 'Yes' : 'No')
 
   const vocalistValueOnTrack = getTagValue('Vocalist', track)
+
   if (vocalistValueOnTrack) {
-    hasVocalistByArtist[artistName] = vocalistValueOnTrack === 'true'
-    return vocals !== vocalistValueOnTrack
+    hasVocalistByArtist[artistName] = vocalistValueOnTrack === 'Yes'
+    return value !== vocalistValueOnTrack
   }
 
-  let values = []
+  const container = []
   const artistTracks = getArtistTracks(track, artistName)
+
   const trackWithVocalistValue = artistTracks.find(track => (
-    values[0] = getTagValue('Vocalist', track))
-  )
+    container.vocalistValue = getTagValue('Vocalist', track)
+  ))
 
   if (trackWithVocalistValue) {
-    const [vocalistValue] = values
-    hasVocalistByArtist[artistName] = vocalistValue === 'true'
-    return vocals !== vocalistValue
+    const {vocalistValue} = container
+    hasVocalistByArtist[artistName] = vocalistValue === 'Yes'
+    return value !== vocalistValue
   }
 
   hasVocalistByArtist[artistName] = null
