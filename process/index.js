@@ -5,7 +5,6 @@ module.exports = function process(isTest) {
   const getArtistTracks = require('../get/artist-tracks')
   const disambiguate = require('./single-use/disambiguate')
   const rate = require('./multi-use/rate')
-  const handlePlayed = require('./single-use/handle-played')
   const setUnplayed = require('./single-use/set-unplayed')
   const initialize = require('./single-use/initialize')
   const executeAndRecurse = require('./multi-use/execute-and-recurse')
@@ -14,7 +13,7 @@ module.exports = function process(isTest) {
 
   const state = {
     playlists: app.playlists(),
-    tracksToSetUnplayed: [],
+    parentNameByPlaylistName: {},
     shouldDeriveDiscoveredAtByArtist: {},
     tracksToAdoptStatsByArtist: {}, // #note: Checks for coresponding property on "didSetStatusByArtists" and if present, does not run status adoption function, otherwise, tracks adopt first status found in artist. Likewise for genre, etc.
     shouldDeriveRatingByArtist: {},
@@ -26,7 +25,6 @@ module.exports = function process(isTest) {
     didSetStatusByArtist: {},
     didSetHasVocalistByArtist: {},
     didSetGenreByArtist: {},
-    wasUpdatedByArtist: {},
     tracksByArtist: {}
   }
 
@@ -41,7 +39,6 @@ module.exports = function process(isTest) {
   getPlaylist('Ambiguous Love').tracks().forEach(disambiguate)// #smart-playlist: Tracks whose love is not "loved," "disliked," nor "none."
   _allTracks.whose({loved: true})().forEach(rate, {...this_, isLoved: true})
   _allTracks.whose({disliked: true})().forEach(rate, this_)
-  _allTracks.whose({unplayed: false})().forEach(handlePlayed, this_)
   getPlaylist('Uninitialized').tracks().forEach(initialize, this_) // #smart-playlist: Tracks without an "Original" tag.
 
   const commandsFolder = getPlaylist('1 Commands') // #feature: User can set name of commands folder in "Preferences" playlist.
