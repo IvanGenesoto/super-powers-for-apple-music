@@ -1,7 +1,7 @@
 node_modules
 bundles
+scratch
 main.js
 test.js
 test-main.js
-scratch.js
 .DS_Store

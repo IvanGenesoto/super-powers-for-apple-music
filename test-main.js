@@ -22,14 +22,18 @@ const display = require('./dialogue/display')
 const getPlaylist = require('./get/playlist')
 // const selection = app.selection()
 // const [track] = selection
-const _allTracks = getPlaylist('Library').tracks
-const played = _allTracks.whose({unplayed: false})()
-const {length} = played
+// const _allTracks = getPlaylist('Library').tracks
+const playlist = getPlaylist('nested test')
+// const tracksByArtist = _allTracks.whose({artist: 'Shelf Life'})()
+const {parent} = playlist.properties()
+// const {length} = tracksByArtist
+// const played = _allTracks.whose({unplayed: false})()
+// const {length} = played
 // track.loved.set(true)
 // delay(10)
 // const unplayed = track.unplayed()
 // track.unplayed.set(true)
 // display(`${unplayed}`)
-display(length)
+display(!!parent)
 
 },{"./dialogue/display":2,"./get/playlist":3}]},{},[4])

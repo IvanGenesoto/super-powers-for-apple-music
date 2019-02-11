@@ -1,10 +1,11 @@
-module.exports = {
+module.exports = { // #debug: Update fieldByLabel.
   '\u2605': 'grouping', // #note: ★ (artist rating)
   Vocalist: 'grouping',
   Vocals: 'grouping',
   Disabled: 'grouping',
   Enabled: 'grouping',
   Disregarded: 'grouping',
+  Regarded: 'grouping',
   Song: 'grouping',
   Retired: 'grouping',
   Rep: 'grouping',
@@ -16,6 +17,6 @@ module.exports = {
   Composer: 'composer',
   Mood: 'composer',
   Energy: 'composer',
-  Originally: 'composer',
+  Original: 'composer',
   Updated: 'composer'
 }
