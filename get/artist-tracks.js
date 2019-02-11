@@ -1,16 +1,8 @@
-module.exports = function getArtistTracks(track, artistName) {
+module.exports = function getArtistTracks(artist) {
 
   const {state} = this
-  const {tracksByArtist} = state
+  const {tracksByArtist, _allTracks} = state
+  const existingTracks = tracksByArtist[artist]
 
-  if (artistName) {
-    const tracks = tracksByArtist[artistName]
-    if (tracks) return tracks
-  }
-
-  const _artist = track.artist
-  const name = artistName || _artist.name()
-  const tracks = tracksByArtist[name]
-
-  return tracks || (tracksByArtist[name] = _artist.tracks())
+  return existingTracks || (tracksByArtist[name] = _allTracks.whose({artist})())
 }

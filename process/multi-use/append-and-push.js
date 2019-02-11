@@ -1,6 +1,6 @@
-module.exports = function appendAndPush(tracksByArtist, artistName, track) {
+module.exports = function appendAndPush(tracksByArtist, artist, track) {
 
-  const existingTracks = tracksByArtist[artistName]
-  const tracks = existingTracks || (tracksByArtist[artistName] = [])
-  track && tracks.push(track)
+  const existingTracks = tracksByArtist[artist]
+  const tracks = existingTracks || (tracksByArtist[artist] = [])
+  tracks.push(track)
 }
