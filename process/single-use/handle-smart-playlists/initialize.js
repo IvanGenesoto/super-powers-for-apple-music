@@ -1,5 +1,5 @@
-const appendAndPush = require('../multi-use/append-and-push')
-const validate = require('../multi-use/validate')
+const appendAndPush = require('../../multi-use/append-and-push')
+const validate = require('../../multi-use/validate')
 
 module.exports = function initialize(track) {
 
