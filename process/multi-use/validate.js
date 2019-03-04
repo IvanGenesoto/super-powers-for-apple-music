@@ -1,30 +1,30 @@
+const labelKitByLabel = require('../../label-kit-by-label')
 const executeCommand = require('./execute-command')
 
 module.exports = function validate(track, antiLabel) { // #mustBeCalledInTryBlock: true, #mustHaveData: true
 
-  const {state, data} = this
-  const {commandKitByName} = state
+  const {data} = this
   const {name} = data
   const lowerCaseName = name.toLowerCase()
   const filter = ([unused, {validationWords}]) => validationWords && validationWords.find(find)
   const find = word => lowerCaseName.includes(word)
 
-  const doesNameContainValidationWords = () => {
-    const commandKit = commandKitByName[antiLabel]
-    const wrappedCommandKit = {commandKit}
-    const filteredEntries = Object.entries(wrappedCommandKit).filter(filter)
+  const doesNameIncludeValidationWord = () => {
+    const labelKit = labelKitByLabel[antiLabel]
+    const wrappedLabelKit = {labelKit}
+    const filteredEntries = Object.entries(wrappedLabelKit).filter(filter)
     const {length} = filteredEntries
     return !!length
   }
 
-  const callExecuteCommand = ([folderName, commandKit]) => executeCommand.call({
-    ...this, folderName, commandKit, playlistName: commandKit.validationName // #note: "folderName" is actually a playlist name if commandKit.isPlaylist is true.
+  const callExecuteCommand = ([label, labelKit]) => executeCommand.call({
+    ...this, label, labelKit, value: labelKit.validationValue
   }, track)
 
-  if (antiLabel) return doesNameContainValidationWords()
+  if (antiLabel) return doesNameIncludeValidationWord()
 
   Object
-    .entries(commandKitByName)
+    .entries(labelKitByLabel)
     .filter(filter)
     .forEach(callExecuteCommand)
 }
