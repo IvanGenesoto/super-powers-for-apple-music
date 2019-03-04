@@ -1,15 +1,15 @@
-const fieldByLabel = require('../../../field-by-label')
+const labelKitByLabel = require('../../../label-kit-by-label')
 
 module.exports = function removeTag(label) { // #mustBeCalledInTryBlock: true, #mustHaveData: true
 
   if (!label) return
 
   const {track, data} = this
-  const field = fieldByLabel[label]
+  const {labelField} = labelKitByLabel[label]
 
-  if (!field) debugger // #debug: Add function call that displays "Label [Label] has no associated field".
+  if (!labelField) debugger // #debug: Add function call that displays "Label [Label] has no associated labelField".
 
-  const fieldText = data[field]
+  const fieldText = data[labelField]
   const beginIndex = fieldText.indexOf(label + ':')
 
   if (beginIndex === -1) return
@@ -18,6 +18,6 @@ module.exports = function removeTag(label) { // #mustBeCalledInTryBlock: true, #
   const endIndex = delimiterIndex === -1 ? fieldText.length : delimiterIndex + 2
   const newFieldText = fieldText.slice(0, beginIndex) + fieldText.slice(endIndex)
 
-  track[field].set(newFieldText)
-  data[field] = newFieldText
+  track[labelField].set(newFieldText)
+  data[labelField] = newFieldText
 }

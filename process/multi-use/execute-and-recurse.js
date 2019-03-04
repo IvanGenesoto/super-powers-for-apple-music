@@ -1,29 +1,56 @@
-const executeCommand = require('./execute-command')
 const getChildPlaylists = require('../../get/child-playlists')
+const labelKitByLabel = require('../../label-kit-by-label')
+const executeCommand = require('./execute-command')
 
 module.exports = function executeAndRecurse(playlist) {
 
+  const {state, folderName} = this
+  const {getArtistTracks} = state
   const playlistData = playlist.properties()
   const {tracks, name: playlistName} = playlistData
   const {length} = tracks
 
-  if (!length) return
-
-  const {state, folderName} = this
-  const {folderCommandKitByName, playlistCommandKitByName} = state
-  const playlistCommandKit = playlistCommandKitByName[playlistName]
-  const commandKit = playlistCommandKit || folderCommandKitByName[folderName]
-  const children = getChildPlaylists.call(this, playlistName)
-
-  const callExecuteCommand = track => {
-    const data = track.properties()
-    try {
-      executeCommand.call({...this, data, commandKit, playlistName}, track)
-      track.delete()
-    }
-    catch (unused) { }
+  const parseName = (playlistName, isPlaylist) => {
+    const denumberedName = denumber(playlistName)
+    const name = denumberedName.toLowerCase().startsWith('set ')
+      ? denumberedName.slice(4)
+      : denumberedName
+    const {label, isArtistCommand} = name.toLowerCase().startsWith('artist ')
+      ? {label: name.slice(7), isArtistCommand: true}
+      : {label: name}
+    const labelKit = labelKitByLabel[label]
+    return labelKit || isPlaylist
+      ? {labelKit, isArtistCommand, isPlaylist}
+      : parseName(playlistName, true)
   }
 
-  commandKit && tracks.forEach(callExecuteCommand)
+  const denumber = string => Number.isInteger(+string[0])
+      ? denumber(string.slice(1))
+      : string
+
+  const callAndDelete = track => {
+    const wrappedDidThrow = {}
+    isArtistCommand && getArtistTracks(track.artist()).forEach(
+      track => callExecuteCommand(track, wrappedDidThrow)
+    )
+    isArtistCommand || callExecuteCommand(track, wrappedDidThrow)
+    const {didThrow} = wrappedDidThrow
+    didThrow || track.delete()
+  }
+
+  const callExecuteCommand = (track, wrappedDidThrow) => {
+    const data = track.properties()
+    const label = isPlaylist ? playlistName : folderName
+    const value = playlistName
+    try { executeCommand.call({...this, label, labelKit, value, data}, track) }
+    catch (unused) { wrappedDidThrow.didThrow = true }
+  }
+
+  if (!length) return
+
+  const children = getChildPlaylists.call(this, playlistName)
+  const {labelKit, isArtistCommand, isPlaylist} = parseName(folderName)
+
+  labelKit && tracks.forEach(callAndDelete)
   children && children.forEach(executeAndRecurse, {...this, folderName: playlistName})
 }
