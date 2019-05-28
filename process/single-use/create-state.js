@@ -1,17 +1,17 @@
 module.exports = function createState(isTest) {
 
-  const app = require('../../../app')
-  const getArtistTracks = require('../../../get/artist-tracks')
-  const getPlaylist = require('../../../get/playlist')
+  const app = require('../../app')
+  const getArtistTracks = require('../../get/artist-tracks')
+  const getPlaylist = require('../../get/playlist')
   const playlistName = isTest ? 'test' : 'Library'
 
   const state = {
     shouldDeriveRatingByArtist: {}, // #note: "rateArtist" function may also set status.
-    shouldDeriveHasVocalistByArtist: {},
+    shouldDeriveVocalsByArtist: {},
     shouldDeriveGenreByArtist: {},
     didSetRatingByArtist: {},
     didSetStatusByArtist: {},
-    didSetHasVocalistByArtist: {},
+    didSetVocalsByArtist: {},
     didSetGenreByArtist: {},
     didAdoptValuesByArtist: {},
     parentNameByPlaylistName: {},
