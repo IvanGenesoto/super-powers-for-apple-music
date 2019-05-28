@@ -6,7 +6,6 @@ module.exports = function adoptValues([artist, tracks]) {
 
   const {state} = this
   const {didAdoptValuesByArtist, getArtistTracks} = state
-  const artistTracks = getArtistTracks.call(this, artist)
 
   const adopt = track => {
     const data = track.properties()
@@ -29,8 +28,12 @@ module.exports = function adoptValues([artist, tracks]) {
 
   if (didAdoptValuesByArtist[artist]) return
 
+  const artistTracks = getArtistTracks.call(this, artist)
+  const isValueAdoptable = ({isAdoptable}) => isAdoptable
+  const artistLabelKitByLabel = labelKitByLabel.filter(isValueAdoptable)
+
   const {valueByLabel, valueByField} = Object
-    .entries(labelKitByLabel)
+    .entries(artistLabelKitByLabel)
     .reduce(valuate.bind({state, artist, artistTracks}), {})
 
   tracks.forEach(adopt)
