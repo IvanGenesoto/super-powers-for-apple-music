@@ -2,7 +2,6 @@ module.exports = function createState(isTest) {
 
   const app = require('../../../app')
   const getArtistTracks = require('../../../get/artist-tracks')
-  const specializeKit = require('./specialize-kit')
   const getPlaylist = require('../../../get/playlist')
   const playlistName = isTest ? 'test' : 'Library'
 
@@ -24,8 +23,6 @@ module.exports = function createState(isTest) {
   const this_ = {state}
 
   state.getArtistTracks = getArtistTracks.bind(this_)
-  state.folderCommandKitByName = specializeKit.call(this_)
-  state.playlistCommandKitByName = specializeKit.call(this_, true)
   state._allTracks = getPlaylist(playlistName).tracks
 
   return state

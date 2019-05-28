@@ -1,8 +1,8 @@
 module.exports = {
-  '\u2605': {
-    adoptionStateKey: 'didSetRatingByArtist',
+  '\u2605': { // #note: ★ (artist rating)
+    antiAdoptionStateKey: 'didSetRatingByArtist',
     labelField: 'grouping',
-    field: 'show', // #note: ★ (artist rating)
+    field: 'show',
     shouldPrefix: true // #enhancement: Adds label to beginning of labelField.
   },
   Genre: {
@@ -12,7 +12,7 @@ module.exports = {
     field: 'comment'
   },
   Vocalist: {
-    adoptionStateKey: 'didSetHasVocalistByArtist',
+    antiAdoptionStateKey: 'didSetHasVocalistByArtist',
     labelField: 'grouping',
     field: 'category'
   },
@@ -60,13 +60,13 @@ module.exports = {
     // isArtistCommand: true,
     // commandName: 'Set Artist Status',
     commandStateKey: 'didSetStatusByArtist',
-    adoptionStateKey: 'didSetStatusByArtist',
+    antiAdoptionStateKey: 'didSetStatusByArtist',
     labelField: 'grouping',
     defaultLabelValue: 'Trialing',
     field: 'description'
   },
   Artist: {
-    adoptionStateKey: 'didSetGenreByArtist',
+    antiAdoptionStateKey: 'didSetGenreByArtist',
     labelField: 'composer',
     field: 'genre'
   },

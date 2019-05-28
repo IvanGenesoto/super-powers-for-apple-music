@@ -17,10 +17,10 @@ module.exports = function executeCommand(track) { // #mustBeCalledInTryBlock: tr
   } = labelKit
 
   const labels = [label, antiLabel]
-  const booleanByArtist = state[commandStateKey]
+  const trueByArtist = state[commandStateKey]
   const isWarranted = !shouldAntiValidate || validate.call(this, track, antiLabel)
 
-  booleanByArtist && (booleanByArtist[artist] = true)
+  trueByArtist && (trueByArtist[artist] = true)
   labels.forEach(removeTag, this)
   field && track[field].set(fieldValue)
 
