@@ -43,7 +43,7 @@ module.exports = function valuate(valuation, [label, kit]) {
   const appendPreValue = function(track) {
     const {key, getValue, wrappedPreValue} = this
     const data = track.properties()
-    const value = getValue.call({track, data}, key)
+    const value = getValue.call({data}, key)
     return (wrappedPreValue.preValue = value)
   }
 
