@@ -29,14 +29,14 @@ module.exports = {
     field: 'comment'
   },
   'Artist Vocals': {
-    antiAdoptionStateKey: 'didSetHasVocalistByArtist',
+    antiAdoptionStateKey: 'didSetVocalsByArtist',
     labelField: 'grouping',
     field: 'category',
     isAdoptable: true
   },
   'Vocals': { // #note: Playlist names are "Yes" or "No".
     // commandName: 'Set Vocals',
-    commandStateKey: 'shouldDeriveHasVocalistByArtist',
+    commandStateKey: 'shouldDeriveVocalsByArtist',
     validationWords: ['instrumental'],
     validationValue: 'No',
     labelField: 'grouping',
