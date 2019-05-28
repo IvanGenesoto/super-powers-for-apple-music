@@ -10,20 +10,6 @@ module.exports = function executeAndRecurse(playlist) {
   const {tracks, name: playlistName} = playlistData
   const {length: trackCount} = tracks
 
-  const parseName = (playlistName, isPlaylist) => {
-    const denumberedName = denumber(playlistName)
-    const name = denumberedName.toLowerCase().startsWith('set ')
-      ? denumberedName.slice(4)
-      : denumberedName
-    const {label, isArtistCommand} = name.toLowerCase().startsWith('artist ')
-      ? {label: name.slice(7), isArtistCommand: true}
-      : {label: name}
-    const labelKit = labelKitByLabel[label]
-    return labelKit || isPlaylist
-      ? {labelKit, isArtistCommand, isPlaylist}
-      : parseName(playlistName, true)
-  }
-
   const denumber = string => Number.isInteger(+string[0]) || string[0] === ' '
       ? denumber(string.slice(1))
       : string
@@ -40,7 +26,6 @@ module.exports = function executeAndRecurse(playlist) {
 
   const callExecuteCommand = (track, wrappedDidThrow) => {
     const data = track.properties()
-    const label = isPlaylist ? playlistName : folderName
     const value = playlistName
     try { executeCommand.call({...this, label, labelKit, value, data}, track) }
     catch (unused) { wrappedDidThrow.didThrow = true }
@@ -49,8 +34,12 @@ module.exports = function executeAndRecurse(playlist) {
   if (!trackCount) return
 
   const children = getChildPlaylists.call(this, playlistName)
-  const {labelKit, isArtistCommand, isPlaylist} = parseName(folderName)
+  const commandName = denumber(folderName)
+  const label = commandName.startsWith('Set ') ? commandName.slice(4) : commandName
+  const labelKit = labelKitByLabel[label]
+  const {isArtistCommand} = labelKit || {}
 
-  labelKit && tracks.forEach(callAndDelete)
+  if (labelKit) return tracks.forEach(callAndDelete)
+
   children && children.forEach(executeAndRecurse, {...this, folderName: playlistName})
 }
