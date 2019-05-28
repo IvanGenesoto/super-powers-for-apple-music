@@ -1,5 +1,5 @@
 const labelKitByLabel = require('../../../label-kit-by-label')
-const prepAdoption = require('./prep-adoption')
+const valuate = require('./valuate')
 const addTag = require('../../multi-use/tag/add')
 
 module.exports = function adoptValues([artist, tracks]) {
@@ -31,7 +31,7 @@ module.exports = function adoptValues([artist, tracks]) {
 
   const {valueByLabel, valueByField} = Object
     .entries(labelKitByLabel)
-    .reduce(prepAdoption.bind({state, artist, artistTracks}))
+    .reduce(valuate.bind({state, artist, artistTracks}), {})
 
   tracks.forEach(adopt)
   didAdoptValuesByArtist[artist] = true

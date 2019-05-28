@@ -8,7 +8,7 @@ module.exports = function executeAndRecurse(playlist) {
   const {getArtistTracks} = state
   const playlistData = playlist.properties()
   const {tracks, name: playlistName} = playlistData
-  const {length} = tracks
+  const {length: trackCount} = tracks
 
   const parseName = (playlistName, isPlaylist) => {
     const denumberedName = denumber(playlistName)
@@ -24,7 +24,7 @@ module.exports = function executeAndRecurse(playlist) {
       : parseName(playlistName, true)
   }
 
-  const denumber = string => Number.isInteger(+string[0])
+  const denumber = string => Number.isInteger(+string[0]) || string[0] === ' '
       ? denumber(string.slice(1))
       : string
 
@@ -46,7 +46,7 @@ module.exports = function executeAndRecurse(playlist) {
     catch (unused) { wrappedDidThrow.didThrow = true }
   }
 
-  if (!length) return
+  if (!trackCount) return
 
   const children = getChildPlaylists.call(this, playlistName)
   const {labelKit, isArtistCommand, isPlaylist} = parseName(folderName)
