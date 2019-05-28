@@ -1,19 +1,18 @@
 module.exports = {
-  'Status': { // #note: Playlist names (and hence values) are "Protected", "Rejected", "Retired" or "Unretired".
-    // commandName: 'Set Artist Status',
+  'Artist Rating': { // #note: Alternatively use "★" ("\u2605").
+    antiAdoptionStateKey: 'didSetRatingByArtist',
+    labelField: 'grouping',
+    field: 'show',
+    shouldPrefix: true, // #enhancement: Adds label to beginning of labelField.
+    isAdoptable: true
+  },
+  'Artist Status': { // #note: Playlist names (and hence values) are "Protected", "Rejected", "Retired" or "Unretired".
     isArtistCommand: true,
     commandStateKey: 'didSetStatusByArtist',
     antiAdoptionStateKey: 'didSetStatusByArtist',
     labelField: 'grouping',
     defaultLabelValue: 'Trialing',
     field: 'description',
-    isAdoptable: true
-  },
-  'Artist Rating': { // #note: Alternatively use "★" ("\u2605").
-    antiAdoptionStateKey: 'didSetRatingByArtist',
-    labelField: 'grouping',
-    field: 'show',
-    shouldPrefix: true, // #enhancement: Adds label to beginning of labelField.
     isAdoptable: true
   },
   'Artist Genre': {
@@ -23,7 +22,6 @@ module.exports = {
     isAdoptable: true
   },
   'Genre': {
-    // commandName: 'Set Genre',
     commandStateKey: 'shouldDeriveGenreByArtist',
     labelField: 'grouping',
     field: 'comment'
@@ -34,8 +32,7 @@ module.exports = {
     field: 'category',
     isAdoptable: true
   },
-  'Vocals': { // #note: Playlist names are "Yes" or "No".
-    // commandName: 'Set Vocals',
+  'Vocals': { // #note: Playlist names are "Yes" and "No".
     commandStateKey: 'shouldDeriveVocalsByArtist',
     validationWords: ['instrumental'],
     validationValue: 'No',
@@ -60,6 +57,8 @@ module.exports = {
   'Disregarded': {
     validationWords: ['interlude', 'intro', 'outro'],
     validationValue: 'Interlude',
+    secondValidationWords: ['feat.'],
+    secondValidationValue: 'Featuring',
     labelField: 'grouping',
     antiLabel: 'Regarded',
     field: 'episodeID'
@@ -104,16 +103,14 @@ module.exports = {
   'Original Genre': {
     labelField: 'composer'
   },
-  'Updated': {
-    // isPlaylist: true,
-    // commandName: 'Set Artist Updated',
+  'Artist Updated': { // #note: Playlist names are "Yes" and "No".
     isArtistCommand: true,
     labelField: 'composer',
-    labelValue: Date.now().toString(),
-    defaultLabelValue: Date.now().toString(),
+    labelValue: Date(), // #enhancement: Date is truncated.
+    defaultLabelValue: 'No',
     field: 'bpm',
     fieldValue: 0,
-    defaultFieldValue: 0,
+    defaultFieldValue: 500,
     isAdoptable: true
   }
 }
