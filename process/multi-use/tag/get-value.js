@@ -1,6 +1,6 @@
 const labelKitByLabel = require('../../../label-kit-by-label')
 
-module.exports = function getTagValue(label) { // #mustBeCalledInTryBlock: true, #mustHaveData: true
+module.exports = function getTagValue(label) { // #mustHaveData: true
 
   if (!label) return
 

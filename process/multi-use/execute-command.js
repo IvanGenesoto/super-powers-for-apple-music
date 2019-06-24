@@ -9,6 +9,7 @@ module.exports = function executeCommand(track) { // #mustBeCalledInTryBlock: tr
 
   const {
     commandStateKey,
+    automaticStateKey,
     labelValue = value,
     defaultLabelValue = value,
     antiLabel,
@@ -20,11 +21,14 @@ module.exports = function executeCommand(track) { // #mustBeCalledInTryBlock: tr
 
   const labels = [label, antiLabel]
   const trueByArtist = state[commandStateKey]
+  const trueByArtistAutomatic = state[automaticStateKey]
   const isWarranted = didValidate || !shouldAntiValidate || validate.call(this, track, antiLabel)
   const labelValue_ = value === 'No' ? defaultLabelValue : labelValue
   const fieldValue_ = value === 'No' ? defaultFieldValue : fieldValue
+  const isAutomatic = value === 'Automatic'
 
   trueByArtist && (trueByArtist[artist] = true)
+  isAutomatic && (trueByArtistAutomatic[artist] = true)
   labels.forEach(removeTag, this)
   field && track[field].set(fieldValue_)
 

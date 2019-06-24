@@ -1,14 +1,14 @@
 const columnBrowserFields = require('../../../column-browser-fields')
-const getTagValue = require('../../multi-use/tag/get-value') // #debug: Create function!
+const getTagValue = require('../../multi-use/tag/get-value')
 
-module.exports = function valuate(valuation, [label, kit]) {
+module.exports = function valuate(valuation, [label, labelKit]) {
 
   const {state, artist, artistTracks} = this
-  const wrappedLabelPreValue = {}
-  const wrappedFieldPreValue = {}
+  const wrappedLabelValue = {}
+  const wrappedFieldValue = {}
   const {valueByLabel = {}, valueByField = {}} = valuation
 
-  const appendValue = (label, kit, isField) => {
+  const appendValue = (label, labelKit, isField) => {
     const {
       antiAdoptionStateKey,
       defaultLabelValue,
@@ -16,16 +16,16 @@ module.exports = function valuate(valuation, [label, kit]) {
       field,
       defaultFieldValue,
       getDefaultFieldValue
-    } = kit
+    } = labelKit
     const key = isField ? field : label
-    const wrappedValue = isField ? wrappedFieldPreValue : wrappedLabelPreValue
+    const wrappedValue = isField ? wrappedFieldValue : wrappedLabelValue
     const valueByKey = isField ? valueByField : valueByLabel
     const defaultValue = isField ? defaultFieldValue : defaultLabelValue
     const getDefaultValue = isField ? getDefaultFieldValue : getDefaultLabelValue
     const getValue = isField ? getFieldValue : getTagValue
     const didSetByArtist = state[antiAdoptionStateKey]
     if (didSetByArtist && didSetByArtist[artist]) return
-    artistTracks.find(appendPreValue, {key, getValue, wrappedValue})
+    artistTracks.find(appendToWrappedValue, {key, getValue, wrappedValue})
     const {value} = wrappedValue
     const value_ =
       value ||
@@ -40,15 +40,15 @@ module.exports = function valuate(valuation, [label, kit]) {
     return data[key]
   }
 
-  const appendPreValue = function(track) {
+  const appendToWrappedValue = function(track) {
     const {key, getValue, wrappedValue} = this
     const data = track.properties()
     const value = getValue.call({data}, key)
     return (wrappedValue.value = value)
   }
 
-  appendValue(label, kit)
-  appendValue(label, kit, true)
+  appendValue(label, labelKit)
+  appendValue(label, labelKit, true)
 
   return {valueByLabel, valueByField}
 }
