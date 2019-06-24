@@ -105,7 +105,7 @@ module.exports = {
   'Artist Updated': { // #note: Playlist name (and hence value) is "Yes" or "No".
     isArtistCommand: true,
     labelField: 'composer',
-    labelValue: Date(), // #implement: Date is truncated.
+    value: Date(), // #implement: Date is truncated.
     defaultValue: 'No',
     field: 'bpm',
     fieldValue: 0,
