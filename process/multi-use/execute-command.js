@@ -1,5 +1,6 @@
 const addTag = require('./tag/add')
 const removeTag = require('./tag/remove')
+const setField = require('./set-field')
 const validate = require('./validate')
 
 module.exports = function executeCommand(track) { // #mustBeCalledInTryBlock: true, #mustHaveData: true
@@ -10,7 +11,7 @@ module.exports = function executeCommand(track) { // #mustBeCalledInTryBlock: tr
   const {
     commandStateKey,
     automaticStateKey,
-    labelValue = value,
+    value: labelValue = value,
     defaultValue = value,
     antiLabel,
     field,
@@ -26,13 +27,14 @@ module.exports = function executeCommand(track) { // #mustBeCalledInTryBlock: tr
   const labelValue_ = value === 'No' ? defaultValue : labelValue
   const fieldValue_ = value === 'No' ? defaultFieldValue : fieldValue
   const isAutomatic = value === 'Automatic'
+  const this_ = {track, data}
 
   trueByArtist && (trueByArtist[artist] = true)
   isAutomatic && (trueByArtistAutomatic[artist] = true)
-  labels.forEach(removeTag, this)
-  field && track[field].set(fieldValue_)
+  labels.forEach(removeTag, this_)
+  field && setField.call(this_, label, fieldValue_)
 
   if (!isWarranted) return
 
-  addTag.call(this, label, labelValue_)
+  addTag.call(this_, label, labelValue_)
 }
