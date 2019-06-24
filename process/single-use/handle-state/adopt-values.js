@@ -30,10 +30,10 @@ module.exports = function adoptValues([artist, tracks]) {
 
   const artistTracks = getArtistTracks.call(this, artist)
   const isValueAdoptable = ({isAdoptable}) => isAdoptable
-  const artistLabelKitByLabel = labelKitByLabel.filter(isValueAdoptable)
+  const adoptableLabelKitByLabel = labelKitByLabel.filter(isValueAdoptable)
 
   const {valueByLabel, valueByField} = Object
-    .entries(artistLabelKitByLabel)
+    .entries(adoptableLabelKitByLabel)
     .reduce(valuate.bind({state, artist, artistTracks}), {})
 
   tracks.forEach(adopt)

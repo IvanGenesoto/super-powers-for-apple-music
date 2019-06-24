@@ -7,6 +7,7 @@ module.exports = function createState(isTest) {
 
   const state = {
     shouldDeriveRatingByArtist: {}, // #note: "rateArtist" function may also set status.
+    shouldDeriveStatusByArtist: {},
     shouldDeriveVocalsByArtist: {},
     shouldDeriveGenreByArtist: {},
     didSetRatingByArtist: {},

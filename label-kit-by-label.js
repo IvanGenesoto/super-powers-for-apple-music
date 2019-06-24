@@ -6,10 +6,11 @@ module.exports = {
     shouldPrefix: true, // #implement: Adds label to beginning of labelField.
     isAdoptable: true
   },
-  'Artist Status': { // #note: Playlist name (and hence value) is "Protected", "Rejected", "Retired" or "Unretired".
+  'Artist Status': { // #note: Playlist name (and hence value) is "Protected", "Rejected", "Retired" or "Automatic".
     isArtistCommand: true,
     commandStateKey: 'didSetStatusByArtist',
     antiAdoptionStateKey: 'didSetStatusByArtist',
+    automaticStateKey: 'shouldDeriveStatusByArtist',
     labelField: 'grouping',
     defaultLabelValue: 'Trialing',
     field: 'description',
