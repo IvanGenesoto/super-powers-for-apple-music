@@ -2,17 +2,17 @@ const getTagValue = require('../../../multi-use/tag/get-value')
 const labelKitByLabel = require('../../../../label-kit-by-label')
 const executeCommand = require('../../../multi-use/execute-command')
 
-module.exports = function deriveVocals(artist) {
+module.exports = function derive(artist) {
 
-  const {state} = this
-  const {getArtistTracks, didSetVocalsByArtist} = state
+  const {state, label, trackLabel, stateKey} = this
+  const {getArtistTracks} = state
+  const didSetByArtist = state[stateKey]
   const artistTracks = getArtistTracks.call(this, artist)
-  const label = 'Artist Vocals'
   const labelKit = labelKitByLabel[label]
 
   const vote = (voteCountByValue, track) => {
     const data = track.properties()
-    const value = getTagValue.call({data}, 'Vocals')
+    const value = getTagValue.call({data}, trackLabel)
     if (!value) return voteCountByValue
     const {[value]: voteCount = 0} = voteCountByValue
     voteCountByValue[value] = voteCount + 1
@@ -38,5 +38,5 @@ module.exports = function deriveVocals(artist) {
     .reduce(tally, {winningVoteCount: 0})
 
   artistTracks.forEach(callExecuteCommand)
-  didSetVocalsByArtist[artist] = true
+  didSetByArtist[artist] = true
 }
