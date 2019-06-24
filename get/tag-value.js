@@ -1,4 +1,4 @@
-const labelKitByLabel = require('../../../label-kit-by-label')
+const labelKitByLabel = require('../label-kit-by-label')
 
 module.exports = function getTagValue(label) { // #mustHaveData: true
 

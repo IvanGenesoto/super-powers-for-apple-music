@@ -12,7 +12,7 @@ module.exports = {
     antiAdoptionStateKey: 'didSetStatusByArtist',
     automaticStateKey: 'shouldDeriveStatusByArtist',
     labelField: 'grouping',
-    defaultLabelValue: 'Trialing',
+    defaultValue: 'Trialing',
     field: 'description',
     isAdoptable: true
   },
@@ -74,7 +74,7 @@ module.exports = {
   },
   'Discovered': {
     labelField: 'composer',
-    getDefaultLabelValue: track => track.dateAdded(),
+    getDefaultValue: track => track.dateAdded(),
     shouldPrefix: true,
     isAdoptable: true
   },
@@ -106,7 +106,7 @@ module.exports = {
     isArtistCommand: true,
     labelField: 'composer',
     labelValue: Date(), // #implement: Date is truncated.
-    defaultLabelValue: 'No',
+    defaultValue: 'No',
     field: 'bpm',
     fieldValue: 0,
     defaultFieldValue: 500,
