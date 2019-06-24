@@ -1,6 +1,7 @@
 const labelKitByLabel = require('../../../label-kit-by-label')
 const valuate = require('./valuate')
 const addTag = require('../../multi-use/tag/add')
+const setField = require('../../multi-use/set-field')
 
 module.exports = function adoptValues([artist, tracks]) {
 
@@ -10,19 +11,17 @@ module.exports = function adoptValues([artist, tracks]) {
   const adopt = track => {
     const data = track.properties()
     adoptValue(track, data, valueByLabel)
-    adoptValue(track, data, valueByField, true)
+    adoptValue(track, data, fieldValueByLabel, true)
   }
 
-  const adoptValue = (track, data, valueByKey, isField) => Object
-    .entries(valueByKey)
+  const adoptValue = (track, data, valueByLabel, isField) => Object
+    .entries(valueByLabel)
     .forEach(set.bind({track, data, isField}))
 
-  const set = function([key, value]) {
+  const set = function([label, value]) {
     const {track, data, isField} = this
-    try {
-      isField && track[key].set(value)
-      isField || addTag.call({track, data}, key, value)
-    }
+    const set = isField ? setField : addTag
+    try { set.call({track, data}, label, value) }
     catch (unused) { }
   }
 
@@ -32,7 +31,7 @@ module.exports = function adoptValues([artist, tracks]) {
   const isValueAdoptable = ({isAdoptable}) => isAdoptable
   const adoptableLabelKitByLabel = labelKitByLabel.filter(isValueAdoptable)
 
-  const {valueByLabel, valueByField} = Object
+  const {valueByLabel, fieldValueByLabel} = Object
     .entries(adoptableLabelKitByLabel)
     .reduce(valuate.bind({state, artist, artistTracks}), {})
 

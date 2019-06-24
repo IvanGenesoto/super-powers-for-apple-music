@@ -1,54 +1,55 @@
 const columnBrowserFields = require('../../../column-browser-fields')
-const getTagValue = require('../../multi-use/tag/get-value')
+const getTagValue = require('../../../get/tag-value')
+const getFieldValue = require('../../../get/field-value')
+const getIsEditable = require('../../../get/is-editable')
 
 module.exports = function valuate(valuation, [label, labelKit]) {
 
   const {state, artist, artistTracks} = this
-  const wrappedLabelValue = {}
-  const wrappedFieldValue = {}
-  const {valueByLabel = {}, valueByField = {}} = valuation
+  const {valueByLabel = {}, fieldValueByLabel = {}} = valuation
+  const trackValuation = {}
 
-  const appendValue = (label, labelKit, isField) => {
-    const {
-      antiAdoptionStateKey,
-      defaultLabelValue,
-      getDefaultLabelValue,
-      field,
-      defaultFieldValue,
-      getDefaultFieldValue
-    } = labelKit
-    const key = isField ? field : label
-    const wrappedValue = isField ? wrappedFieldValue : wrappedLabelValue
-    const valueByKey = isField ? valueByField : valueByLabel
-    const defaultValue = isField ? defaultFieldValue : defaultLabelValue
-    const getDefaultValue = isField ? getDefaultFieldValue : getDefaultLabelValue
-    const getValue = isField ? getFieldValue : getTagValue
-    const didSetByArtist = state[antiAdoptionStateKey]
-    if (didSetByArtist && didSetByArtist[artist]) return
-    artistTracks.find(appendToWrappedValue, {key, getValue, wrappedValue})
-    const {value} = wrappedValue
-    const value_ =
-      value ||
-      defaultValue ||
-      (getDefaultValue && getDefaultValue(artistTracks[0])) ||
-      (isField && columnBrowserFields.includes(field) && '-') // #note: Deprecated with iTunes.
-    value_ && (valueByKey[key] = value_)
-  }
+  const {
+    antiAdoptionStateKey,
+    defaultValue,
+    getDefaultValue,
+    field,
+    defaultFieldValue,
+    getDefaultFieldValue
+  } = labelKit
 
-  const getFieldValue = function(key) {
-    const {data} = this
-    return data[key]
-  }
+  const didSetByArtist = state[antiAdoptionStateKey]
+  const didSet = didSetByArtist && didSetByArtist[artist]
 
-  const appendToWrappedValue = function(track) {
-    const {key, getValue, wrappedValue} = this
+  const find = track => {
     const data = track.properties()
-    const value = getValue.call({data}, key)
-    return (wrappedValue.value = value)
+    const value = getTagValue.call({data}, label)
+    if (!value) return
+    const isEditable = getIsEditable.call({data, track}, true)
+    if (!isEditable) return
+    trackValuation.fieldValue = getFieldValue.call({data}, label)
+    return (trackValuation.value = value)
   }
 
-  appendValue(label, labelKit)
-  appendValue(label, labelKit, true)
+  if (didSet) return valuation
 
-  return {valueByLabel, valueByField}
+  artistTracks.find(find)
+
+  const {value, fieldValue} = trackValuation
+
+  const value_ =
+    value ||
+    defaultValue ||
+    (getDefaultValue && getDefaultValue(artistTracks[0]))
+
+  const fieldValue_ =
+    fieldValue ||
+    defaultFieldValue ||
+    (getDefaultFieldValue && getDefaultFieldValue(artistTracks[0])) ||
+    (columnBrowserFields.includes(field) && '-') // #note: Deprecated with iTunes.
+
+  value_ && (valueByLabel[label] = value_)
+  fieldValue_ && (fieldValueByLabel[label] = fieldValue_)
+
+  return {valueByLabel, fieldValueByLabel}
 }
