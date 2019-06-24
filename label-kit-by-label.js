@@ -3,10 +3,10 @@ module.exports = {
     antiAdoptionStateKey: 'didSetRatingByArtist',
     labelField: 'grouping',
     field: 'show',
-    shouldPrefix: true, // #enhancement: Adds label to beginning of labelField.
+    shouldPrefix: true, // #implement: Adds label to beginning of labelField.
     isAdoptable: true
   },
-  'Artist Status': { // #note: Playlist names (and hence values) are "Protected", "Rejected", "Retired" or "Unretired".
+  'Artist Status': { // #note: Playlist name (and hence value) is "Protected", "Rejected", "Retired" or "Unretired".
     isArtistCommand: true,
     commandStateKey: 'didSetStatusByArtist',
     antiAdoptionStateKey: 'didSetStatusByArtist',
@@ -32,16 +32,16 @@ module.exports = {
     field: 'category',
     isAdoptable: true
   },
-  'Vocals': { // #note: Playlist names are "Yes" and "No".
+  'Vocals': { // #note: Playlist name (and hence value) is "Yes" or "No".
     commandStateKey: 'shouldDeriveVocalsByArtist',
-    validationWords: ['instrumental'],
-    validationValue: 'No',
+    validationWordsArrays: [['instrumental']],
+    validationValues: ['No'],
     labelField: 'grouping',
     field: 'movement'
   },
   'Disabled': { // #note: Folder is nested in the "Set Attribute" folder.
-    validationWords: ['alternate', 'version', 'acoustic', 'remix', 'mix', 'edition'],
-    validationValue: 'Alternate',
+    validationWordsArrays: [['alternate', 'version', 'acoustic', 'remix', 'mix', 'edition']],
+    validationValues: ['Alternate'],
     labelField: 'grouping',
     antiLabel: 'Enabled',
     field: 'enabled',
@@ -55,10 +55,8 @@ module.exports = {
     fieldValue: true
   },
   'Disregarded': {
-    validationWords: ['interlude', 'intro', 'outro'],
-    validationValue: 'Interlude',
-    secondValidationWords: ['feat.'],
-    secondValidationValue: 'Featuring',
+    validationWordsArrays: [['interlude', 'intro', 'outro'], ['feat.']],
+    validationValues: ['Interlude', 'Featuring'],
     labelField: 'grouping',
     antiLabel: 'Regarded',
     field: 'episodeID'
@@ -103,10 +101,10 @@ module.exports = {
   'Original Genre': {
     labelField: 'composer'
   },
-  'Artist Updated': { // #note: Playlist names are "Yes" and "No".
+  'Artist Updated': { // #note: Playlist name (and hence value) is "Yes" or "No".
     isArtistCommand: true,
     labelField: 'composer',
-    labelValue: Date(), // #enhancement: Date is truncated.
+    labelValue: Date(), // #implement: Date is truncated.
     defaultLabelValue: 'No',
     field: 'bpm',
     fieldValue: 0,

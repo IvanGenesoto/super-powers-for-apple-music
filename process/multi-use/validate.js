@@ -6,25 +6,37 @@ module.exports = function validate(track, antiLabel) { // #mustBeCalledInTryBloc
   const {data} = this
   const {name} = data
   const lowerCaseName = name.toLowerCase()
-  const filter = ([unused, {validationWords}]) => validationWords && validationWords.find(find)
-  const find = word => lowerCaseName.includes(word)
 
-  const doesNameIncludeValidationWord = () => {
+  const antiValidate = () => {
     const labelKit = labelKitByLabel[antiLabel]
     const wrappedLabelKit = {labelKit}
-    const filteredEntries = Object.entries(wrappedLabelKit).filter(filter)
-    const {length} = filteredEntries
-    return !!length
+    const validateWithThis = validateEntry.bind({isAnti: true})
+    const validatedEntries = Object.entries(wrappedLabelKit).filter(validateWithThis)
+    const [hasValidatedEntry] = validatedEntries
+    return hasValidatedEntry
   }
 
-  const callExecuteCommand = ([label, labelKit]) => executeCommand.call({
-    ...this, label, labelKit, value: labelKit.validationValue
-  }, track)
+  const validateEntry = function ([label, labelKit]) {
+    const {isAnti} = this
+    const {validationWordsArrays, validationValues} = labelKit
+    const filterWithThis = validateName.bind({label, labelKit, validationValues, isAnti})
+    if (!validationWordsArrays) return
+    return validationWordsArrays.filter(filterWithThis)
+  }
 
-  if (antiLabel) return doesNameIncludeValidationWord()
+  const validateName = function (validationWords, index) {
+    const {label, labelKit, validationValues, isAnti} = this
+    const find = word => lowerCaseName.includes(word.toLowerCase())
+    const match = validationWords.find(find)
+    const value = validationValues[index]
+    if (!match) return
+    if (isAnti) return true
+    executeCommand.call({...this, label, labelKit, value, didValidate: true}, track)
+  }
+
+  if (antiLabel) return antiValidate()
 
   Object
     .entries(labelKitByLabel)
-    .filter(filter)
-    .forEach(callExecuteCommand)
+    .forEach(validateEntry)
 }
