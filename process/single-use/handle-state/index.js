@@ -1,31 +1,24 @@
 module.exports = function handleState() {
 
-  const derive = require('./derive') // #debug: Create function! Also sets didSetVocalsByArtist[artist], etc., to true.
-  const deriveRating = require('./derive/rating') // #debug: Create function! Also sets status if didSetStatusByArtist[artist] is falsy and then sets it to true (along with didSetRatingByArtist[artist]).
-  const deriveStatus = require('./derive/status') // #debug: Create function! Also sets didSetStatusByArtist[artist] to true.
+  const deriveArtistAttribute = require('./derive-artist-attribute')
+  const deriveArtistRating = require('./derive-artist-rating')
   const adoptValues = require('./adopt-values')
   const {state} = this
+  const {shouldDeriveRatingByArtist, tracksToAdoptValuesByArtist} = state
 
-  const {
-    shouldDeriveRatingByArtist,
-    shouldDeriveStatusByArtist,
-    tracksToAdoptValuesByArtist
-  } = state
-
-  const callDerive = trackLabel => {
+  const callDeriveArtistAttribute = trackLabel => {
     const label = 'Artist ' + trackLabel
     const stateKeyToCall = 'shouldDerive' + trackLabel + 'ByArtist'
     const stateKey = 'didSet' + trackLabel + 'ByArtist'
     const shouldDeriveByArtist = state[stateKeyToCall]
     Object
       .keys(shouldDeriveByArtist)
-      .forEach(derive, {...this, label, trackLabel, stateKey})
+      .forEach(deriveArtistAttribute, {...this, label, trackLabel, stateKey})
   }
 
-  callDerive('Vocals')
-  callDerive('Genre')
+  callDeriveArtistAttribute('Vocals')
+  callDeriveArtistAttribute('Genre')
 
-  Object.keys(shouldDeriveRatingByArtist).forEach(deriveRating, this)
-  Object.keys(shouldDeriveStatusByArtist).forEach(deriveStatus, this)
+  Object.keys(shouldDeriveRatingByArtist).forEach(deriveArtistRating, this)
   Object.entries(tracksToAdoptValuesByArtist).forEach(adoptValues, this)
 }

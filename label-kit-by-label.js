@@ -1,19 +1,30 @@
 module.exports = {
-  'Artist Rating': { // #note: Alternatively use "★" ("\u2605").
-    antiAdoptionStateKey: 'didSetRatingByArtist',
-    labelField: 'grouping',
-    field: 'show',
-    shouldPrefix: true, // #implement: Adds label to beginning of labelField.
-    isAdoptable: true
-  },
   'Artist Status': { // #note: Playlist name (and hence value) is "Protected", "Rejected", "Retired" or "Automatic".
-    isArtistCommand: true,
     commandStateKey: 'didSetStatusByArtist',
     antiAdoptionStateKey: 'didSetStatusByArtist',
-    automaticStateKey: 'shouldDeriveStatusByArtist',
+    automaticStateKey: 'shouldDeriveRatingByArtist',
     labelField: 'grouping',
     defaultValue: 'Trialing',
     field: 'description',
+    isAdoptable: true
+  },
+  'Artist Updated': { // #note: Playlist name (and hence value) is "Yes" or "No".
+    labelField: 'composer',
+    value: Date(), // #implement: Date is truncated.
+    defaultValue: 'No',
+    field: 'bpm',
+    fieldValue: 0,
+    defaultFieldValue: 500,
+    isAdoptable: true
+  },
+  'Artist Rating': { // #note: Alternatively use "★" ("\u2605").
+    antiAdoptionStateKey: 'didSetRatingByArtist',
+    labelField: 'grouping',
+    shouldPrefix: true, // #implement: Adds label to beginning of labelField.
+    isAdoptable: true
+  },
+  'Artist Star Rating': { // #note: Not actually used as label.
+    field: 'show',
     isAdoptable: true
   },
   'Artist Genre': {
@@ -22,16 +33,25 @@ module.exports = {
     field: 'genre',
     isAdoptable: true
   },
-  'Genre': {
-    commandStateKey: 'shouldDeriveGenreByArtist',
-    labelField: 'grouping',
-    field: 'comment'
-  },
   'Artist Vocals': {
     antiAdoptionStateKey: 'didSetVocalsByArtist',
     labelField: 'grouping',
     field: 'category',
     isAdoptable: true
+  },
+  'Artist Discovered': {
+    labelField: 'composer',
+    getDefaultValue: track => track.dateAdded(),
+    shouldPrefix: true,
+    isAdoptable: true
+  },
+  'Rating': { // #note: Not actually used as label.
+    field: 'rating'
+  },
+  'Genre': {
+    commandStateKey: 'shouldDeriveGenreByArtist',
+    labelField: 'grouping',
+    field: 'comment'
   },
   'Vocals': { // #note: Playlist name (and hence value) is "Yes" or "No".
     commandStateKey: 'shouldDeriveVocalsByArtist',
@@ -70,46 +90,29 @@ module.exports = {
     fieldValue: ''
   },
   'Proxy': {
-    labelField: 'grouping'
+    labelField: 'grouping',
+    fieldValue: 'Yes'
   },
-  'Discovered': {
-    labelField: 'composer',
-    getDefaultValue: track => track.dateAdded(),
-    shouldPrefix: true,
-    isAdoptable: true
-  },
-  'Unrated': {
+  'Songs': {
     labelField: 'composer',
     isAdoptable: true
   },
-  'Highest': {
+  'Rated Songs': {
     labelField: 'composer',
     isAdoptable: true
   },
-  'Tracks': {
+  'Unrated Songs': {
+    labelField: 'composer',
+    isAdoptable: true
+  },
+  'Highest Rating': {
     labelField: 'composer',
     isAdoptable: true
   },
   'Composer': {
     labelField: 'composer'
   },
-  'Mood': {
-    labelField: 'composer'
-  },
-  'Energy': {
-    labelField: 'composer'
-  },
   'Original Genre': {
     labelField: 'composer'
-  },
-  'Artist Updated': { // #note: Playlist name (and hence value) is "Yes" or "No".
-    isArtistCommand: true,
-    labelField: 'composer',
-    value: Date(), // #implement: Date is truncated.
-    defaultValue: 'No',
-    field: 'bpm',
-    fieldValue: 0,
-    defaultFieldValue: 500,
-    isAdoptable: true
   }
 }

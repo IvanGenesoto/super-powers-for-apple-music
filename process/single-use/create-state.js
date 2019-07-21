@@ -6,8 +6,7 @@ module.exports = function createState(isTest) {
   const playlistName = isTest ? 'test' : 'Library'
 
   const state = {
-    shouldDeriveRatingByArtist: {}, // #note: "rateArtist" function may also set status.
-    shouldDeriveStatusByArtist: {},
+    shouldDeriveRatingByArtist: {},
     shouldDeriveVocalsByArtist: {},
     shouldDeriveGenreByArtist: {},
     didSetRatingByArtist: {},
@@ -16,7 +15,7 @@ module.exports = function createState(isTest) {
     didSetGenreByArtist: {},
     didAdoptValuesByArtist: {},
     parentNameByPlaylistName: {},
-    tracksToAdoptValuesByArtist: {}, // #note: Process checks for coresponding property on "didSetStatusByArtist" and if not present, tracks adopt first status found in artist, then the same for "didSetGenreByArtist", etc.
+    tracksToAdoptValuesByArtist: {},
     tracksByArtist: {},
     playlists: app.playlists()
   }

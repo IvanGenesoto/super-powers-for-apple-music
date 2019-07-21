@@ -7,16 +7,17 @@ module.exports = function removeTag(label) { // #mustBeCalledInTryBlock: true, #
   const {track, data} = this
   const {labelField} = labelKitByLabel[label]
 
-  if (!labelField) return // #debug: Add function call that displays "Label [Label] has no associated labelField".
+  if (!labelField) return
 
   const fieldText = data[labelField]
-  const beginIndex = fieldText.indexOf(label + ':')
+  const beginningIndex = fieldText.indexOf(label + ':')
+  const hasLabel = beginningIndex + 1
 
-  if (beginIndex === -1) return
+  if (!hasLabel) return
 
-  const delimiterIndex = fieldText.indexOf(', ', beginIndex)
-  const endIndex = delimiterIndex === -1 ? fieldText.length : delimiterIndex + 2
-  const newFieldText = fieldText.slice(0, beginIndex) + fieldText.slice(endIndex)
+  const delimiterIndex = fieldText.indexOf(', ', beginningIndex)
+  const endingIndex = delimiterIndex === -1 ? fieldText.length : delimiterIndex + 2
+  const newFieldText = fieldText.slice(0, beginningIndex) + fieldText.slice(endingIndex)
 
   track[labelField].set(newFieldText)
   data[labelField] = newFieldText
