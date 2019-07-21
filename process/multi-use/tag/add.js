@@ -5,7 +5,7 @@ module.exports = function addTag(label, value) { // #mustBeCalledInTryBlock: tru
   const {track, data} = this
   const {labelField} = labelKitByLabel[label]
 
-  if (!labelField) return // #debug: Add function call that displays "Label [Label] has no associated labelField".
+  if (!labelField) return
 
   const fieldText = data[labelField]
   const delimiter = fieldText ? ', ' : ''

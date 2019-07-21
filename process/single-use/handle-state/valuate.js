@@ -25,7 +25,7 @@ module.exports = function valuate(valuation, [label, labelKit]) {
     const data = track.properties()
     const value = getTagValue.call({data}, label)
     if (!value) return
-    const isEditable = getIsEditable.call({data, track}, true)
+    const isEditable = getIsEditable.call({data, track})
     if (!isEditable) return
     trackValuation.fieldValue = getFieldValue.call({data}, label)
     return (trackValuation.value = value)
