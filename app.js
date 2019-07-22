@@ -1,6 +1,4 @@
-/* global Application */
-
-const app = Application('iTunes') // #debug: Change to 'Music' when updated.
+const app = Application('iTunes') /* global Application */ // #debug: Change to 'Music' when updated.
 
 app.includeStandardAdditions = true
 app.fixedIndexing = true

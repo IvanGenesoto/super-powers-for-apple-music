@@ -1,94 +1,86 @@
-
-/* global Application */
-const app = Application('iTunes')
-app.fixedIndexing = true
-app.includeStandardAdditions = true
+const app = require('./app')
 const {chooseFromList, displayAlert, displayDialog} = app
-const selection = app.selection()
-const {length} = selection
-let trackCount = 0
-let failedCount = 0
+const selecteds = app.selection()
+const {length: selectedCount} = selecteds
 
-if (!length) displayAlert('No tracks selected.', {
-  buttons: ['OK'],
-  defaultButton: 'OK',
-  as: 'critical'
-})
-else chooseLabel()
-
-function chooseLabel() {
+const chooseLabel = () => {
   const s = trackCount === 1 ? '\'s' : 's\''
   const these = trackCount === 1 ? 'this' : 'these'
   const labels = ['Misc', 'Deviated']
-  const chosen = chooseFromList(labels, {
-    withPrompt: `Which label should be removed from ${these} ${length} track${s}?`,
+  const chosens = chooseFromList(labels, {
+    withPrompt: `Which label should be removed from ${these} ${selectedCount} track${s}?`,
     withIcon: 1
   })
-  if (chosen) handle(chosen)
+  chosens && handle(chosens[0])
 }
 
-function handle([label]) {
-  if (label === 'Misc') {
-    const value = chooseMisc()
-    if (value) removeMisc(value)
-  }
-  else remove(label)
+const handle = label => {
+  if (label !== 'Misc') return removeFromSelecteds(label)
+  const chosen = chooseMisc()
+  chosen && removeMiscFromSelecteds(chosen)
 }
 
-function chooseMisc() {
+const chooseMisc = () => {
   const s = trackCount === 1 ? '\'s' : 's\''
   const these = trackCount === 1 ? 'this' : 'these'
   const values = ['Re-Evaluate']
-  const chosen = chooseFromList(values, {
-    withPrompt: `Which misc. value should be removed from ${these} ${length} track${s}?`,
+  const chosens = chooseFromList(values, {
+    withPrompt: `Which misc. value should be removed from ${these} ${selectedCount} track${s}?`,
     withIcon: 1
   })
-  if (chosen) return chosen[0]
+  return chosens && chosens[0]
 }
 
-function removeMisc(value) {
-  selection.forEach(track => {
-    try {
-      if (track.category() === value) track.category.set('')
-      const composer = track.composer()
-      const entry = `"Misc: ${value}" `
-      const start = composer.indexOf(entry)
-      if (start !== -1) {
-        const {length} = entry
-        const beginning = composer.slice(0, start)
-        const end = composer.slice(start + length)
-        track.composer.set(beginning + end)
-        trackCount++
-      }
-    }
-    catch (unused) { failedCount++ }
-  })
+const removeMiscFromSelecteds = value => {
+  selecteds.forEach(removeMisc, {value})
   report(`"Misc: ${value}"`)
 }
 
-function remove(label) {
-  selection.forEach(track => {
-    try {
-      const columnName = label === 'Deviated' ? 'comment' : ''
-      if (columnName) track[columnName].set('')
-      const propertyName = label === 'Deviated' ? 'grouping' : 'composer'
-      const previous = track[propertyName]()
-      const searchString = `"${label}: `
-      const start = previous.indexOf(searchString)
-      if (start !== -1) {
-        const finish = previous.indexOf('"', start + 1)
-        const beginning = previous.slice(0, start)
-        const end = previous.slice(finish + 2)
-        track[propertyName].set(beginning + end)
-        trackCount++
-      }
-    }
-    catch (unused) { failedCount++ }
-  })
+const removeMisc = function (track) {
+  const {value} = this
+  const category = track.category()
+  const doesMatchCategory = value === category
+  try {
+    const composer = track.composer()
+    const tag = `"Misc: ${value}" `
+    const {length: tagLength} = tag
+    const beginningIndex = composer.indexOf(tag)
+    const endingIndex = beginningIndex + tagLength
+    doesMatchCategory && track.category.set('')
+    if (beginningIndex === -1) return
+    const beginning = composer.slice(0, beginningIndex)
+    const ending = composer.slice(endingIndex)
+    track.composer.set(beginning + ending)
+    trackCount++
+  }
+  catch (unused) { failedCount++ }
+}
+
+const removeFromSelecteds = label => {
+  selecteds.forEach(remove, {label})
   report(label)
 }
 
-function report(text) {
+const remove = function (track) {
+  const {label} = this
+  try {
+    const columnName = label === 'Deviated' ? 'comment' : ''
+    if (columnName) track[columnName].set('')
+    const propertyName = label === 'Deviated' ? 'grouping' : 'composer'
+    const previous = track[propertyName]()
+    const searchString = `"${label}: `
+    const beginningIndex = previous.indexOf(searchString)
+    if (beginningIndex === -1) return
+    const endingIndex = previous.indexOf('"', beginningIndex + 1)
+    const beginning = previous.slice(0, beginningIndex)
+    const ending = previous.slice(endingIndex + 2)
+    track[propertyName].set(beginning + ending)
+    trackCount++
+  }
+  catch (unused) { failedCount++ }
+}
+
+const report = text => {
   const s = trackCount === 1 ? '\'s' : 's\''
   const were = trackCount === 1 ? 'was' : 'were'
   displayDialog(`${trackCount} track${s} ${text} ${were} removed. ${failedCount} failed.`, {
@@ -97,3 +89,14 @@ function report(text) {
     withIcon: 1
   })
 }
+
+let trackCount = 0
+let failedCount = 0
+
+selectedCount && chooseLabel()
+
+selectedCount || displayAlert('No tracks selected.', {
+  buttons: ['OK'],
+  defaultButton: 'OK',
+  as: 'critical'
+})

@@ -1,20 +1,24 @@
-
 const display = require('./dialogue/display')
 const app = require('./app')
 const selection = app.selection()
-const getStatus = (track, index) => {
+
+const getStatus = (countByStatus, track) => {
   const status = track.cloudStatus()
-  const existingCount = countByStatus[status] || 0
-  countByStatus[status] = existingCount + 1
+  const count = countByStatus[status] || 0
+  countByStatus[status] = count + 1
+  return countByStatus
 }
+
 const concatenate = (text, [status, count], index) => {
   const delimiter = index ? '\u000a' : ''
   text += `${delimiter}${status}: ${count}`
   return text
 }
-let countByStatus = {}
-selection.forEach(getStatus)
+
+const countByStatus = selection.reduce(getStatus, {})
+
 const text = Object
   .entries(countByStatus)
   .reduce(concatenate, '')
+
 display(text)

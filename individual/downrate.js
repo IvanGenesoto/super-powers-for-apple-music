@@ -1,7 +1,7 @@
-
 const display = require('./dialogue/display')
 const app = require('./app')
 const selection = app.selection()
+
 const downrate = track => {
   const rating = track.rating()
   const newRating =
@@ -17,7 +17,9 @@ const downrate = track => {
   }
   catch (unused) { failedCount++ }
 }
+
 let downratedCount = 0
 let failedCount = 0
+
 selection.forEach(downrate)
 display(`${downratedCount} downrated. ${failedCount} failed.`)
