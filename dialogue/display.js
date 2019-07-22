@@ -1,3 +1,4 @@
 const app = require('../app')
+const {displayDialog} = app
 
-module.exports = message => app.displayDialog(message)
+module.exports = message => displayDialog(message)

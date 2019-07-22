@@ -20,7 +20,7 @@ module.exports = {
   'Artist Rating': { // #note: Alternatively use "★" ("\u2605").
     antiAdoptionStateKey: 'didSetRatingByArtist',
     labelField: 'grouping',
-    shouldPrefix: true, // #implement: Adds label to beginning of labelField.
+    shouldPrefix: true,
     isAdoptable: true
   },
   'Artist Star Rating': { // #note: Not actually used as label.

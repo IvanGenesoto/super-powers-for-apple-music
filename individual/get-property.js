@@ -1,28 +1,28 @@
-
 const app = require('./app')
 const {chooseFromList, displayAlert, displayDialog} = app
-const selection = app.selection()
-const {length} = selection
+const selecteds = app.selection()
+const [hasSelected] = selecteds
 
-if (!length) displayAlert('No tracks selected.', {
-  buttons: ['OK'],
-  defaultButton: 'OK',
-  as: 'critical'
-})
-else chooseProperty()
-
-function chooseProperty() {
-  const [track] = selection
+const chooseProperty = () => {
+  const [track] = selecteds
   const properties = track.properties()
   const keys = Object.keys(properties)
   const chosen = chooseFromList(keys, {
     withPrompt: `Get value for which property?`,
     withIcon: 1
   })
-  if (chosen) report(chosen, properties)
+  chosen && report(chosen, properties)
 }
 
-function report([key], properties) {
+const report = ([key], properties) => {
   const value = '' + properties[key]
   displayDialog(value)
 }
+
+hasSelected && chooseProperty()
+
+hasSelected || displayAlert('No tracks selected.', {
+  buttons: ['OK'],
+  defaultButton: 'OK',
+  as: 'critical'
+})
