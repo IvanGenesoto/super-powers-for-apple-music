@@ -2,7 +2,7 @@ module.exports = function process(isTest) {
 
   const createState = require('./single-use/create-state')
   const getPlaylist = require('../get/playlist')
-  // const getShouldProcessPlayed = require('../get/should-process-played') // #implement: User can set if they want to process all played or changed tracks via the "Preferences" playlist's description.
+  // const getShouldProcessPlayed = require('../get/should-process-played') // #implement: User can set if they want to "Rate songs without using love" via the "Preferences" playlist's description.
   // const processPlayed = require('./played') // #implement: Adds an artist-named property to shouldDeriveRatingByArtist for all tracks whose "unplayed" is false.
   const handleSmartPlaylists = require('./single-use/handle-smart-playlists')
   const executeAndRecurse = require('./multi-use/execute-and-recurse')
