@@ -7,7 +7,7 @@ module.exports = function process(isTest) {
   const handleSmartPlaylists = require('./single-use/handle-smart-playlists')
   const executeAndRecurse = require('./multi-use/execute-and-recurse')
   const handleState = require('./single-use/handle-state')
-  // const setUnplayed = require('./single-use/set-unplayed')
+  // const setUnplayed = require('./single-use/set-unplayed') // #implement: After process runs, delays for a minute before setting all tracks' "unplayed" property to true.
   const commandsFolder = getPlaylist('1 Commands') // #implement: User can set name of commands folder in "Preferences" playlist's description.
   const state = createState(isTest)
   const this_ = {state}
@@ -20,6 +20,6 @@ module.exports = function process(isTest) {
 
   // if (!shouldProcessPlayed) return
 
-  // delay(60) /* global delay */
+  // delay(60) // #note: Add "/* global delay */" to the top of the file.
   // setUnplayed()
 }

@@ -23,10 +23,11 @@ module.exports = function deriveRating(artist) {
 
   const processTrack = track => {
     const data = track.properties()
-    const isEditable = getIsEditable.call({data}) // #note: Could be set to "not paranoid" as an inaccurate value will only count as one "vote".
-    const isEnabled = getFieldValue.call({data}, 'Enabled')
-    const isDisregarded = getTagValue.call({data}, 'Disregarded')
-    const rating = getFieldValue.call({data}, 'Rating')
+    const this_ = {data}
+    const isEditable = getIsEditable.call(this_) // #note: Could be set to "not paranoid" as an inaccurate value will only count as one "vote".
+    const isEnabled = getFieldValue.call(this_, 'Enabled')
+    const isDisregarded = getTagValue.call(this_, 'Disregarded')
+    const rating = getFieldValue.call(this_, 'Rating')
     rating || unratedTracks.push(track)
     if (!isEditable) return
     editableTracks.push(track)
@@ -38,17 +39,17 @@ module.exports = function deriveRating(artist) {
     trackCount++
     if (!rating) return unratedCount++
     ratedCount++
-    rating > highestTrackRating && (highestTrackRating = rating)
+    const rating_ = simplify(rating)
+    rating_ > highestTrackRating && (highestTrackRating = rating)
     if (isDisregarded) return
-    const simplifiedRating = simplify(rating)
-    const exponent = simplifiedRating - 1
-    const points = 4 ** exponent
-    const isHighest = simplifiedRating > highestRegardedTrackRating
+    const exponent = rating_ - 1
+    const points = exponent + 1 && 4 ** exponent
+    const isHighest = rating_ > highestRegardedTrackRating
     regardedRatedCount++
     pointTotal += points
-    isHighest && (highestRegardedTrackRating = simplifiedRating)
+    isHighest && (highestRegardedTrackRating = rating_)
     isHighest && (proxyTrack = track)
-    simplifiedRating > 1 && (hasGoodTrack = true)
+    rating_ > 1 && (hasGoodTrack = true)
   }
 
   const simplify = rating =>
@@ -56,35 +57,19 @@ module.exports = function deriveRating(artist) {
     : validRatings.includes(rating) ? rating / 20
     : 1
 
-  // const getPoints = simplifiedRating => {
-  //   const points = 4 ** (simplifiedRating - 1)
-  //   return points === 1 ? 0.9999999999 : points
-  // }
-
   const getArtistRating = artistPoints => {
     const artistRating = Math.log(artistPoints) / Math.log(3) + 1
     const roundedArtistRating = Math.round(artistRating * 1000) / 1000
     return Math.min(5.999, roundedArtistRating)
   }
 
-  const getArtistStarRating = artistRating => {
-    const isDismissed = artistRating <= 1
-    if (isDismissed) return ''
-    let count = Math.floor(artistRating)
+  const getArtistStarRating = (artistRating, artistStatus) => {
     let stars = ''
+    if (artistStatus === dismissedStatus) return stars
+    let count = Math.floor(artistRating)
     for (; count; count--) stars += '\u2605'
     return stars
   }
-
-  const getStatus = () =>
-      !isTrialing && hasGoodTrack && artistRating >= 1 ? followingStatus
-    : !isTrialing && artistRating > 1 ? followingStatus
-    : !isTrialing ? dismissedStatus
-    : hasGoodTrack ? followingStatus
-    : regardedRatedCount === 1 ? trialingStatus
-    : artistRating < 0.5 ? dismissedStatus // #note: More than one rating is 0-stars.
-    : artistRating === 0.5 && regardedRatedCount > 2 ? dismissedStatus // #note: More than one rating is 0-stars.
-    : trialingStatus
 
   // const stringify = artistRating => {
   //   let string = artistRating.toString()
@@ -99,6 +84,16 @@ module.exports = function deriveRating(artist) {
   //   for (; count; count--) zeros += '0'
   //   return zeros
   // }
+
+  const getStatus = () =>
+      !isTrialing && hasGoodTrack && artistRating >= 1 ? followingStatus
+    : !isTrialing && artistRating > 1 ? followingStatus
+    : !isTrialing ? dismissedStatus
+    : hasGoodTrack ? followingStatus
+    : regardedRatedCount === 1 ? trialingStatus
+    : artistRating < 0.5 ? dismissedStatus // #note: More than one rating is 0-stars.
+    : artistRating === 0.5 && regardedRatedCount > 2 ? dismissedStatus // #note: More than one rating is 0-stars.
+    : trialingStatus
 
   const callCallExecuteCommand = (track, index) => {
     const data = editableDatas[index]
@@ -119,9 +114,9 @@ module.exports = function deriveRating(artist) {
 
   let trackCount = 0
   let ratedCount = 0
+  let regardedRatedCount = 0
   let unratedCount = 0
   let highestTrackRating = 0
-  let regardedRatedCount = 0
   let highestRegardedTrackRating = 0
   let pointTotal = 0
   let proxyTrack
@@ -136,15 +131,15 @@ module.exports = function deriveRating(artist) {
   if (!hasEditableTrack) return
 
   const isTrialing = regardedRatedCount < 5
-  const artistPoints = pointTotal / ratedCount
+  const artistPoints = pointTotal / regardedRatedCount
   const artistRating = getArtistRating(artistPoints)
-  const artistStarRating = getArtistStarRating(artistRating)
   const proxyTrack_ = proxyTrack || enabledTrack || editableTrack
   const index = editableTracks.indexOf(proxyTrack_)
   const proxyData = editableDatas[index]
   const currentArtistStatus = getTagValue.call({data: proxyData}, 'Artist Status')
   const isImmutableStatus = immutableStatuses.includes(currentArtistStatus)
   const artistStatus = isImmutableStatus ? currentArtistStatus : getStatus()
+  const artistStarRating = getArtistStarRating(artistRating, artistStatus)
   const willChangeStatus = artistStatus !== currentArtistStatus
   const didDismiss = willChangeStatus && artistStatus === dismissedStatus
   const didReject = didSetStatus && artistStatus === rejectedStatus
