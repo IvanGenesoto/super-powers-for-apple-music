@@ -13,6 +13,7 @@ module.exports = function createState(isTest) {
     didSetStatusByArtist: {},
     didSetVocalsByArtist: {},
     didSetGenreByArtist: {},
+    didUpdateByArtist: {},
     didAdoptValuesByArtist: {},
     parentNameByPlaylistName: {},
     tracksToAdoptValuesByArtist: {},

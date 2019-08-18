@@ -1,6 +1,6 @@
 module.exports = {
   'Artist Status': { // #note: Playlist name (and hence value) is "Protected", "Rejected", "Retired" or "Automatic".
-    commandStateKey: 'didSetStatusByArtist',
+    stateKey: 'didSetStatusByArtist',
     antiAdoptionStateKey: 'didSetStatusByArtist',
     automaticStateKey: 'shouldDeriveRatingByArtist',
     labelField: 'grouping',
@@ -9,8 +9,9 @@ module.exports = {
     isAdoptable: true
   },
   'Artist Updated': { // #note: Playlist name (and hence value) is "Yes" or "No".
+    stateKey: 'didUpdateByArtist',
     labelField: 'composer',
-    value: Date(), // #implement: Date is truncated.
+    value: new Date().toLocaleDateString(),
     defaultValue: 'No',
     field: 'bpm',
     fieldValue: 0,
@@ -41,7 +42,7 @@ module.exports = {
   },
   'Artist Discovered': {
     labelField: 'composer',
-    getDefaultValue: track => track.dateAdded(),
+    getDefaultValue: track => track.dateAdded().toLocaleDateString(),
     shouldPrefix: true,
     isAdoptable: true
   },
@@ -49,12 +50,12 @@ module.exports = {
     field: 'rating'
   },
   'Genre': {
-    commandStateKey: 'shouldDeriveGenreByArtist',
+    stateKey: 'shouldDeriveGenreByArtist',
     labelField: 'grouping',
     field: 'comment'
   },
   'Vocals': { // #note: Playlist name (and hence value) is "Yes" or "No".
-    commandStateKey: 'shouldDeriveVocalsByArtist',
+    stateKey: 'shouldDeriveVocalsByArtist',
     validationWordsArrays: [['instrumental']],
     validationValues: ['No'],
     labelField: 'grouping',
