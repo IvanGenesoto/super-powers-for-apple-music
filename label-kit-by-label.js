@@ -29,7 +29,7 @@ module.exports = {
   },
   'Artist Genre': {
     antiAdoptionStateKey: 'didSetGenreByArtist',
-    labelField: 'composer',
+    labelField: 'grouping',
     field: 'genre',
     isAdoptable: true
   },
