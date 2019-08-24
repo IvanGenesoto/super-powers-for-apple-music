@@ -1,9 +1,10 @@
 {
   "name": "perfect-playlist",
   "version": "1.0.0",
-  "description": "An app for iTunes and Apple Music users who want a \"power user\" experience with \"casual user\" interaction.",
+  "description": "An app for iTunes and Apple Music users who want a power-user experience with casual interaction.",
   "scripts": {
     "bundle": "browserify index.js -vd -o main.js",
+    "bundle:test": "browserify test.js -vd -o test-main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,13 +19,9 @@
     "url": "https://github.com/IvanGenesoto/perfect-playlist/issues"
   },
   "devDependencies": {
-    "browserify": "^14.4.0",
+    "browserify": "^16.2.3",
     "eslint": "^3.19.0",
     "eslint-config-standard": "^10.2.1",
-    "eslint-plugin-import": "^2.3.0",
-    "eslint-plugin-node": "^5.0.0",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-react": "^7.0.1",
     "eslint-plugin-standard": "^3.0.1"
   }
 }
