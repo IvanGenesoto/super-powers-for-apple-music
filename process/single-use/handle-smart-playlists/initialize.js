@@ -11,7 +11,7 @@ module.exports = function initialize(track) {
   const delimiter = composer ? ', ' : ''
 
   try {
-    track.composer.set(`${composerText}${delimiter}Original: ${genre}`)
+    track.composer.set(`${composerText}${delimiter}Original Genre: ${genre}`)
     // track.genre.set('-')
     // appendAndPush(tracksToAdoptGenreByArtist, artist, track)
     // appendAndPush(tracksToAdoptVocalistByArtist, artist, track)

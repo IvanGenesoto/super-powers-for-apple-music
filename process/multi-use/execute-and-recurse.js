@@ -17,16 +17,18 @@ module.exports = function executeAndRecurse(playlist) {
 
   const callAndDelete = track => {
     const wrappedDidThrow = {}
-    isArtistCommand && getArtistTracks(track.artist()).forEach(
-      track => callExecuteCommand(track, wrappedDidThrow)
-    )
-    isArtistCommand || callExecuteCommand(track, wrappedDidThrow)
+    const data = track.properties()
+    const {artist} = data
+    isArtistCommand && getArtistTracks
+      .call(this, artist)
+      .forEach(track => callExecuteCommand(track, wrappedDidThrow))
+    isArtistCommand || callExecuteCommand(track, wrappedDidThrow, data)
     const {didThrow} = wrappedDidThrow
     didThrow || track.delete()
   }
 
-  const callExecuteCommand = (track, wrappedDidThrow) => {
-    const data = track.properties()
+  const callExecuteCommand = (track, wrappedDidThrow, data_) => {
+    const data = data_ || track.properties()
     const value = playlistName
     try { executeCommand.call({...this, label, labelKit, value, data}, track) }
     catch (unused) { wrappedDidThrow.didThrow = true }
