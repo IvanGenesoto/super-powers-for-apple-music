@@ -63,13 +63,13 @@ module.exports = {
   },
   'Disabled': { // #note: Folder is nested in the "Set Attribute" folder.
     validationWordsArrays: [['alternate', 'version', 'acoustic', 'remix', 'mix', 'edition']],
-    validationValues: ['Alternate'],
+    validationValues: ['Alternate'], // #note: Additional values are "Duplicate", "Replaced by Alternate" and "Wrong Artist".
     labelField: 'grouping',
     antiLabel: 'Enabled',
     field: 'enabled',
     fieldValue: false
   },
-  'Enabled': {
+  'Enabled': { // #note: Possible values are "Not an Alternate" and "Replacement Alternate".
     labelField: 'grouping',
     antiLabel: 'Disabled',
     shouldAntiValidate: true,
@@ -77,13 +77,13 @@ module.exports = {
     fieldValue: true
   },
   'Disregarded': {
-    validationWordsArrays: [['interlude', 'intro', 'outro'], ['feat.']],
-    validationValues: ['Interlude', 'Featuring'],
+    validationWordsArrays: [['interlude', 'intro', 'outro'], ['feat.'], ['instrumental']],
+    validationValues: ['Interlude', 'Featuring', 'Atypical'],
     labelField: 'grouping',
     antiLabel: 'Regarded',
     field: 'episodeID'
   },
-  'Regarded': {
+  'Regarded': { // note: Possible values are "Not an Interlude" and "Not Featuring".
     labelField: 'grouping',
     antiLabel: 'Disregarded',
     shouldAntiValidate: true,

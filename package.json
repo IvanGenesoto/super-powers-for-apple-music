@@ -5,6 +5,7 @@
   "scripts": {
     "bundle": "browserify index.js -vd -o main.js",
     "bundle:test": "browserify test.js -vd -o test-main.js",
+    "bundle:individual": "browserify $in -vd -o $out",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
