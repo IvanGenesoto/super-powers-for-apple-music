@@ -19,9 +19,9 @@ module.exports = function executeAndRecurse(playlist) {
     const wrappedDidThrow = {}
     const data = track.properties()
     const {artist} = data
-    isArtistCommand && getArtistTracks
-      .call(this, artist)
-      .forEach(track => callExecuteCommand(track, wrappedDidThrow))
+    isArtistCommand && getArtistTracks(artist).forEach(
+      track => callExecuteCommand(track, wrappedDidThrow)
+    )
     isArtistCommand || callExecuteCommand(track, wrappedDidThrow, data)
     const {didThrow} = wrappedDidThrow
     didThrow || track.delete()

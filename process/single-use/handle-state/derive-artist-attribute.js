@@ -8,7 +8,7 @@ module.exports = function deriveArtistAttribute(artist) {
   const {state, label, trackLabel, stateKey} = this
   const {getArtistTracks} = state
   const didSetByArtist = state[stateKey]
-  const artistTracks = getArtistTracks.call(this, artist)
+  const artistTracks = getArtistTracks(artist)
 
   const vote = (voteCountByValue, track) => {
     const data = track.properties()

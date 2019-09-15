@@ -27,7 +27,7 @@ module.exports = function adoptValues([artist, tracks]) {
 
   if (didAdoptValuesByArtist[artist]) return
 
-  const artistTracks = getArtistTracks.call(this, artist)
+  const artistTracks = getArtistTracks(artist)
   const isValueAdoptable = ({isAdoptable}) => isAdoptable
   const adoptableLabelKitByLabel = labelKitByLabel.filter(isValueAdoptable)
 
