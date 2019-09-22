@@ -1,5 +1,5 @@
-const display = require('./dialogue/display')
-const app = require('./app')
+const display = require('../dialogue/display')
+const app = require('../app')
 const selection = app.selection()
 
 const uprate = track => {
