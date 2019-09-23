@@ -5,9 +5,10 @@ module.exports = function getTagValue(label) { // #mustHaveData: true
   if (!label) return
 
   const {data} = this
-  const {labelField} = labelKitByLabel[label]
+  const labelKit = labelKitByLabel[label]
+  const {labelField} = labelKit
 
-  if (!labelField) return // #debug: Add function call that displays "Label [Label] has no associated labelField".
+  if (!labelField) return
 
   const fieldText = data[labelField]
   const beginIndex = fieldText.indexOf(label + ':')

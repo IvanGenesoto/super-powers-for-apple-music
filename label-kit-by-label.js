@@ -5,7 +5,7 @@ module.exports = {
     automaticStateKey: 'shouldDeriveRatingByArtist',
     labelField: 'grouping',
     defaultValue: 'Trialing',
-    field: 'description',
+    field: 'comment',
     isAdoptable: true
   },
   'Artist Updated': { // #note: Playlist name (and hence value) is "Yes" or "No".
@@ -24,20 +24,20 @@ module.exports = {
     shouldPrefix: true,
     isAdoptable: true
   },
-  'Artist Star Rating': { // #note: Not actually used as label.
+  'Artist Star Rating': {
     field: 'show',
     isAdoptable: true
   },
   'Artist Genre': {
     antiAdoptionStateKey: 'didSetGenreByArtist',
     labelField: 'grouping',
-    field: 'genre',
+    field: 'category',
     isAdoptable: true
   },
   'Artist Vocals': {
     antiAdoptionStateKey: 'didSetVocalsByArtist',
     labelField: 'grouping',
-    field: 'category',
+    field: 'movement',
     isAdoptable: true
   },
   'Artist Discovered': {
@@ -46,20 +46,20 @@ module.exports = {
     shouldPrefix: true,
     isAdoptable: true
   },
-  'Rating': { // #note: Not actually used as label.
+  'Rating': {
     field: 'rating'
   },
-  'Genre': {
+  'Song Genre': {
     stateKey: 'shouldDeriveGenreByArtist',
     labelField: 'grouping',
-    field: 'comment'
+    field: 'genre'
   },
-  'Vocals': { // #note: Playlist name (and hence value) is "Yes" or "No".
+  'Song Vocals': { // #note: Playlist name (and hence value) is "Yes" or "No".
     stateKey: 'shouldDeriveVocalsByArtist',
     validationWordsArrays: [['instrumental']],
     validationValues: ['No'],
     labelField: 'grouping',
-    field: 'movement'
+    field: 'description'
   },
   'Disabled': { // #note: Folder is nested in the "Set Attribute" folder.
     validationWordsArrays: [['alternate', 'version', 'acoustic', 'remix', 'mix', 'edition']],
@@ -69,7 +69,7 @@ module.exports = {
     field: 'enabled',
     fieldValue: false
   },
-  'Enabled': { // #note: Possible values are "Not an Alternate" and "Replacement Alternate".
+  'Enabled': { // #note: Possible values are "Alternate to Unavailable," "Not an Alternate" and "Replacement Alternate".
     labelField: 'grouping',
     antiLabel: 'Disabled',
     shouldAntiValidate: true,
@@ -94,7 +94,7 @@ module.exports = {
     labelField: 'grouping',
     fieldValue: 'Yes'
   },
-  'Songs': {
+  'Total Songs': {
     labelField: 'composer',
     isAdoptable: true
   },

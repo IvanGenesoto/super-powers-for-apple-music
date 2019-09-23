@@ -39,8 +39,10 @@ module.exports = function executeAndRecurse(playlist) {
   const children = getChildPlaylists.call(this, playlistName)
   const commandName = denumber(folderName)
   const label = commandName.startsWith('Set ') ? commandName.slice(4) : commandName
-  const isArtistCommand = label.toLowerCase().startsWith('artist')
-  const labelKit = labelKitByLabel[label]
+  const isArtistCommand = label.startsWith('Artist')
+  const labelKit_ = labelKitByLabel[label]
+  const label_ = 'Song ' + label
+  const labelKit = labelKit_ || labelKitByLabel[label_]
 
   labelKit && tracks.forEach(callAndDelete)
   !labelKit && children && children.forEach(executeAndRecurse, this_)

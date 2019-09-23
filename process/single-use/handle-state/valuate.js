@@ -1,4 +1,3 @@
-// const columnBrowserFields = require('../../../column-browser-fields')
 const getTagValue = require('../../../get/tag-value')
 const getFieldValue = require('../../../get/field-value')
 const getIsEditable = require('../../../get/is-editable')
@@ -8,12 +7,12 @@ module.exports = function valuate(valuation, [label, labelKit]) {
   const {state, artist, artistTracks} = this
   const {valueByLabel = {}, fieldValueByLabel = {}} = valuation
   const trackValuation = {}
+  const [firstArtistTrack] = artistTracks
 
   const {
     antiAdoptionStateKey,
     defaultValue,
     getDefaultValue,
-    // field,
     defaultFieldValue,
     getDefaultFieldValue
   } = labelKit
@@ -40,14 +39,13 @@ module.exports = function valuate(valuation, [label, labelKit]) {
   const value_ =
     value ||
     defaultValue ||
-    (getDefaultValue && getDefaultValue(artistTracks[0]))
+    (getDefaultValue && getDefaultValue(firstArtistTrack))
 
   const fieldValue_ =
     fieldValue ||
     defaultFieldValue ||
-    (getDefaultFieldValue && getDefaultFieldValue(artistTracks[0])) ||
-    '-'
-    // (columnBrowserFields.includes(field) && '-') // #note: Column Browser deprecated in Music app.
+    (getDefaultFieldValue && getDefaultFieldValue(firstArtistTrack)) ||
+    '-' // (columnBrowserFields.includes(field) && '-') // #note: Column Browser deprecated in Music app.
 
   value_ && (valueByLabel[label] = value_)
   fieldValue_ && (fieldValueByLabel[label] = fieldValue_)
