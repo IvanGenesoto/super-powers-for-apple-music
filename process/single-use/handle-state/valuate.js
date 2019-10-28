@@ -44,8 +44,8 @@ module.exports = function valuate(valuation, [label, labelKit]) {
   const fieldValue_ =
     fieldValue ||
     defaultFieldValue ||
-    (getDefaultFieldValue && getDefaultFieldValue(firstArtistTrack)) ||
-    '-' // (columnBrowserFields.includes(field) && '-') // #note: Column Browser deprecated in Music app.
+    (getDefaultFieldValue && getDefaultFieldValue(firstArtistTrack))
+    // (columnBrowserFields.includes(field) && '-') // #note: Column Browser deprecated in Music app.
 
   value_ && (valueByLabel[label] = value_)
   fieldValue_ && (fieldValueByLabel[label] = fieldValue_)

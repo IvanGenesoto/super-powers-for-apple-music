@@ -25,7 +25,7 @@ module.exports = {
     isAdoptable: true
   },
   'Artist Star Rating': {
-    field: 'show',
+    labelField: 'composer',
     isAdoptable: true
   },
   'Artist Genre': {
@@ -37,7 +37,9 @@ module.exports = {
   'Artist Vocals': {
     antiAdoptionStateKey: 'didSetVocalsByArtist',
     labelField: 'grouping',
-    field: 'movement',
+    field: 'movementNumber',
+    fieldValue: 1,
+    defaultFieldValue: 0,
     isAdoptable: true
   },
   'Artist Discovered': {
@@ -81,18 +83,16 @@ module.exports = {
     validationValues: ['Interlude', 'Featuring', 'Atypical'],
     labelField: 'grouping',
     antiLabel: 'Regarded',
-    field: 'episodeID'
+    field: 'movement'
   },
   'Regarded': { // note: Possible values are "Not an Interlude" and "Not Featuring".
     labelField: 'grouping',
     antiLabel: 'Disregarded',
-    shouldAntiValidate: true,
-    field: 'episodeID',
-    fieldValue: ''
+    shouldAntiValidate: true
   },
   'Proxy': {
     labelField: 'grouping',
-    fieldValue: 'Yes'
+    value: 'Yes'
   },
   'Total Songs': {
     labelField: 'composer',
