@@ -1,4 +1,4 @@
-const labelKitByLabel = require('../../label-kit-by-label')
+const tagKitByLabel = require('../../tag-kit-by-label')
 const executeCommand = require('./execute-command')
 
 module.exports = function validate(track, antiLabel) { // #mustBeCalledInTryBlock: true, #mustHaveData: true
@@ -8,35 +8,35 @@ module.exports = function validate(track, antiLabel) { // #mustBeCalledInTryBloc
   const lowerCaseName = name.toLowerCase()
 
   const antiValidate = () => {
-    const labelKit = labelKitByLabel[antiLabel]
-    const wrappedLabelKit = {labelKit}
+    const tagKit = tagKitByLabel[antiLabel]
+    const wrappedLabelKit = {tagKit}
     const validateWithThis = validateEntry.bind({isAnti: true})
     const validatedEntries = Object.entries(wrappedLabelKit).filter(validateWithThis)
     const [hasValidatedEntry] = validatedEntries
     return hasValidatedEntry
   }
 
-  const validateEntry = function ([label, labelKit]) {
+  const validateEntry = function ([label, tagKit]) {
     const {isAnti} = this
-    const {validationWordsArrays, validationValues} = labelKit
-    const filterWithThis = validateName.bind({label, labelKit, validationValues, isAnti})
+    const {validationWordsArrays, validationValues} = tagKit
+    const filterWithThis = validateName.bind({label, tagKit, validationValues, isAnti})
     if (!validationWordsArrays) return
     return validationWordsArrays.filter(filterWithThis)
   }
 
   const validateName = function (validationWords, index) {
-    const {label, labelKit, validationValues, isAnti} = this
+    const {label, tagKit, validationValues, isAnti} = this
     const find = word => lowerCaseName.includes(word.toLowerCase())
     const match = validationWords.find(find)
     const value = validationValues[index]
     if (!match) return
     if (isAnti) return true
-    executeCommand.call({...this, label, labelKit, value, didValidate: true}, track)
+    executeCommand.call({...this, label, tagKit, value, didValidate: true}, track)
   }
 
   if (antiLabel) return antiValidate()
 
   Object
-    .entries(labelKitByLabel)
+    .entries(tagKitByLabel)
     .forEach(validateEntry)
 }

@@ -1,10 +1,10 @@
-const labelKitByLabel = require('../../../label-kit-by-label')
+const tagKitByLabel = require('../../../tag-kit-by-label')
 
 module.exports = function addTag(label, value) { // #mustBeCalledInTryBlock: true, #mustHaveData: true
 
   const {track, data} = this
-  const labelKit = labelKitByLabel[label]
-  const {labelField, shouldPrefix} = labelKit
+  const tagKit = tagKitByLabel[label]
+  const {labelField, shouldPrefix} = tagKit
 
   if (!labelField) return
 

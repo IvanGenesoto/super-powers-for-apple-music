@@ -1,11 +1,11 @@
-const labelKitByLabel = require('../../../label-kit-by-label')
+const tagKitByLabel = require('../../../tag-kit-by-label')
 
 module.exports = function removeTag(label) { // #mustBeCalledInTryBlock: true, #mustHaveData: true
 
   if (!label) return
 
   const {track, data} = this
-  const {labelField} = labelKitByLabel[label]
+  const {labelField} = tagKitByLabel[label]
 
   if (!labelField) return
 

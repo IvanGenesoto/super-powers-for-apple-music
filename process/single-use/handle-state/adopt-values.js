@@ -1,4 +1,4 @@
-const labelKitByLabel = require('../../../label-kit-by-label')
+const tagKitByLabel = require('../../../tag-kit-by-label')
 const valuate = require('./valuate')
 const addTag = require('../../multi-use/tag/add')
 const setField = require('../../multi-use/set-field')
@@ -29,7 +29,7 @@ module.exports = function adoptValues([artist, tracks]) {
 
   const artistTracks = getArtistTracks(artist)
   const isValueAdoptable = ({isAdoptable}) => isAdoptable
-  const adoptableLabelKitByLabel = labelKitByLabel.filter(isValueAdoptable)
+  const adoptableLabelKitByLabel = tagKitByLabel.filter(isValueAdoptable)
 
   const {valueByLabel, fieldValueByLabel} = Object
     .entries(adoptableLabelKitByLabel)

@@ -2,11 +2,11 @@ const addTag = require('./tag/add')
 const removeTag = require('./tag/remove')
 const setField = require('./set-field')
 const validate = require('./validate')
-const labelKitByLabel = require('../../label-kit-by-label')
+const tagKitByLabel = require('../../tag-kit-by-label')
 
 module.exports = function executeCommand(track) { // #mustBeCalledInTryBlock: true, #mustHaveData: true
 
-  const {state, data, label, labelKit = labelKitByLabel[label], value, didValidate} = this
+  const {state, data, label, tagKit = tagKitByLabel[label], value, didValidate} = this
   const {artist} = data
 
   const {
@@ -19,7 +19,7 @@ module.exports = function executeCommand(track) { // #mustBeCalledInTryBlock: tr
     fieldValue = value,
     defaultFieldValue = value,
     shouldAntiValidate
-  } = labelKit
+  } = tagKit
 
   const labels = [label, antiLabel]
   const trueByArtist = state[stateKey]

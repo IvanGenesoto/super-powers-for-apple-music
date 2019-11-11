@@ -2,7 +2,7 @@ const getTagValue = require('../../../get/tag-value')
 const getFieldValue = require('../../../get/field-value')
 const getIsEditable = require('../../../get/is-editable')
 
-module.exports = function valuate(valuation, [label, labelKit]) {
+module.exports = function valuate(valuation, [label, tagKit]) {
 
   const {state, artist, artistTracks} = this
   const {valueByLabel = {}, fieldValueByLabel = {}} = valuation
@@ -15,7 +15,7 @@ module.exports = function valuate(valuation, [label, labelKit]) {
     getDefaultValue,
     defaultFieldValue,
     getDefaultFieldValue
-  } = labelKit
+  } = tagKit
 
   const didSetByArtist = state[antiAdoptionStateKey]
   const didSet = didSetByArtist && didSetByArtist[artist]
