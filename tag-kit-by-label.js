@@ -33,8 +33,6 @@ module.exports = {
     antiAdoptionStateKey: 'didSetGenreByArtist',
     labelField: 'grouping',
     field: 'description',
-    fieldValue: 'pop',
-    defaultFieldValue: 'wave',
     isAdoptable: true
   },
   'Artist Vocals': {
@@ -57,9 +55,7 @@ module.exports = {
   'Song Genre': {
     stateKey: 'shouldDeriveGenreByArtist',
     labelField: 'grouping',
-    field: 'genre',
-    fieldValue: 'pop',
-    defaultFieldValue: 'wave'
+    field: 'genre'
   },
   'Song Vocals': { // #note: Playlist name (and hence value) is "Yes" or "No".
     stateKey: 'shouldDeriveVocalsByArtist',
