@@ -26,20 +26,23 @@ module.exports = {
   },
   'Artist Star Rating': {
     labelField: 'composer',
+    field: 'category',
     isAdoptable: true
   },
   'Artist Genre': {
     antiAdoptionStateKey: 'didSetGenreByArtist',
     labelField: 'grouping',
-    field: 'category',
+    field: 'description',
+    fieldValue: 'pop',
+    defaultFieldValue: 'wave',
     isAdoptable: true
   },
   'Artist Vocals': {
     antiAdoptionStateKey: 'didSetVocalsByArtist',
     labelField: 'grouping',
-    field: 'movementNumber',
-    fieldValue: 1,
-    defaultFieldValue: 0,
+    field: 'description',
+    fieldValue: 'pop',
+    defaultFieldValue: 'wave',
     isAdoptable: true
   },
   'Artist Discovered': {
@@ -54,14 +57,23 @@ module.exports = {
   'Song Genre': {
     stateKey: 'shouldDeriveGenreByArtist',
     labelField: 'grouping',
-    field: 'genre'
+    field: 'genre',
+    fieldValue: 'pop',
+    defaultFieldValue: 'wave'
   },
   'Song Vocals': { // #note: Playlist name (and hence value) is "Yes" or "No".
     stateKey: 'shouldDeriveVocalsByArtist',
     validationWordsArrays: [['instrumental']],
     validationValues: ['No'],
     labelField: 'grouping',
-    field: 'description'
+    field: 'genre',
+    fieldValue: 'pop',
+    defaultFieldValue: 'wave'
+  },
+  'Plays': { // #note: Playlist name (and hence value) is "Yes" or "No".
+    labelField: 'grouping',
+    field: 'movementNumber',
+    isInteger: true
   },
   'Disabled': { // #note: Folder is nested in the "Set Attribute" folder.
     validationWordsArrays: [['alternate', 'version', 'acoustic', 'remix', 'mix', 'edition']],
@@ -91,7 +103,7 @@ module.exports = {
     shouldAntiValidate: true
   },
   'Proxy': {
-    labelField: 'grouping',
+    labelField: 'composer',
     value: 'Yes'
   },
   'Total Songs': {

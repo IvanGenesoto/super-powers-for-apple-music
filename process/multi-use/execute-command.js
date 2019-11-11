@@ -25,8 +25,8 @@ module.exports = function executeCommand(track) { // #mustBeCalledInTryBlock: tr
   const trueByArtist = state[stateKey]
   const shouldDeriveAutomaticallyByArtist = state[automaticStateKey]
   const isWarranted = didValidate || !shouldAntiValidate || validate.call(this, track, antiLabel)
-  const labelValue_ = value === 'No' ? defaultValue : labelValue
-  const fieldValue_ = value === 'No' ? defaultFieldValue : fieldValue
+  const labelValue_ = value === 'Yes' ? labelValue : defaultValue
+  const fieldValue_ = value === 'Yes' ? fieldValue : defaultFieldValue
   const isAutomatic = value === 'Automatic'
   const this_ = {track, data}
 
