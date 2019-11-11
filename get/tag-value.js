@@ -2,21 +2,17 @@ const tagKitByLabel = require('../tag-kit-by-label')
 
 module.exports = function getTagValue(label) { // #mustHaveData: true
 
-  if (!label) return
-
   const {data} = this
   const tagKit = tagKitByLabel[label]
-  const {labelField} = tagKit
+  const {labelField} = tagKit || {}
+  const fieldText = data[labelField] || ''
+  const {length: fieldTextLength} = fieldText
+  const beginningIndex = fieldText.indexOf(label + ':')
 
-  if (!labelField) return
+  if (beginningIndex === -1) return
 
-  const fieldText = data[labelField]
-  const beginIndex = fieldText.indexOf(label + ':')
+  const delimiterIndex = fieldText.indexOf(', ', beginningIndex)
+  const endingIndex = delimiterIndex === -1 ? fieldTextLength : delimiterIndex
 
-  if (beginIndex === -1) return
-
-  const delimiterIndex = fieldText.indexOf(', ', beginIndex)
-  const endIndex = delimiterIndex === -1 ? fieldText.length : delimiterIndex
-
-  return fieldText.slice(beginIndex, endIndex)
+  return fieldText.slice(beginningIndex, endingIndex)
 }

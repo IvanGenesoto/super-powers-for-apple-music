@@ -3,6 +3,7 @@ const removeTag = require('./tag/remove')
 const setField = require('./set-field')
 const validate = require('./validate')
 const tagKitByLabel = require('../../tag-kit-by-label')
+const getTagValue = require('../../get/tag-value')
 
 module.exports = function executeCommand(track) { // #mustBeCalledInTryBlock: true, #mustHaveData: true
 
@@ -18,7 +19,8 @@ module.exports = function executeCommand(track) { // #mustBeCalledInTryBlock: tr
     field,
     fieldValue = value,
     defaultFieldValue = value,
-    shouldAntiValidate
+    shouldAntiValidate,
+    isInteger
   } = tagKit
 
   const labels = [label, antiLabel]
@@ -29,13 +31,17 @@ module.exports = function executeCommand(track) { // #mustBeCalledInTryBlock: tr
   const fieldValue_ = value === 'No' ? defaultFieldValue : fieldValue
   const isAutomatic = value === 'Automatic'
   const this_ = {track, data}
+  const previousValue = isInteger ? getTagValue.call(this_, label) || 0 : null
+  const integerValue = value === 'Increment' ? previousValue + 1 : previousValue - 1
+  const labelValue__ = isInteger ? integerValue : labelValue_
+  const fieldValue__ = isInteger ? integerValue : fieldValue_
 
   trueByArtist && (trueByArtist[artist] = true)
   isAutomatic && (shouldDeriveAutomaticallyByArtist[artist] = true)
   labels.forEach(removeTag, this_)
-  field && setField.call(this_, label, fieldValue_)
+  field && setField.call(this_, label, fieldValue__)
 
   if (!isWarranted) return
 
-  addTag.call(this_, label, labelValue_)
+  addTag.call(this_, label, labelValue__)
 }
