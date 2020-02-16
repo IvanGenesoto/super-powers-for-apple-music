@@ -3,8 +3,6 @@ module.exports = [ // #depricated: Music app has no column browser.
   'category',
   'artist',
   'album',
-  'show',
-  'season',
   'grouping',
   'composer'
 ]
