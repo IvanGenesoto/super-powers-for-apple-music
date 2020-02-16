@@ -8,5 +8,6 @@ module.exports = [
   'Artist Vocals',
   'Artist Rating',
   'Artist Discovered',
-  'Proxy'
+  'Proxy',
+  'Composer'
 ]

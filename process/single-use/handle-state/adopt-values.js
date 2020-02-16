@@ -18,7 +18,7 @@ module.exports = function adoptValues([artist, tracks]) {
     .entries(valueByLabel)
     .forEach(set.bind({track, data, isField}))
 
-  const set = function([label, value]) {
+  const set = function ([label, value]) {
     const {track, data, isField} = this
     const set = isField ? setField : addTag
     try { set.call({track, data}, label, value) }

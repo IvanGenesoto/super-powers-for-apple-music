@@ -2,17 +2,16 @@ const getTagValue = require('../../../get/tag-value')
 const getFieldValue = require('../../../get/field-value')
 const getIsEditable = require('../../../get/is-editable')
 const columnBrowserFields = require('../../../column-browser-fields')
-const tagKitByLabel = require('../../../tag-kit-by-label')
 
 module.exports = function valuate(valuation, [label, tagKit]) {
 
   const {state, artist, artistTracks} = this
   const {valueByLabel = {}, fieldValueByLabel = {}} = valuation
-  const {field} = tagKitByLabel[label] || {}
   const trackValuation = {}
   const [firstArtistTrack] = artistTracks
 
   const {
+    field,
     antiAdoptionStateKey,
     defaultValue,
     getDefaultValue,

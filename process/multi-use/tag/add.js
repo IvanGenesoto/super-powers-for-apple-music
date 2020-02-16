@@ -1,4 +1,5 @@
 const tagKitByLabel = require('../../../tag-kit-by-label')
+const removeDisposableTag = require('./remove-disposable')
 
 module.exports = function addTag(label, value) { // #mustBeCalledInTryBlock: true, #mustHaveData: true
 
@@ -8,12 +9,22 @@ module.exports = function addTag(label, value) { // #mustBeCalledInTryBlock: tru
   const fieldText = data[labelField] || ''
   const delimiter = fieldText ? ', ' : ''
 
-  const newFieldText = shouldPrefix
+  let fieldText_ = shouldPrefix
     ? `${label}: ${value}${delimiter}${fieldText}`
     : `${fieldText}${delimiter}${label}: ${value}`
 
+  let {length: characterCount} = fieldText_
+  let index = 0
+
   if (!labelField) return
 
-  track[labelField].set(newFieldText)
-  data[labelField] = newFieldText
+  while (characterCount > 255) {
+    fieldText_ = removeDisposableTag(fieldText_, index)
+    const {length: characterCount_} = fieldText_
+    characterCount = characterCount_
+    ++index
+  }
+
+  track[labelField].set(fieldText_)
+  data[labelField] = fieldText_
 }
