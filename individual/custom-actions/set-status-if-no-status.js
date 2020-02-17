@@ -6,7 +6,7 @@ const {getArtistTracks, tracksByArtist} = state
 const selecteds = app.selection()
 const {length: selectedCount} = selecteds
 const shouldPrefix = true
-const labelField = 'grouping'
+const tagField = 'grouping'
 const label = 'Status'
 const value = 'Temp'
 
@@ -25,14 +25,14 @@ const appendArtistTracks = track => {
 
 const setStatus = track => {
   try {
-    const fieldText = track[labelField]()
+    const fieldText = track[tagField]()
     // const index = fieldText.indexOf(label + ':')
     // if (index + 1) return skippedCount++
     const delimiter = fieldText ? ', ' : ''
     const newFieldText = shouldPrefix
       ? `${label}: ${value}${delimiter}${fieldText}`
       : `${fieldText}${delimiter}${label}: ${value}`
-    track[labelField].set(newFieldText)
+    track[tagField].set(newFieldText)
     alteredCount++
   }
   catch (unused) { failedCount++ }

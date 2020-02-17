@@ -3,7 +3,7 @@ const {displayAlert, displayDialog} = app
 const selecteds = app.selection()
 const {length: selectedCount} = selecteds
 const shouldPrefix = true
-const labelField = 'grouping'
+const tagField = 'grouping'
 const label = 'Status'
 const value = 'Temp'
 
@@ -14,12 +14,12 @@ const alterSelecteds = () => {
 
 const alter = track => {
   try {
-    const fieldText = track[labelField]()
+    const fieldText = track[tagField]()
     const delimiter = fieldText ? ', ' : ''
     const newFieldText = shouldPrefix
       ? `${label}: ${value}${delimiter}${fieldText}`
       : `${fieldText}${delimiter}${label}: ${value}`
-    track[labelField].set(newFieldText)
+    track[tagField].set(newFieldText)
     trackCount++
   }
   catch (unused) { failedCount++ }

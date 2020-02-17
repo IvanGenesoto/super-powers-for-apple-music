@@ -3,45 +3,44 @@ const removeTag = require('./tag/remove')
 const setField = require('./set-field')
 const validate = require('./validate')
 const tagKitByLabel = require('../../tag-kit-by-label')
-const getTagValue = require('../../get/tag-value')
 
 module.exports = function executeCommand(track) { // #mustBeCalledInTryBlock: true, #mustHaveData: true
 
-  const {state, data, label, tagKit = tagKitByLabel[label], value, didValidate} = this
+  const {state, data, label, value, didValidate, tagKit = tagKitByLabel[label]} = this
   const {artist} = data
+  const shouldUseDefault = value === 'No' // #note: Must check value for "No" instead of "Yes" due to "No" being a validation value.
+  const shouldDeriveAutomatically = value === 'Automatic'
 
   const {
     stateKey,
     automaticStateKey,
-    value: labelValue = value,
-    defaultValue = value,
     antiLabel,
-    field,
-    fieldValue = value,
-    defaultFieldValue = value,
     shouldAntiValidate,
-    isInteger
+    getValue = () => value,
+    value: value_ = shouldUseDefault || getValue(track, data, label),
+    getDefaultValue = () => value,
+    defaultValue = shouldUseDefault && getDefaultValue(track, data, label),
+    field,
+    getFieldValue = () => value,
+    fieldValue = shouldUseDefault || getFieldValue(track, data, label),
+    getDefaultFieldValue = () => value,
+    defaultFieldValue = shouldUseDefault && getDefaultFieldValue(track, data, label),
+    triggeredLabel
   } = tagKit
 
   const labels = [label, antiLabel]
   const trueByArtist = state[stateKey]
   const shouldDeriveAutomaticallyByArtist = state[automaticStateKey]
   const isWarranted = didValidate || !shouldAntiValidate || validate.call(this, track, antiLabel)
-  const labelValue_ = value === 'No' ? defaultValue : labelValue // #note: Must check value for "No" instead of "Yes" due to "No" being a validation value.
-  const fieldValue_ = value === 'No' ? defaultFieldValue : fieldValue
-  const isAutomatic = value === 'Automatic'
+  const value__ = shouldUseDefault ? defaultValue : value_
+  const fieldValue_ = shouldUseDefault ? defaultFieldValue : fieldValue
   const this_ = {track, data}
-  const previousValue = isInteger ? getTagValue.call(this_, label) || 0 : null
-  const integerValue = value === 'Increment' ? previousValue + 1 : previousValue - 1
-  const labelValue__ = isInteger ? integerValue : labelValue_
-  const fieldValue__ = isInteger ? integerValue : fieldValue_
+  const this__ = {...this, label: triggeredLabel, tagKit: undefined}
 
   trueByArtist && (trueByArtist[artist] = true)
-  isAutomatic && (shouldDeriveAutomaticallyByArtist[artist] = true)
+  shouldDeriveAutomatically && (shouldDeriveAutomaticallyByArtist[artist] = true)
   labels.forEach(removeTag, this_)
-  field && setField.call(this_, label, fieldValue__)
-
-  if (!isWarranted) return
-
-  addTag.call(this_, label, labelValue__)
+  field && setField.call(this_, label, fieldValue_)
+  isWarranted && addTag.call(this_, label, value__)
+  triggeredLabel && executeCommand.call(this__, track)
 }

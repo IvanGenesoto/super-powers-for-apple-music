@@ -14,11 +14,12 @@ module.exports = function valuate(valuation, [label, tagKit]) {
     field,
     antiAdoptionStateKey,
     defaultValue,
-    getDefaultValue,
+    getDefaultValue = () => {},
     defaultFieldValue,
-    getDefaultFieldValue
+    getDefaultFieldValue = () => {}
   } = tagKit
 
+  const columnBrowserDefaultValue = columnBrowserFields.includes(field) && '-'
   const didSetByArtist = state[antiAdoptionStateKey]
   const didSet = didSetByArtist && didSetByArtist[artist]
 
@@ -37,17 +38,19 @@ module.exports = function valuate(valuation, [label, tagKit]) {
   artistTracks.find(find)
 
   const {value, fieldValue} = trackValuation
+  const track = firstArtistTrack
+  const data = {}
 
   const value_ =
     value ||
     defaultValue ||
-    (getDefaultValue && getDefaultValue(firstArtistTrack))
+    getDefaultValue(track, data, label)
 
   const fieldValue_ =
     fieldValue ||
     defaultFieldValue ||
-    (getDefaultFieldValue && getDefaultFieldValue(firstArtistTrack)) ||
-    (columnBrowserFields.includes(field) && '-')
+    getDefaultFieldValue(track, data, label) ||
+    columnBrowserDefaultValue
 
   value_ && (valueByLabel[label] = value_)
   fieldValue_ && (fieldValueByLabel[label] = fieldValue_)

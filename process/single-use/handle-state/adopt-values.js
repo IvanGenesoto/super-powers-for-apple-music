@@ -28,11 +28,11 @@ module.exports = function adoptValues([artist, tracks]) {
   if (didAdoptValuesByArtist[artist]) return
 
   const artistTracks = getArtistTracks(artist)
-  const isValueAdoptable = ({isAdoptable}) => isAdoptable
-  const adoptableLabelKitByLabel = tagKitByLabel.filter(isValueAdoptable)
+  const isTagKitAdoptable = ({isAdoptable}) => isAdoptable
+  const adoptableTagKitByLabel = tagKitByLabel.filter(isTagKitAdoptable)
 
   const {valueByLabel, fieldValueByLabel} = Object
-    .entries(adoptableLabelKitByLabel)
+    .entries(adoptableTagKitByLabel)
     .reduce(valuate.bind({state, artist, artistTracks}), {})
 
   tracks.forEach(adopt)

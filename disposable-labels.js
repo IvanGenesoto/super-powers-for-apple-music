@@ -9,5 +9,6 @@ module.exports = [
   'Artist Rating',
   'Artist Discovered',
   'Proxy',
-  'Composer'
+  'Composer',
+  'Original Genre'
 ]

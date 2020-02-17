@@ -4,8 +4,8 @@ module.exports = function getTagValue(label) { // #mustHaveData: true
 
   const {data} = this
   const tagKit = tagKitByLabel[label]
-  const {labelField} = tagKit || {}
-  const fieldText = data[labelField] || ''
+  const {tagField} = tagKit || {}
+  const fieldText = data[tagField] || ''
   const {length: fieldTextLength} = fieldText
   const beginningIndex = fieldText.indexOf(label + ':')
 

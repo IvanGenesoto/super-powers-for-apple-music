@@ -5,8 +5,8 @@ module.exports = function addTag(label, value) { // #mustBeCalledInTryBlock: tru
 
   const {track, data} = this
   const tagKit = tagKitByLabel[label]
-  const {labelField, shouldPrefix} = tagKit || {}
-  const fieldText = data[labelField] || ''
+  const {tagField, shouldPrefix} = tagKit || {}
+  const fieldText = data[tagField] || ''
   const delimiter = fieldText ? ', ' : ''
 
   let fieldText_ = shouldPrefix
@@ -16,7 +16,7 @@ module.exports = function addTag(label, value) { // #mustBeCalledInTryBlock: tru
   let {length: characterCount} = fieldText_
   let index = 0
 
-  if (!labelField) return
+  if (!tagField) return
 
   while (characterCount > 255) {
     fieldText_ = removeDisposableTag(fieldText_, index)
@@ -25,6 +25,6 @@ module.exports = function addTag(label, value) { // #mustBeCalledInTryBlock: tru
     ++index
   }
 
-  track[labelField].set(fieldText_)
-  data[labelField] = fieldText_
+  track[tagField].set(fieldText_)
+  data[tagField] = fieldText_
 }

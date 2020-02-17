@@ -1,52 +1,53 @@
 const getDateString = require('./get/date-string')
+const getInteger = require('./get/integer')
 
 module.exports = {
   'Artist Status': { // #note: Playlist name (and hence value) is "Protected", "Rejected", "Retired" or "Automatic".
     stateKey: 'didSetStatusByArtist',
     antiAdoptionStateKey: 'didSetStatusByArtist',
     automaticStateKey: 'shouldDeriveRatingByArtist',
-    labelField: 'grouping',
+    tagField: 'grouping',
     defaultValue: 'Trialing',
     field: 'comment',
     isAdoptable: true
   },
   'Artist Updated': { // #note: Playlist name (and hence value) is "Yes" or "No".
     stateKey: 'didUpdateByArtist',
-    labelField: 'composer',
+    tagField: 'composer',
     value: getDateString(),
-    defaultValue: 'No',
-    field: 'bpm',
+    defaultValue: getDateString(new Date(0)),
+    field: 'movementNumber',
     fieldValue: 0,
-    defaultFieldValue: 500,
+    defaultFieldValue: 600,
     isAdoptable: true
   },
   'Artist Rating': { // #note: Alternatively use "★" ("\u2605").
     antiAdoptionStateKey: 'didSetRatingByArtist',
-    labelField: 'grouping',
+    tagField: 'grouping',
     shouldPrefix: true,
     isAdoptable: true
   },
   'Artist Star Rating': {
-    labelField: 'composer',
+    tagField: 'composer',
     field: 'category',
     isAdoptable: true
   },
   'Artist Genre': {
     antiAdoptionStateKey: 'didSetGenreByArtist',
-    labelField: 'grouping',
+    tagField: 'grouping',
     field: 'description',
     isAdoptable: true
   },
   'Artist Vocals': {
     antiAdoptionStateKey: 'didSetVocalsByArtist',
-    labelField: 'grouping',
+    tagField: 'grouping',
     field: 'description',
     fieldValue: 'pop',
     defaultFieldValue: 'wave',
     isAdoptable: true
   },
   'Artist Discovered': {
-    labelField: 'composer',
+    tagField: 'composer',
     getDefaultValue: track => getDateString(track.dateAdded()),
     shouldPrefix: true,
     isAdoptable: true
@@ -54,35 +55,47 @@ module.exports = {
   'Rating': {
     field: 'rating'
   },
-  'Song Genre': {
+  'Song Genre': { // #note: Playlist name (and hence value) is a genre.
     stateKey: 'shouldDeriveGenreByArtist',
-    labelField: 'grouping',
+    tagField: 'grouping',
     field: 'genre'
   },
   'Song Vocals': { // #note: Playlist name (and hence value) is "Yes" or "No".
     stateKey: 'shouldDeriveVocalsByArtist',
     validationWordsArrays: [['instrumental']],
     validationValues: ['No'],
-    labelField: 'grouping',
+    tagField: 'grouping',
     field: 'genre',
     fieldValue: 'pop',
     defaultFieldValue: 'wave'
   },
-  'Plays': { // #note: Playlist name (and hence value) is "Yes" or "No".
-    labelField: 'grouping',
-    field: 'movementNumber',
-    isInteger: true
+  'Plays': {
+    tagField: 'grouping',
+    getValue: getInteger,
+    getDefaultValue: getInteger.bind({isDefault: true}),
+    field: 'bpm',
+    getFieldValue: getInteger,
+    getDefaultFieldValue: getInteger.bind({isDefault: true})
+  },
+  'Played': { // #note: Playlist name (and hence value) is "Yes" or "No".
+    tagField: 'grouping',
+    triggeredLabel: 'Plays',
+    value: getDateString(),
+    defaultValue: getDateString(new Date(0)),
+    field: 'year',
+    fieldValue: 0,
+    defaultFieldValue: 600
   },
   'Disabled': { // #note: Folder is nested in the "Set Attribute" folder.
     validationWordsArrays: [['alternate', 'version', 'acoustic', 'remix', 'mix', 'edition']],
     validationValues: ['Alternate'], // #note: Additional values are "Duplicate", "Replaced by Alternate" and "Wrong Artist".
-    labelField: 'grouping',
+    tagField: 'grouping',
     antiLabel: 'Enabled',
     field: 'enabled',
     fieldValue: false
   },
   'Enabled': { // #note: Possible values are "Alternate to Unavailable," "Not an Alternate" and "Replacement Alternate".
-    labelField: 'grouping',
+    tagField: 'grouping',
     antiLabel: 'Disabled',
     shouldAntiValidate: true,
     field: 'enabled',
@@ -91,39 +104,39 @@ module.exports = {
   'Disregarded': {
     validationWordsArrays: [['interlude', 'intro', 'outro'], ['feat.'], ['instrumental']],
     validationValues: ['Interlude', 'Featuring', 'Atypical'],
-    labelField: 'grouping',
+    tagField: 'grouping',
     antiLabel: 'Regarded',
     field: 'movement'
   },
   'Regarded': { // note: Possible values are "Not an Interlude" and "Not Featuring".
-    labelField: 'grouping',
+    tagField: 'grouping',
     antiLabel: 'Disregarded',
     shouldAntiValidate: true
   },
   'Proxy': {
-    labelField: 'composer',
+    tagField: 'composer',
     value: 'Yes'
   },
   'Total Songs': {
-    labelField: 'composer',
+    tagField: 'composer',
     isAdoptable: true
   },
   'Rated Songs': {
-    labelField: 'composer',
+    tagField: 'composer',
     isAdoptable: true
   },
   'Unrated Songs': {
-    labelField: 'composer',
+    tagField: 'composer',
     isAdoptable: true
   },
   'Highest Rating': {
-    labelField: 'composer',
+    tagField: 'composer',
     isAdoptable: true
   },
   'Composer': {
-    labelField: 'composer'
+    tagField: 'composer'
   },
   'Original Genre': {
-    labelField: 'composer'
+    tagField: 'composer'
   }
 }
