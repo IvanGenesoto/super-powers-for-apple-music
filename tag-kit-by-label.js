@@ -1,3 +1,5 @@
+const getDateString = require('./get/date-string')
+
 module.exports = {
   'Artist Status': { // #note: Playlist name (and hence value) is "Protected", "Rejected", "Retired" or "Automatic".
     stateKey: 'didSetStatusByArtist',
@@ -11,7 +13,7 @@ module.exports = {
   'Artist Updated': { // #note: Playlist name (and hence value) is "Yes" or "No".
     stateKey: 'didUpdateByArtist',
     labelField: 'composer',
-    value: new Date().toLocaleDateString(),
+    value: getDateString(),
     defaultValue: 'No',
     field: 'bpm',
     fieldValue: 0,
@@ -45,7 +47,7 @@ module.exports = {
   },
   'Artist Discovered': {
     labelField: 'composer',
-    getDefaultValue: track => track.dateAdded().toLocaleDateString(),
+    getDefaultValue: track => getDateString(track.dateAdded()),
     shouldPrefix: true,
     isAdoptable: true
   },
