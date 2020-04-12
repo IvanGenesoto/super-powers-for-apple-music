@@ -1,14 +1,14 @@
-const getChildPlaylists = require('../../get/child-playlists')
+// const getChildPlaylists = require('../../get/child-playlists')
 const tagKitByLabel = require('../../tag-kit-by-label')
 const executeCommand = require('./execute-command')
 
-module.exports = function executeAndRecurse(playlist) {
+module.exports = function executeCommands(playlist) {
 
   const {state, folderName} = this
   const {getArtistTracks} = state
   const playlistData = playlist.properties()
   const {tracks, name: playlistName} = playlistData
-  const this_ = {...this, folderName: playlistName}
+  // const this_ = {...this, folderName: playlistName}
   const [hasTrack] = tracks
 
   const denumber = string => Number.isInteger(+string[0]) || string[0] === ' '
@@ -36,14 +36,12 @@ module.exports = function executeAndRecurse(playlist) {
 
   if (!hasTrack) return
 
-  const children = getChildPlaylists.call(this, playlistName)
-  const commandName = denumber(folderName)
-  const label = commandName.startsWith('Set ') ? commandName.slice(4) : commandName
-  const isArtistCommand = label.startsWith('Artist')
-  const tagKit_ = tagKitByLabel[label]
+  // const children = getChildPlaylists.call(this, playlistName)
+  const label = denumber(folderName)
   const label_ = 'Song ' + label
-  const tagKit = tagKit_ || tagKitByLabel[label_]
+  const isArtistCommand = label.startsWith('Artist')
+  const tagKit = tagKitByLabel[label] || tagKitByLabel[label_]
 
   tagKit && tracks.forEach(callAndDelete)
-  !tagKit && children && children.forEach(executeAndRecurse, this_)
+  // !tagKit && children && children.forEach(executeCommands, this_)
 }
