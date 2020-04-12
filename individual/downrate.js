@@ -4,15 +4,12 @@ const selection = app.selection()
 
 const downrate = track => {
   const rating = track.rating()
-  const newRating =
-      rating === 0 ? 10
-    : rating === 10 ? 10
-    : rating === 20 ? 10
-    : rating - 20
+  const shouldNotSet = rating === 20
+  const isBad = !rating || rating === 10 || rating === 20
+  const newRating = !rating || rating === 10 ? 20 : rating - 20
   try {
-    track.rating.set(newRating)
-    track.loved.set(false)
-    track.disliked.set(false)
+    shouldNotSet || track.rating.set(newRating)
+    isBad || track.loved.set(false)
     downratedCount++
   }
   catch (unused) { failedCount++ }
