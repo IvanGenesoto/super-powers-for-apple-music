@@ -16,7 +16,6 @@ const uprate = track => {
   // const isFavorite = shouldCheckFavorite && databaseIds && databaseIds.includes(databaseId)
   const rating = track.rating()
   const isFavorite = rating === 100
-  display(isFavorite)
   const newRating = rating === 10 ? 20 : rating + 20
   try {
     isFavorite || track.rating.set(newRating)
