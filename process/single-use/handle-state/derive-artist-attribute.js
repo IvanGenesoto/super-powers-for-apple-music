@@ -1,12 +1,15 @@
 const getTagValue = require('../../../get/tag-value')
 const getIsEditable = require('../../../get/is-editable')
 const executeCommand = require('../../multi-use/execute-command')
+const tagKitByLabel = require('../../../tag-kit-by-label')
 
 module.exports = function deriveArtistAttribute(artist) {
 
-  const {state, label, trackLabel, stateKey} = this
+  const {state, artistLabel, songLabel} = this
   const {getArtistTracks} = state
-  const didSetByArtist = state[stateKey]
+  const artistTagKit = tagKitByLabel[artistLabel]
+  const {antiAdoptionStateKey} = artistTagKit
+  const didSetByArtist = state[antiAdoptionStateKey]
   const artistTracks = getArtistTracks(artist)
 
   const vote = (voteCountByValue, track) => {
@@ -14,7 +17,7 @@ module.exports = function deriveArtistAttribute(artist) {
     const {enabled: isEnabled} = data
     const isDisregarded = getTagValue.call({data}, 'Disregarded')
     const isEditable = getIsEditable.call({data}) // #note: Could be set to "not paranoid" as an inaccurate value will only count as one "vote".
-    const value = getTagValue.call({data}, trackLabel)
+    const value = getTagValue.call({data}, songLabel)
     const {[value]: voteCount = 0} = voteCountByValue
     if (!isEnabled || isDisregarded || !isEditable || !value) return voteCountByValue
     voteCountByValue[value] = voteCount + 1
@@ -29,7 +32,7 @@ module.exports = function deriveArtistAttribute(artist) {
 
   const callExecuteCommand = track => {
     const data = track.properties()
-    try { executeCommand.call({...this, label, value, data}, track) }
+    try { executeCommand.call({...this, label: artistLabel, value, data}, track) }
     catch (unused) { }
   }
 

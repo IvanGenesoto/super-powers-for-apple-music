@@ -1,4 +1,4 @@
-module.exports = function setUnplayed(track) {
+module.exports = function setUnplayed() {
 
   const {state} = this
   const {_allTracks} = state

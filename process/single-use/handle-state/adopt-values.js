@@ -6,7 +6,9 @@ const setField = require('../../multi-use/set-field')
 module.exports = function adoptValues([artist, tracks]) {
 
   const {state} = this
-  const {didAdoptValuesByArtist, getArtistTracks} = state
+  const {getArtistTracks, shouldProcessAll} = state
+  const artistTracks = shouldProcessAll && getArtistTracks(artist)
+  const tracks_ = shouldProcessAll ? artistTracks : tracks
 
   const adopt = track => {
     const data = track.properties()
@@ -25,9 +27,6 @@ module.exports = function adoptValues([artist, tracks]) {
     catch (unused) { }
   }
 
-  if (didAdoptValuesByArtist[artist]) return
-
-  const artistTracks = getArtistTracks(artist)
   const isTagKitAdoptable = ({isAdoptable}) => isAdoptable
   const adoptableTagKitByLabel = tagKitByLabel.filter(isTagKitAdoptable)
 
@@ -35,6 +34,5 @@ module.exports = function adoptValues([artist, tracks]) {
     .entries(adoptableTagKitByLabel)
     .reduce(valuate.bind({state, artist, artistTracks}), {})
 
-  tracks.forEach(adopt)
-  didAdoptValuesByArtist[artist] = true
+  tracks_.forEach(adopt)
 }

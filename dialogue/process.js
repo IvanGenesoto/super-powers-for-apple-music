@@ -1,14 +1,15 @@
+const app = require('../app')
+
 module.exports = () => {
 
-  const app = require('../app')
-  const buttons = ['Cancel', 'Yes']
+  const buttons = ['Cancel', 'All', 'Smart']
 
-  const {buttonReturned} = app.displayDialog('Process your music collection?', {
+  const {buttonReturned} = app.displayDialog('Which artists should be processed?', {
     buttons,
     cancelButton: 'Cancel',
-    defaultButton: 'Yes',
+    defaultButton: 'Smart',
     withIcon: 1
   })
 
-  return buttonReturned === 'Yes'
+  return buttonReturned === 'All'
 }

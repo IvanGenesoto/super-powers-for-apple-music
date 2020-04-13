@@ -1,6 +1,6 @@
 {
   "name": "perfect-playlist",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "An app for iTunes and Apple Music users who want a power-user experience with casual interaction.",
   "scripts": {
     "bundle": "browserify index.js -vd -o main.js",

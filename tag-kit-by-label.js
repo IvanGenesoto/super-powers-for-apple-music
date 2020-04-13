@@ -13,6 +13,7 @@ module.exports = {
   },
   'Artist Updated': { // #note: Playlist name (and hence value) is "Yes" or "No".
     stateKey: 'didUpdateByArtist',
+    antiAdoptionStateKey: 'didUpdateByArtist',
     tagField: 'composer',
     value: getDateString(),
     defaultValue: getDateString(new Date(0)),

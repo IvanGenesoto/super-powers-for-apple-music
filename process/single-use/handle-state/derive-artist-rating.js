@@ -111,7 +111,8 @@ module.exports = function deriveRating(artist) {
 
   const callExecuteCommand = function (label, value) {
     const {track, data} = this
-    executeCommand.call({...this, label, value, data}, track)
+    try { executeCommand.call({...this, label, value, data}, track) }
+    catch (unused) { }
   }
 
   let trackCount = 0
