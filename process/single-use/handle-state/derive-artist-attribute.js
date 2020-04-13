@@ -1,5 +1,4 @@
 const getTagValue = require('../../../get/tag-value')
-const getFieldValue = require('../../../get/field-value')
 const getIsEditable = require('../../../get/is-editable')
 const executeCommand = require('../../multi-use/execute-command')
 
@@ -12,7 +11,7 @@ module.exports = function deriveArtistAttribute(artist) {
 
   const vote = (voteCountByValue, track) => {
     const data = track.properties()
-    const isEnabled = getFieldValue.call({data}, 'Enabled')
+    const {enabled: isEnabled} = data
     const isDisregarded = getTagValue.call({data}, 'Disregarded')
     const isEditable = getIsEditable.call({data}) // #note: Could be set to "not paranoid" as an inaccurate value will only count as one "vote".
     const value = getTagValue.call({data}, trackLabel)

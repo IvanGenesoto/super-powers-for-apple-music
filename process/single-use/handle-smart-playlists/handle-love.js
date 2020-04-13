@@ -1,6 +1,6 @@
 // const getPlaylist = require('../get/playlist')
 
-module.exports = function handleLoved(track) {
+module.exports = function handleLove(track) {
 
   const {state, isDisliked} = this
   const data = track.properties()
@@ -21,9 +21,10 @@ module.exports = function handleLoved(track) {
   const isBad_ = !rating || rating === 10 || rating === 20
   const isBad = isDisliked && isBad_
 
-  const newRating = isDisliked
-    ? !rating || rating === 10 ? 20 : rating - 20
-    : rating === 10 ? 20 : rating + 20
+  const newRating =
+      isDisliked && rating ? rating - 20
+    : isDisliked ? 20
+    : rating + 20
 
   try {
     isFavorite || shouldNotSet || track.rating.set(newRating)
