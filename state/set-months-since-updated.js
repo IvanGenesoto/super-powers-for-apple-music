@@ -9,7 +9,7 @@ module.exports = function setMonthsSinceUpdated(track) {
   const label = 'Artist Updated'
   const data = track.properties()
   const {artist} = data
-  const artistTracks = getArtistTracks(artist)
+  const didUpdate = didUpdateByArtist[artist]
   const previousValue = getFieldValue.call({data}, label)
   const dateString = getTagValue.call({data}, label) || null
   const date = new Date(dateString)
@@ -25,7 +25,7 @@ module.exports = function setMonthsSinceUpdated(track) {
     catch (unused) { }
   }
 
-  if (didUpdateByArtist[artist] || value === previousValue) return
+  if (didUpdate || value === previousValue) return
 
-  artistTracks.forEach(callExecuteCommand)
+  getArtistTracks(artist).forEach(callExecuteCommand)
 }

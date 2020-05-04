@@ -1,4 +1,4 @@
-module.exports = [ // #depricated: Music app has no column browser.
+module.exports = [ // #note: Currently unused.
   'genre',
   'category',
   'artist',

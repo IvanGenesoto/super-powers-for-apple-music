@@ -8,6 +8,7 @@ module.exports = function addTag(label, value) { // #mustBeCalledInTryBlock: tru
   const {tagField, shouldPrefix} = tagKit || {}
   const fieldText = data[tagField] || ''
   const delimiter = fieldText ? ', ' : ''
+  const isInvalid = !value && value !== 0
 
   let fieldText_ = shouldPrefix
     ? `${label}: ${value}${delimiter}${fieldText}`
@@ -16,7 +17,7 @@ module.exports = function addTag(label, value) { // #mustBeCalledInTryBlock: tru
   let {length: characterCount} = fieldText_
   let index = 0
 
-  if (!tagField) return
+  if (!tagField || isInvalid) return
 
   while (characterCount > 255) {
     fieldText_ = removeDisposableTag(fieldText_, index)

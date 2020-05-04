@@ -18,7 +18,7 @@ module.exports = function setField(label, value = '') { // #mustBeCalledInTryBlo
   const [firstCharacter] = value_
   const value__ = firstCharacter.toUpperCase() + value_.slice(1)
 
-  if (!field) return // #debug: Add function call that displays "Label [Label] has no associated field".
+  if (!field) return
 
   track[field].set(value__)
   data[field] = value__

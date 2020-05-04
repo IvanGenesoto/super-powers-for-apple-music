@@ -1,7 +1,7 @@
 const getTagValue = require('../get/tag-value')
 const getFieldValue = require('../get/field-value')
 const getIsEditable = require('../get/is-editable')
-const columnBrowserFields = require('../static/column-browser-fields')
+// const columnBrowserFields = require('../static/column-browser-fields')
 
 module.exports = function valuate(valuation, [label, tagKit]) {
 
@@ -11,7 +11,6 @@ module.exports = function valuate(valuation, [label, tagKit]) {
   const [firstArtistTrack] = artistTracks
 
   const {
-    field,
     antiAdoptionStateKey,
     defaultValue,
     getDefaultValue = () => {},
@@ -19,7 +18,7 @@ module.exports = function valuate(valuation, [label, tagKit]) {
     getDefaultFieldValue = () => {}
   } = tagKit
 
-  const columnBrowserDefaultValue = columnBrowserFields.includes(field) && '-'
+  // const columnBrowserDefaultValue = columnBrowserFields.includes(field) && '-'
   const didSetByArtist = state[antiAdoptionStateKey]
   const didSet = didSetByArtist && didSetByArtist[artist]
 
@@ -30,7 +29,8 @@ module.exports = function valuate(valuation, [label, tagKit]) {
     const isEditable = getIsEditable.call({data, track})
     if (!isEditable) return
     trackValuation.fieldValue = getFieldValue.call({data}, label)
-    return (trackValuation.value = value)
+    trackValuation.value = value
+    return true
   }
 
   if (didSet) return valuation
@@ -49,8 +49,8 @@ module.exports = function valuate(valuation, [label, tagKit]) {
   const fieldValue_ =
     fieldValue ||
     defaultFieldValue ||
-    getDefaultFieldValue(track, data, label) ||
-    columnBrowserDefaultValue
+    getDefaultFieldValue(track, data, label, value) ||
+    '-'
 
   value_ && (valueByLabel[label] = value_)
   fieldValue_ && (fieldValueByLabel[label] = fieldValue_)
