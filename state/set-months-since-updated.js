@@ -1,6 +1,6 @@
-const getTagValue = require('../../../get/tag-value')
-const getFieldValue = require('../../../get/field-value')
-const setField = require('../../multi-use/set-field')
+const getTagValue = require('../get/tag-value')
+const getFieldValue = require('../get/field-value')
+const setField = require('../set/field')
 
 module.exports = function setMonthsSinceUpdated(track) {
 

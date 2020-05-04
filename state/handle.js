@@ -1,4 +1,4 @@
-const getPlaylist = require('../../../get/playlist')
+const getPlaylist = require('../get/playlist')
 const deriveArtistAttribute = require('./derive-artist-attribute')
 const deriveArtistRating = require('./derive-artist-rating')
 const adoptValues = require('./adopt-values')

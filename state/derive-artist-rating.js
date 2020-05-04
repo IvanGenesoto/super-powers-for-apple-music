@@ -1,7 +1,7 @@
-const getIsEditable = require('../../../get/is-editable')
-const getTagValue = require('../../../get/tag-value')
-const removeTag = require('../../multi-use/tag/remove')
-const executeCommand = require('../../multi-use/execute-command')
+const getIsEditable = require('../get/is-editable')
+const getTagValue = require('../get/tag-value')
+const removeTag = require('../tag/remove')
+const executeCommand = require('../execute/command')
 
 module.exports = function deriveRating(artist) {
 
@@ -24,7 +24,7 @@ module.exports = function deriveRating(artist) {
   const processTrack = track => {
     const data = track.properties()
     const this_ = {data}
-    const {enabled: isEnabled, rating, loved: isLoved, disliked: isDisliked} = data
+    const {enabled: isEnabled, rating} = data
     const isEditable = getIsEditable.call(this_) // #note: Could be set to "not paranoid" as an inaccurate value will only count as one "vote".
     const isDisregarded = getTagValue.call(this_, 'Disregarded')
     rating || unratedTracks.push(track)
@@ -38,7 +38,7 @@ module.exports = function deriveRating(artist) {
     trackCount++
     if (!rating) return unratedCount++
     ratedCount++
-    const rating_ = simplify(rating, isLoved, isDisliked)
+    const rating_ = simplify(rating)
     rating_ > highestTrackRating && (highestTrackRating = rating)
     if (isDisregarded) return
     const exponent = rating_ - 1
@@ -51,27 +51,40 @@ module.exports = function deriveRating(artist) {
     rating_ > 1 && (hasGoodTrack = true)
   }
 
-  const simplify = (rating, isLoved, isDisliked) =>
-      isDisliked && rating === 20 ? 0
-    : isLoved && rating === 100 ? 6
+  const simplify = rating =>
+      rating === 10 ? 0
     : validRatings.includes(rating) ? rating / 20
     : 0
+
+  // const simplify = (rating, isLoved, isDisliked) =>
+  //     isDisliked && rating === 20 ? 0
+  //   : isLoved && rating === 100 ? 6
+  //   : validRatings.includes(rating) ? rating / 20
+  //   : 0
 
   const getArtistRating = artistPointTotal => {
     const artistRating = Math.log(artistPointTotal) / Math.log(3) + 1
     const roundedArtistRating = Math.round(artistRating * 1000) / 1000
-    return Math.min(6.999, roundedArtistRating)
+    return Math.min(5.999, roundedArtistRating)
   }
 
   const getArtistStarRating = (artistRating, artistStatus) => {
-    const isFavorite = artistRating >= 6
     let stars = ''
     if (badStatuses.includes(artistStatus)) return stars
-    let count = isFavorite ? 5 : Math.floor(artistRating)
-    for (; count; count--) stars += '\u2605'
-    isFavorite && (stars += ' \u2661')
+    let count = Math.floor(artistRating)
+    while (count) (stars += '\u2605') && --count
     return stars
   }
+
+  // const getArtistStarRating = (artistRating, artistStatus) => {
+  //   const isFavorite = artistRating >= 6
+  //   let stars = ''
+  //   if (badStatuses.includes(artistStatus)) return stars
+  //   let count = isFavorite ? 5 : Math.floor(artistRating)
+  //   for (; count; count--) stars += '\u2605'
+  //   isFavorite && (stars += ' \u2661')
+  //   return stars
+  // }
 
   const stringify = artistRating => {
     let string = artistRating.toString()

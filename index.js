@@ -1,5 +1,5 @@
 const isTest = true
-const shouldAllBeProcessed = require('./dialogue/process')
+const shouldAllBeProcessed = require('./dialogue/which')
 const process = require('./process')
 const shouldProcessAll = shouldAllBeProcessed()
 

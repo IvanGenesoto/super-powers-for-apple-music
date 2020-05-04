@@ -1,7 +1,7 @@
-const getTagValue = require('../../../get/tag-value')
-const getFieldValue = require('../../../get/field-value')
-const getIsEditable = require('../../../get/is-editable')
-const columnBrowserFields = require('../../../column-browser-fields')
+const getTagValue = require('../get/tag-value')
+const getFieldValue = require('../get/field-value')
+const getIsEditable = require('../get/is-editable')
+const columnBrowserFields = require('../static/column-browser-fields')
 
 module.exports = function valuate(valuation, [label, tagKit]) {
 

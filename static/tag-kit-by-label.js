@@ -1,5 +1,5 @@
-const getDateString = require('./get/date-string')
-const getInteger = require('./get/integer')
+const getDateString = require('../get/date-string')
+const getInteger = require('../get/integer')
 
 module.exports = {
   'Artist Status': { // #note: Playlist name (and hence value) is "Protected", "Rejected", "Retired" or "Automatic".

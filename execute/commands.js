@@ -1,6 +1,6 @@
 // const getChildPlaylists = require('../../get/child-playlists')
-const tagKitByLabel = require('../../tag-kit-by-label')
-const executeCommand = require('./execute-command')
+const tagKitByLabel = require('../static/tag-kit-by-label')
+const executeCommand = require('./command')
 
 module.exports = function executeCommands(playlist) {
 

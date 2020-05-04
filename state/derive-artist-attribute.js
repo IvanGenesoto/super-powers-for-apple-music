@@ -1,7 +1,7 @@
-const getTagValue = require('../../../get/tag-value')
-const getIsEditable = require('../../../get/is-editable')
-const executeCommand = require('../../multi-use/execute-command')
-const tagKitByLabel = require('../../../tag-kit-by-label')
+const getTagValue = require('../get/tag-value')
+const getIsEditable = require('../get/is-editable')
+const executeCommand = require('../execute/command')
+const tagKitByLabel = require('../static/tag-kit-by-label')
 
 module.exports = function deriveArtistAttribute(artist) {
 

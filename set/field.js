@@ -1,6 +1,6 @@
-const tagKitByLabel = require('../../tag-kit-by-label')
-const comprisingLabelsByField = require('../../comprising-labels-by-field')
-const getTagValue = require('../../get/tag-value')
+const tagKitByLabel = require('../static/tag-kit-by-label')
+const comprisingLabelsByField = require('../static/comprising-labels-by-field')
+const getTagValue = require('../get/tag-value')
 
 module.exports = function setField(label, value = '') { // #mustBeCalledInTryBlock: true, #mustHaveData: true
 

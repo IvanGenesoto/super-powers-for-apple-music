@@ -1,8 +1,8 @@
-const addTag = require('./tag/add')
-const removeTag = require('./tag/remove')
-const setField = require('./set-field')
-const validate = require('./validate')
-const tagKitByLabel = require('../../tag-kit-by-label')
+const addTag = require('../tag/add')
+const removeTag = require('../tag/remove')
+const setField = require('../set/field')
+const validate = require('../validate')
+const tagKitByLabel = require('../static/tag-kit-by-label')
 
 module.exports = function executeCommand(track) { // #mustBeCalledInTryBlock: true, #mustHaveData: true
 

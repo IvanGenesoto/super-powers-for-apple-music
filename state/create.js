@@ -1,6 +1,6 @@
-const app = require('../../app')
-const getArtistTracks = require('../../get/artist-tracks')
-const getPlaylist = require('../../get/playlist')
+const app = require('../app')
+const getArtistTracks = require('../get/artist-tracks')
+const getPlaylist = require('../get/playlist')
 
 module.exports = function createState(shouldProcessAll, isTest) {
 

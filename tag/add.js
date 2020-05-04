@@ -1,4 +1,4 @@
-const tagKitByLabel = require('../../../tag-kit-by-label')
+const tagKitByLabel = require('../static/tag-kit-by-label')
 const removeDisposableTag = require('./remove-disposable')
 
 module.exports = function addTag(label, value) { // #mustBeCalledInTryBlock: true, #mustHaveData: true

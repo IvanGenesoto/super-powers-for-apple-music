@@ -1,5 +1,4 @@
-const appendAndPush = require('../../multi-use/append-and-push')
-const validate = require('../../multi-use/validate')
+const validate = require('../validate')
 
 module.exports = function initialize(track) {
 
@@ -9,6 +8,8 @@ module.exports = function initialize(track) {
   const {genre, rating, composer, artist} = data
   const composerText = composer ? `Composer: ${composer}` : ''
   const delimiter = composer ? ', ' : ''
+  const tracks_ = tracksToAdoptValuesByArtist[artist]
+  const tracks = tracksToAdoptValuesByArtist[artist] = tracks_ || []
 
   try {
     track.composer.set(`${composerText}${delimiter}Original Genre: ${genre}`)
@@ -16,7 +17,7 @@ module.exports = function initialize(track) {
     track.year.set(0)
     track.movementNumber.set(0)
     rating && (shouldDeriveRatingByArtist[artist] = true)
-    appendAndPush(tracksToAdoptValuesByArtist, artist, track)
+    tracks.push(track)
     validate.call({...this, data}, track)
     track.delete()
   }

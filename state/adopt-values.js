@@ -1,7 +1,7 @@
-const tagKitByLabel = require('../../../tag-kit-by-label')
+const tagKitByLabel = require('../static/tag-kit-by-label')
 const valuate = require('./valuate')
-const addTag = require('../../multi-use/tag/add')
-const setField = require('../../multi-use/set-field')
+const addTag = require('../tag/add')
+const setField = require('../set/field')
 
 module.exports = function adoptValues([artist, tracks]) {
 
