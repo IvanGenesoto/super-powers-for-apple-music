@@ -1,6 +1,5 @@
 const getDateString = require('../get/date-string')
 const getInteger = require('../get/integer')
-const isDateEpox = dateString => !dateString || dateString === '1970/01/01'
 
 module.exports = {
   'Artist Status': { // #note: Playlist name (and hence value) is "Protected", "Rejected", "Retired" or "Automatic".
@@ -9,6 +8,7 @@ module.exports = {
     automaticStateKey: 'shouldDeriveRatingByArtist',
     tagField: 'grouping',
     defaultValue: 'Trialing',
+    defaultAdoptionFieldValue: 'Trialing',
     field: 'comment',
     isAdoptable: true
   },
@@ -20,9 +20,8 @@ module.exports = {
     defaultValue: '1970/01/01',
     field: 'movementNumber',
     fieldValue: 0,
-    getDefaultFieldValue: (unused, unused_, unused__, value) => isDateEpox(value)
-      ? 600
-      : 0,
+    defaultFieldValue: 600,
+    getDefaultAdoptionFieldValue: value => !value || value === '1970/01/01' ? 600 : 0,
     isAdoptable: true
   },
   'Artist Rating': { // #note: Alternatively use "★" ("\u2605").
@@ -48,6 +47,7 @@ module.exports = {
     field: 'description',
     fieldValue: 'pop',
     defaultFieldValue: 'wave',
+    defaultAdoptionFieldValue: null,
     isAdoptable: true
   },
   'Artist Discovered': {
