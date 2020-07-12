@@ -1,9 +1,10 @@
-const labelKitByLabel = require('../label-kit-by-label')
+const tagKitByLabel = require('../static/tag-kit-by-label')
 
 module.exports = function getFieldValue(label) { // #mustHaveData: true
 
   const {data} = this
-  const {field} = labelKitByLabel[label]
+  const tagKit = tagKitByLabel[label]
+  const {field} = tagKit
 
   return data[field]
 }
