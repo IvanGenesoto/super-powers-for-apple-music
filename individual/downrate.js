@@ -1,18 +1,14 @@
-const display = require('./dialogue/display')
-const app = require('./app')
+const display = require('../dialogue/display')
+const app = require('../app')
 const selection = app.selection()
 
 const downrate = track => {
   const rating = track.rating()
-  const newRating =
-      rating === 0 ? 10
-    : rating === 10 ? 10
-    : rating === 20 ? 10
-    : rating - 20
+  const isBad = !rating || rating === 10 || rating === 20
+  const rating_ = isBad ? 10 : rating - 20
   try {
-    track.rating.set(newRating)
+    rating_ === rating || track.rating.set(rating_)
     track.loved.set(false)
-    track.disliked.set(false)
     downratedCount++
   }
   catch (unused) { failedCount++ }

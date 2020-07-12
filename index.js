@@ -1,6 +1,6 @@
 const isTest = true
-const shouldCollectionBeProcessed = require('./dialogue/process')
+const shouldAllBeProcessed = require('./dialogue/which')
 const process = require('./process')
-const shouldProcess = shouldCollectionBeProcessed()
+const shouldProcessAll = shouldAllBeProcessed()
 
-if (shouldProcess) process(isTest)
+process(shouldProcessAll, isTest)

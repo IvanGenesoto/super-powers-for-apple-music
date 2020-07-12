@@ -1,21 +1,18 @@
-const labelKitByLabel = require('../label-kit-by-label')
+const tagKitByLabel = require('../static/tag-kit-by-label')
 
 module.exports = function getTagValue(label) { // #mustHaveData: true
 
-  if (!label) return
-
   const {data} = this
-  const {labelField} = labelKitByLabel[label]
+  const tagKit = tagKitByLabel[label]
+  const {tagField} = tagKit || {}
+  const fieldText = data[tagField] || ''
+  const {length: fieldTextLength} = fieldText
+  const beginningIndex = fieldText.indexOf(label + ':')
 
-  if (!labelField) return // #debug: Add function call that displays "Label [Label] has no associated labelField".
+  if (beginningIndex === -1) return
 
-  const fieldText = data[labelField]
-  const beginIndex = fieldText.indexOf(label + ':')
+  const delimiterIndex = fieldText.indexOf(', ', beginningIndex)
+  const endingIndex = delimiterIndex === -1 ? fieldTextLength : delimiterIndex
 
-  if (beginIndex === -1) return
-
-  const delimiterIndex = fieldText.indexOf(', ', beginIndex)
-  const endIndex = delimiterIndex === -1 ? fieldText.length : delimiterIndex
-
-  return fieldText.slice(beginIndex, endIndex)
+  return fieldText.slice(beginningIndex, endingIndex)
 }
