@@ -1,4 +1,4 @@
-const app = require('../../app')
+const app = require('../../src/app')
 const createState = require('../../process/single-use/create-state')
 const {displayAlert, displayDialog} = app
 const state = createState()

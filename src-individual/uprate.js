@@ -1,6 +1,6 @@
-const display = require('../dialogue/display')
-const getPlaylist = require('../get/playlist')
-const app = require('../app')
+const display = require('../src/dialogue/display')
+const getPlaylist = require('../src/get/playlist')
+const app = require('../src/app')
 const selection = app.selection()
 
 const uprate = track => {
