@@ -1,5 +1,5 @@
-const display = require('../dialogue/display')
-const getPlaylist = require('../get/playlist')
+const display = require('../src/dialogue/display')
+const getPlaylist = require('../src/get/playlist')
 const playlist = getPlaylist('test')
 
 const concatenate = (text, [name, value], index) => {

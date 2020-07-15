@@ -1,12 +1,44 @@
 {
-  // See https://go.microsoft.com/fwlink/?LinkId=733558
-  // for the documentation about the tasks.json format
   "version": "2.0.0",
   "tasks": [
     {
       "type": "npm",
+      "script": "bundle",
+      "problemMatcher": [],
+      "label": "npm: bundle",
+      "detail": "browserify src/index.js -o dist/process.jxa",
+      "group": "build"
+    },
+    {
+      "type": "npm",
       "script": "bundle:test",
-      "problemMatcher": []
+      "problemMatcher": [],
+      "label": "npm: bundle:test",
+      "detail": "browserify src/index-test.js -o dist/process-test.jxa",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "npm: bundle:individual",
+      "type": "shell",
+      "problemMatcher": [],
+      "detail": "browserify $in -o $out",
+      "command": "in=./src-individual/${input:name}.js out=./dist/${input:name}.jxa npm run bundle:individual",
+      "group": "build",
+      "presentation": {
+        "panel": "dedicated",
+        "showReuseMessage": false
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "name",
+      "description": "Script?",
+      "default": "custom-action"
     }
   ]
 }

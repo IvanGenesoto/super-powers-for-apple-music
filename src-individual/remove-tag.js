@@ -1,4 +1,4 @@
-const app = require('../app')
+const app = require('../src/app')
 const {chooseFromList, displayAlert, displayDialog} = app
 const selecteds = app.selection()
 const {length: selectedCount} = selecteds
