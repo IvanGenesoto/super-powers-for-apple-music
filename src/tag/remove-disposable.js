@@ -1,4 +1,4 @@
-const disposableLabels = require('../../../disposable-labels')
+const disposableLabels = require('../static/disposable-labels')
 
 module.exports = function removeDisposableTag(fieldText, index) {
 

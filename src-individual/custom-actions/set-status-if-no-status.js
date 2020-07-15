@@ -1,4 +1,4 @@
-const app = require('../../app')
+const app = require('../../src/app')
 const createState = require('../../process/single-use/create-state')
 const {displayAlert, displayDialog} = app
 const state = createState()
@@ -26,8 +26,6 @@ const appendArtistTracks = track => {
 const setStatus = track => {
   try {
     const fieldText = track[tagField]()
-    // const index = fieldText.indexOf(label + ':')
-    // if (index + 1) return skippedCount++
     const delimiter = fieldText ? ', ' : ''
     const newFieldText = shouldPrefix
       ? `${label}: ${value}${delimiter}${fieldText}`
@@ -41,7 +39,7 @@ const setStatus = track => {
 const report = () => {
   const s = alteredCount === 1 ? '' : 's'
   const were = alteredCount === 1 ? 'was' : 'were'
-  displayDialog(`${alteredCount} track${s} ${were} altered. ${skippedCount} skipped. ${failedCount} failed.`, {
+  displayDialog(`${alteredCount} track${s} ${were} altered. ${failedCount} failed.`, {
     buttons: ['OK'],
     defaultButton: 'OK',
     withIcon: 1
@@ -49,7 +47,6 @@ const report = () => {
 }
 
 let alteredCount = 0
-let skippedCount = 0
 let failedCount = 0
 
 selectedCount && processTracks()

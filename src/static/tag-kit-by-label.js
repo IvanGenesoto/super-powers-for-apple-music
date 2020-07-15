@@ -56,7 +56,7 @@ module.exports = {
     shouldPrefix: true,
     isAdoptable: true
   },
-  'Rating': {
+  Rating: {
     field: 'rating'
   },
   'Song Genre': { // #note: Playlist name (and hence value) is a genre.
@@ -73,7 +73,7 @@ module.exports = {
     fieldValue: 'pop',
     defaultFieldValue: 'wave'
   },
-  'Plays': {
+  Plays: {
     tagField: 'grouping',
     getValue: getInteger,
     getDefaultValue: getInteger.bind({isDefault: true}),
@@ -81,7 +81,7 @@ module.exports = {
     getFieldValue: getInteger,
     getDefaultFieldValue: getInteger.bind({isDefault: true})
   },
-  'Played': { // #note: Playlist name (and hence value) is "Yes" or "No".
+  Played: { // #note: Playlist name (and hence value) is "Yes" or "No".
     tagField: 'grouping',
     triggeredLabel: 'Plays',
     value: getDateString(),
@@ -90,7 +90,7 @@ module.exports = {
     fieldValue: 0,
     defaultFieldValue: 600
   },
-  'Disabled': { // #note: Folder is nested in the "Set Attribute" folder.
+  Disabled: { // #note: Folder is nested in the "Set Attribute" folder.
     validationWordsArrays: [['alternate', 'version', 'acoustic', 'remix', 'mix', 'edition']],
     validationValues: ['Alternate'], // #note: Additional values are "Duplicate", "Replaced" and "Not Artist".
     tagField: 'grouping',
@@ -98,26 +98,26 @@ module.exports = {
     field: 'enabled',
     fieldValue: false
   },
-  'Enabled': { // #note: Possible values are "Replacement," "Not Alternate" and "Available".
+  Enabled: { // #note: Possible values are "Replacement," "Not Alternate" and "Available".
     tagField: 'grouping',
     antiLabel: 'Disabled',
     shouldAntiValidate: true,
     field: 'enabled',
     fieldValue: true
   },
-  'Disregarded': {
+  Disregarded: {
     validationWordsArrays: [['interlude', 'intro', 'outro'], ['feat.'], ['instrumental']],
     validationValues: ['Interlude', 'Featuring', 'Atypical'],
     tagField: 'grouping',
     antiLabel: 'Regarded',
     field: 'movement'
   },
-  'Regarded': { // note: Possible values are "Not Interlude," "Not Featuring" and "Not Atypical".
+  Regarded: { // note: Possible values are "Not Interlude," "Not Featuring" and "Not Atypical".
     tagField: 'grouping',
     antiLabel: 'Disregarded',
     shouldAntiValidate: true
   },
-  'Proxy': {
+  Proxy: {
     tagField: 'composer',
     value: 'Yes'
   },
@@ -137,7 +137,7 @@ module.exports = {
     tagField: 'composer',
     isAdoptable: true
   },
-  'Composer': {
+  Composer: {
     tagField: 'composer'
   },
   'Original Genre': {

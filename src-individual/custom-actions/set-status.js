@@ -1,10 +1,11 @@
-// replace-quotes
-
-const app = require('../../app')
+const app = require('../../src/app')
 const {displayAlert, displayDialog} = app
 const selecteds = app.selection()
 const {length: selectedCount} = selecteds
-const field = 'composer'
+const shouldPrefix = true
+const tagField = 'grouping'
+const label = 'Status'
+const value = 'Temp'
 
 const alterSelecteds = () => {
   selecteds.forEach(alter)
@@ -13,23 +14,12 @@ const alterSelecteds = () => {
 
 const alter = track => {
   try {
-    let fieldValue = track[field]()
-    for (let i = 0; i < fieldValue.length; i++) {
-      const character = fieldValue[i]
-      if (character === '"') {
-        if (fieldValue[i + 1] === ' ') {
-          const beginning = fieldValue.slice(0, i)
-          const ending = fieldValue.slice(i + 1)
-          fieldValue = beginning + ',' + ending
-        }
-        else {
-          const beginning = fieldValue.slice(0, i)
-          const ending = fieldValue.slice(i + 1)
-          fieldValue = beginning + ending
-        }
-      }
-    }
-    track[field].set(fieldValue)
+    const fieldText = track[tagField]()
+    const delimiter = fieldText ? ', ' : ''
+    const newFieldText = shouldPrefix
+      ? `${label}: ${value}${delimiter}${fieldText}`
+      : `${fieldText}${delimiter}${label}: ${value}`
+    track[tagField].set(newFieldText)
     trackCount++
   }
   catch (unused) { failedCount++ }

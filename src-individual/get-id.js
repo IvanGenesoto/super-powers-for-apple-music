@@ -1,5 +1,5 @@
-const display = require('../dialogue/display')
-const app = require('../app')
+const display = require('../src/dialogue/display')
+const app = require('../src/app')
 const selection = app.selection()
 const [track] = selection
 const id = track.id()
