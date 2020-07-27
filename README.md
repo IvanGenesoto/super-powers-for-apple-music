@@ -1,2 +1,4 @@
-# perfect-playlist
-An app for iTunes and Apple Music users who want a power-user experience with casual interaction.
+# Super Powers for Apple Music
+Automated artist attributes for Apple Music tracks, written in JXA (JavaScript for Automation).
+
+Copyright © 2020 Ivan Genesoto
