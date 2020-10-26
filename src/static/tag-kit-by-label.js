@@ -1,5 +1,4 @@
 const getDateString = require('../get/date-string')
-const getInteger = require('../get/integer')
 
 module.exports = {
   'Artist Status': { // #note: Playlist name (and hence value) is "Protected", "Rejected", "Retired" or "Automatic".
@@ -24,27 +23,26 @@ module.exports = {
     getDefaultAdoptionFieldValue: value => !value || value === '1970/01/01' ? 600 : 0,
     isAdoptable: true
   },
-  'Artist Rating': { // #note: Alternatively use "★" ("\u2605").
+  'Artist Rating': {
     antiAdoptionStateKey: 'didSetRatingByArtist',
-    tagField: 'grouping',
-    shouldPrefix: true,
+    field: 'bpm',
     isAdoptable: true
   },
   'Artist Star Rating': {
     tagField: 'composer',
-    field: 'category',
+    field: 'description',
     isAdoptable: true
   },
   'Artist Genre': {
     antiAdoptionStateKey: 'didSetGenreByArtist',
     tagField: 'grouping',
-    field: 'description',
+    field: 'category',
     isAdoptable: true
   },
   'Artist Vocals': {
     antiAdoptionStateKey: 'didSetVocalsByArtist',
     tagField: 'grouping',
-    field: 'description',
+    field: 'category',
     fieldValue: 'pop',
     defaultFieldValue: 'wave',
     defaultAdoptionFieldValue: null,
@@ -73,23 +71,23 @@ module.exports = {
     fieldValue: 'pop',
     defaultFieldValue: 'wave'
   },
-  Plays: {
-    tagField: 'grouping',
-    getValue: getInteger,
-    getDefaultValue: getInteger.bind({isDefault: true}),
-    field: 'bpm',
-    getFieldValue: getInteger,
-    getDefaultFieldValue: getInteger.bind({isDefault: true})
-  },
-  Played: { // #note: Playlist name (and hence value) is "Yes" or "No".
-    tagField: 'grouping',
-    triggeredLabel: 'Plays',
-    value: getDateString(),
-    defaultValue: '1970/01/01',
-    field: 'year',
-    fieldValue: 0,
-    defaultFieldValue: 600
-  },
+  // Plays: {
+  //   tagField: 'grouping',
+  //   getValue: getInteger,
+  //   getDefaultValue: getInteger.bind({isDefault: true}),
+  //   field: 'bpm',
+  //   getFieldValue: getInteger,
+  //   getDefaultFieldValue: getInteger.bind({isDefault: true})
+  // },
+  // Played: { // #note: Playlist name (and hence value) is "Yes" or "No".
+  //   tagField: 'grouping',
+  //   triggeredLabel: 'Plays',
+  //   value: getDateString(),
+  //   defaultValue: '1970/01/01',
+  //   field: 'year',
+  //   fieldValue: 0,
+  //   defaultFieldValue: 600
+  // },
   Disabled: { // #note: Folder is nested in the "Set Attribute" folder.
     validationWordsArrays: [['alternate', 'version', 'acoustic', 'remix', 'mix', 'edition']],
     validationValues: ['Alternate'], // #note: Additional values are "Duplicate", "Replaced" and "Not Artist".

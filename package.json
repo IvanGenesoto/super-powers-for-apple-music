@@ -1,7 +1,7 @@
 {
   "name": "super-powers-for-apple-music",
   "version": "0.1.0",
-  "description": "An app for iTunes and Apple Music users who want a power-user experience with casual interaction.",
+  "description": "An app for Apple Music users who want a power-user experience with casual interaction.",
   "scripts": {
     "bundle": "browserify src/index.js -o dist/process.jxa",
     "bundle:test": "browserify src/index-test.js -o dist/process-test.jxa",

@@ -64,8 +64,9 @@ module.exports = function deriveRating(artist) {
 
   const getArtistRating = artistPointTotal => {
     const artistRating = Math.log(artistPointTotal) / Math.log(3) + 1
-    const roundedArtistRating = Math.round(artistRating * 1000) / 1000
-    return Math.min(5.999, roundedArtistRating)
+    const integerArtistRating = Math.round(artistRating * 1000)
+    // const roundedArtistRating = Math.round(artistRating * 1000) / 1000
+    return Math.min(5999, integerArtistRating)
   }
 
   const getArtistStarRating = (artistRating, artistStatus) => {
@@ -86,19 +87,19 @@ module.exports = function deriveRating(artist) {
   //   return stars
   // }
 
-  const stringify = artistRating => {
-    let string = artistRating.toString()
-    const {length} = string
-    if (length === 5) return string
-    if (length === 1) string += '.'
-    return string + getZeros(5 - string.length)
-  }
+  // const stringify = artistRating => {
+  //   let string = artistRating.toString()
+  //   const {length} = string
+  //   if (length === 5) return string
+  //   if (length === 1) string += '.'
+  //   return string + getZeros(5 - string.length)
+  // }
 
-  const getZeros = count => {
-    let zeros = ''
-    for (; count; count--) zeros += '0'
-    return zeros
-  }
+  // const getZeros = count => {
+  //   let zeros = ''
+  //   for (; count; count--) zeros += '0'
+  //   return zeros
+  // }
 
   const getStatus = () =>
       !isTrialing && hasGoodTrack && artistRating >= 1 ? followingStatus
@@ -113,7 +114,7 @@ module.exports = function deriveRating(artist) {
   const callCallExecuteCommand = (track, index) => {
     const data = editableDatas[index]
     const callExecuteCommandWithThis = callExecuteCommand.bind({track, data})
-    callExecuteCommandWithThis('Artist Rating', artistRatingString)
+    callExecuteCommandWithThis('Artist Rating', artistRating)
     callExecuteCommandWithThis('Artist Star Rating', artistStarRating)
     callExecuteCommandWithThis('Songs', trackCount)
     callExecuteCommandWithThis('Rated Songs', ratedCount)
@@ -149,7 +150,7 @@ module.exports = function deriveRating(artist) {
   const isTrialing = regardedRatedCount < 5
   const artistPointTotal = pointTotal / regardedRatedCount
   const artistRating = getArtistRating(artistPointTotal)
-  const artistRatingString = stringify(artistRating)
+  // const artistRatingString = stringify(artistRating)
   const proxyTrack_ = proxyTrack || enabledTrack || editableTrack
   const index = editableTracks.indexOf(proxyTrack_)
   const proxyData = editableDatas[index]

@@ -15,10 +15,7 @@
       "problemMatcher": [],
       "label": "npm: bundle:test",
       "detail": "browserify src/index-test.js -o dist/process-test.jxa",
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      }
+      "group": "build"
     },
     {
       "label": "npm: bundle:individual",
@@ -26,7 +23,10 @@
       "problemMatcher": [],
       "detail": "browserify $in -o $out",
       "command": "in=./src-individual/${input:name}.js out=./dist/${input:name}.jxa npm run bundle:individual",
-      "group": "build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
       "presentation": {
         "panel": "dedicated",
         "showReuseMessage": false

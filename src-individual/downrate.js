@@ -1,5 +1,6 @@
 const display = require('../src/dialogue/display')
 const app = require('../src/app')
+// const disambiguate = require('../src/smart-playlists/disambiguate')
 const selection = app.selection()
 
 const downrate = track => {
@@ -9,6 +10,7 @@ const downrate = track => {
   try {
     rating_ === rating || track.rating.set(rating_)
     track.loved.set(false)
+    track.disliked.set(false)
     downratedCount++
   }
   catch (unused) { failedCount++ }
@@ -18,4 +20,6 @@ let downratedCount = 0
 let failedCount = 0
 
 selection.forEach(downrate)
+// delay(20)
+// selection.forEach(disambiguate)
 display(`${downratedCount} downrated. ${failedCount} failed.`)

@@ -1,21 +1,20 @@
-const getPlaylist = require('../get/playlist')
-
 module.exports = function handleLove(track) {
 
   const {state, isDisliked} = this
   const {shouldDeriveRatingByArtist} = state
   const data = track.properties()
-  const {rating, artist, databaseID: databaseId} = data
+  const {rating, artist} = data
   const key = isDisliked ? 'disliked' : 'loved'
-  const isFavorite = !isDisliked && rating === 100
+  // const isFavorite = !isDisliked && rating === 100
   const canBeBad = !rating || rating === 10 || rating === 20
   const isBad = isDisliked && canBeBad
 
   const rating_ =
-      isFavorite ? 100
-    : isBad ? 10
+      // isFavorite ? 100
+      isBad ? 10
     : isDisliked ? rating - 20
     : rating === 10 ? 20
+    : rating === 100 ? 100
     : rating + 20
 
   // const rating_ =
@@ -23,22 +22,22 @@ module.exports = function handleLove(track) {
   //   : isDisliked ? 20
   //   : rating + 20
 
-  const addToFavorite = () => {
-    const getFavorites = () => playlist && playlist.tracks()
-    const getDatabaseIds = () => favorites && favorites.map(getDatabaseId)
-    const getDatabaseId = track => track.databaseID()
-    const playlist = getPlaylist('Favorite')
-    const favorites = getFavorites()
-    const databaseIds = getDatabaseIds()
-    const isInPlaylist = databaseIds && databaseIds.includes(databaseId)
-    isInPlaylist || track.duplicate({to: playlist})
-  }
+  // const addToFavorite = () => {
+  //   const getFavorites = () => playlist && playlist.tracks()
+  //   const getDatabaseIds = () => favorites && favorites.map(getDatabaseId)
+  //   const getDatabaseId = track => track.databaseID()
+  //   const playlist = getPlaylist('Favorite')
+  //   const favorites = getFavorites()
+  //   const databaseIds = getDatabaseIds()
+  //   const isInPlaylist = databaseIds && databaseIds.includes(databaseId)
+  //   isInPlaylist || track.duplicate({to: playlist})
+  // }
 
   try {
     rating_ === rating || track.rating.set(rating_)
     track[key].set(false)
     shouldDeriveRatingByArtist[artist] = true
-    isFavorite && addToFavorite()
+    // isFavorite && addToFavorite()
   }
 
   // try {

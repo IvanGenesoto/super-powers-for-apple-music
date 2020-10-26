@@ -1,8 +1,8 @@
 module.exports = [ // #note: Currently unused.
   'genre',
   'category',
-  'artist',
-  'album',
+  'composer',
   'grouping',
-  'composer'
+  'artist',
+  'album'
 ]

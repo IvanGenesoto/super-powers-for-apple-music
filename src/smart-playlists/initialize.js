@@ -14,7 +14,6 @@ module.exports = function initialize(track) {
   try {
     track.composer.set(`${composerText}${delimiter}Original Genre: ${genre}`)
     track.genre.set('-')
-    track.year.set(0)
     track.movementNumber.set(0)
     rating && (shouldDeriveRatingByArtist[artist] = true)
     tracks.push(track)
