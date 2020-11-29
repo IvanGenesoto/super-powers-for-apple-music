@@ -1,3 +1,3 @@
-export * from './app'
-export * from './display'
-export * from './get-playlist'
+export * from './resources/app'
+export * from './resources/display'
+export * from './resources/get-playlist'

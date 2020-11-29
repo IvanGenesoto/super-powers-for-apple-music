@@ -1,19 +1,13 @@
-const app = require('../src/app')
-const display = require('../src/dialog/display')
+import {app
+} from '.'
 
-const shouldAllBeProcessed = () => {
-  const buttons = ['Cancel', 'All', 'Smart']
-  const {buttonReturned} = app.displayDialog('Which artists should be processed?', {
-    buttons,
-    cancelButton: 'Cancel',
-    defaultButton: 'Smart',
-    withIcon: 1
-  })
-  return buttonReturned === 'All'
-}
+const {displayDialog, displayAlert} = app
+const buttons = ['All', 'Played', 'Smart']
 
-const isTest = true
-const shouldProcessAll = shouldAllBeProcessed()
-const process = (shouldProcessAll, isTest) => display(`${shouldProcessAll} ${isTest}`)
+const {buttonReturned} = displayDialog('Which artists should be processed?', {
+  buttons,
+  defaultButton: 'Smart',
+  withIcon: 1,
+})
 
-process(shouldProcessAll, isTest)
+displayAlert(buttonReturned)
