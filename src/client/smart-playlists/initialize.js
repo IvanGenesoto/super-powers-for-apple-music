@@ -20,6 +20,7 @@ export function initialize(track) {
   const tracks = tracksToAdoptValuesByArtist[artist] = tracks_ || []
 
   try {
+    track.episodeNumber.set(1)
     track.composer.set(`${composerText}${delimiter}Original Genre: ${genre}`)
     track[genreField].set(nil)
     isComprised || track[vocalsField].set(nil)

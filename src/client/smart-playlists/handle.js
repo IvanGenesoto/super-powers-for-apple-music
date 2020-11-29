@@ -18,5 +18,6 @@ export function handleSmartPlaylists() {
   _allTracks.whose({disliked: true})().forEach(handleLove, this_)
   /// _getPlaylist('Uprate').tracks().forEach(handleLove, this)
   /// _getPlaylist('Downrate').tracks().forEach(handleLove, {...this, isDisliked: true})
-  _getPlaylist('Uninitialized').tracks().forEach(initialize, this) // #smart-playlist: Tracks without an "Original Genre" tag.
+  /// _getPlaylist('Uninitialized').tracks().forEach(initialize, this) // #smart-playlist: Tracks without an "Original Genre" tag.
+  _allTracks.whose({episodeNumber: 0})().forEach(initialize, this)
 }
