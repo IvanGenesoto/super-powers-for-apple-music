@@ -1,15 +1,14 @@
-const display = require('../src/dialogue/display')
-const app = require('../src/app')
+import {app, display} from '.'
+
 const selection = app.selection()
+const [track] = selection
+const properties = track.properties()
 
 const concatenate = (text, [name, value], index) => {
   const delimiter = index ? '\u000a' : ''
   text += `${delimiter}${name}: ${value}`
   return text
 }
-
-const [track] = selection
-const properties = track.properties()
 
 const text = Object
   .entries(properties)

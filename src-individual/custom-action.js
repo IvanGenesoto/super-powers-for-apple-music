@@ -1,5 +1,5 @@
 const app = require('../src/app')
-const display = require('../src/dialogue/display')
+const display = require('../src/dialog/display')
 
 const shouldAllBeProcessed = () => {
   const buttons = ['Cancel', 'All', 'Smart']

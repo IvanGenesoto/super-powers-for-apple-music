@@ -1,0 +1,122 @@
+{
+  "ignorePatterns": "src-individual",
+  "extends": [
+    "plugin:eslint-comments/recommended",
+    "plugin:import/recommended",
+    "plugin:react/recommended",
+    "standard",
+  ],
+  "globals": {
+      "Application": "readonly",
+      "delay": "readonly",
+  },
+  "plugins": [
+    "@babel",
+    "no-block-comments",
+    "unicorn",
+  ],
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {"babelOptions": {
+    "configFile": "./.rc/.babelrc",
+  }},
+  "settings": {
+    "react": {"version": "detect"}
+  },
+  "rules": {
+    "array-bracket-newline": ["error", "consistent"],
+    "array-callback-return": ["error", {"allowImplicit": true}],
+    "array-element-newline": ["error", "consistent"],
+    "arrow-body-style": ["error", "as-needed"],
+    "arrow-parens": ["error", "as-needed"],
+    "brace-style": ["error", "stroustrup"],
+    "camelcase": ["error", {"ignoreGlobals": false}],
+    "comma-dangle": ["error", "always-multiline"],
+    "curly": "off",
+    "default-param-last": "off",
+    "dot-notation": ["error", {
+      "allowPattern": "^_*[a-zA-Z0-9$]+(_+[a-zA-Z0-9$]+)+|^_*[A-Z]"
+    }],
+    "function-paren-newline": ["error", "consistent"],
+    "function-call-argument-newline": ["error", "consistent"],
+    "indent": ["error", 2, {
+      "SwitchCase": 1,
+      "flatTernaryExpressions": true,
+      "ignoredNodes": ["ConditionalExpression", "LogicalExpression"],
+    }],
+    "line-comment-position": ["error", {"position": "beside", "ignorePattern": "^/", "applyDefaultIgnorePatterns": false}],
+    "multiline-comment-style": ["error", "separate-lines"],
+    "multiline-ternary": "off",
+    "no-console": ["error", {"allow": ["info", "warn", "error"]}],
+    "no-inline-comments": ["error", {
+      "ignorePattern": "^ html $|^ #due \\[[1-2][0-9][0-9][0-9]-[0-1][1-9]-[0-3][0-9]\\]: .+$|^ #note: .+$|^ #fix: .+$|^ #implement: .+$|^ #improve: .+$|^ #change: .+$|^ #backfill: .+$|^ #smart-playlist: .+$|^ #do: .+$|^ #hardcoded$|^ #hardcoded, #.+$|^ #mustPassData$|^ #mustPassData, #.+$|^ #mustBeCalledInTryBlock$|^ #mustBeCalledInTryBlock, #.+$",
+    }],
+    "no-multi-str": "off",
+    "no-restricted-syntax": ["error", "SequenceExpression", "SwitchStatement"],
+    "no-return-assign": "off",
+    "no-unused-expressions": "off",
+    "no-unused-vars": ["error", {
+      "args": "all",
+      "argsIgnorePattern": "^unused",
+      "varsIgnorePattern": "^unused",
+    }],
+    "no-var": "off",
+    "object-curly-newline": ["error", {"consistent": true}],
+    "object-curly-spacing": ["error", "never"],
+    "object-shorthand": "error",
+    "operator-linebreak": ["error", "before", { "overrides": {
+      "=": "after", "+=": "after", "-=": "after"
+    }}],
+    "padded-blocks": "off",
+    "quotes": ["error", "single", {
+      "avoidEscape": true,
+      "allowTemplateLiterals": true,
+    }],
+    "quote-props": "off",
+    "spaced-comment": ["error", "always", {"markers": ["/"]}],
+    "space-before-function-paren": ["error", {"named": "never"}],
+    "@babel/no-unused-expressions": ["error", {
+      "allowShortCircuit": true,
+      "allowTernary": true,
+      "allowTaggedTemplates": true
+    }],
+    "eslint-comments/no-unused-disable": "error",
+    "eslint-comments/no-use": ["error", {"allow": [
+      "eslint-disable-line",
+      "exported",
+      "global",
+    ]}],
+    "eslint-comments/require-description": ["error", {"ignore": [
+      "exported",
+      "global",
+    ]}],
+    "import/no-commonjs": "error",
+    "import/no-default-export": "error",
+    "import/no-unresolved": ["error", { "commonjs": true, "amd": true }],
+    "import/no-extraneous-dependencies": ["error", {
+      "devDependencies": ["**/*.test.js"]
+    }],
+    "no-block-comments/no-block-comments": "error",
+    "node/no-callback-literal": "off",
+    "react/prop-types": ["error", {"skipUndeclared": true}],
+    "standard/no-callback-literal": "off",
+    "unicorn/expiring-todo-comments": ["error", {
+      "allowWarningComments": false,
+      "terms": ["#due"]
+    }],
+    "unicorn/filename-case": "error",
+    "unicorn/import-index": "error",
+    "unicorn/prefer-optional-catch-binding": "error",
+    "unicorn/prefer-negative-index": "error",
+    "unicorn/prefer-ternary": "error",
+    "unicorn/prevent-abbreviations": ["error", {
+      "checkProperties": true,
+      "checkShorthandProperties": true,
+      "replacements": {
+        "i": false,
+        "props": false,
+        "temp": false,
+        "stuff": {"_": true, "__": true},
+      }
+    }],
+  }
+}

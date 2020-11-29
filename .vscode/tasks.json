@@ -2,27 +2,10 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "type": "npm",
-      "script": "bundle",
-      "problemMatcher": [],
-      "label": "npm: bundle",
-      "detail": "browserify src/index.js -o dist/process.jxa",
-      "group": "build"
-    },
-    {
-      "type": "npm",
-      "script": "bundle:test",
-      "problemMatcher": [],
-      "label": "npm: bundle:test",
-      "detail": "browserify src/index-test.js -o dist/process-test.jxa",
-      "group": "build"
-    },
-    {
-      "label": "npm: bundle:individual",
+      "label": "1. Build Individual",
       "type": "shell",
       "problemMatcher": [],
-      "detail": "browserify $in -o $out",
-      "command": "in=./src-individual/${input:name}.js out=./dist/${input:name}.jxa npm run bundle:individual",
+      "command": ". .sh/individual.sh ${input:name}",
       "group": {
         "kind": "build",
         "isDefault": true

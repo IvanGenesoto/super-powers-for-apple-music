@@ -1,0 +1,4 @@
+{
+  "ignore": ["dist", "**/*.test.js"],
+  "events": {"start": "npm run prestart"}
+}

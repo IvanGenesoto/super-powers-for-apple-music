@@ -1,0 +1,34 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Node",
+      "type": "node",
+      "request": "launch",
+      "skipFiles": ["<node_internals>/**"],
+      "runtimeExecutable": "npm",
+      "program": "${workspaceFolder}/dist/server/main.js",
+      "runtimeArgs": ["start"],
+      "outputCapture": "std"
+    },
+    {
+      "name": "Chrome",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+    },
+    {
+      "name": "CI",
+      "type": "node",
+      "request": "launch",
+      "skipFiles": ["<node_internals>/**"],
+      "env": {"NODE_ENV": "production"},
+      "runtimeExecutable": "npm",
+      "preLaunchTask": "npm: ci",
+      "program": "${workspaceFolder}/dist/server/main.js",
+      "runtimeArgs": ["run", "start:prod"],
+      "outputCapture": "std",
+      "postDebugTask": "npm: install"
+    },
+  ]
+}

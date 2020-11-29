@@ -16,8 +16,8 @@ const alter = track => {
   try {
     const fieldText = track[tagField]()
     const delimiter = fieldText ? ', ' : ''
-    const newFieldText = shouldPrefix
-      ? `${label}: ${value}${delimiter}${fieldText}`
+    const newFieldText =
+        shouldPrefix ? `${label}: ${value}${delimiter}${fieldText}`
       : `${fieldText}${delimiter}${label}: ${value}`
     track[tagField].set(newFieldText)
     trackCount++

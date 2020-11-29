@@ -1,4 +1,4 @@
-const display = require('../src/dialogue/display')
+const display = require('../src/dialog/display')
 const getPlaylist = require('../src/get/playlist')
 const playlist = getPlaylist('test')
 

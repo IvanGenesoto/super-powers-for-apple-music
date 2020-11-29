@@ -1,7 +1,5 @@
-node_modules
-dist
-scratch
-main.js
-test.js
-test-main.js
 .DS_Store
+main-individual.*
+dist
+dist-individual
+node_modules

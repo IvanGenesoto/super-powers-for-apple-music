@@ -33,8 +33,8 @@ const setStatus = track => {
     const delimiter = fieldText ? ', ' : ''
     const tempLabel = 'Test'
     const tempValue = 'One'
-    const newFieldText = shouldPrefix
-      ? `${tempLabel}: ${tempValue}${delimiter}${fieldText}`
+    const newFieldText =
+        shouldPrefix ? `${tempLabel}: ${tempValue}${delimiter}${fieldText}`
       : `${fieldText}${delimiter}${tempLabel}: ${tempValue}`
     track[tagField].set(newFieldText)
     alteredCount++

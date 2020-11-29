@@ -1,0 +1,7 @@
+{
+  "ignoreFiles": [
+    "**",
+    "!**/*.css",
+  ],
+  "extends": "stylelint-config-standard",
+}
