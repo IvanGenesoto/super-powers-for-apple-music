@@ -4,7 +4,8 @@ import {getTagValue, getFieldValue, getIsEditable} from '..'
 export function valuate(valuation, [label, tagKit]) {
 
   const {state, artist, artistTracks} = this
-  const {valueByLabel = {}, fieldValueByLabel = {}} = valuation
+  const {nil} = state
+  const {tagValueByLabel = {}, fieldValueByLabel = {}} = valuation
   const trackValuation = {}
   const [firstArtistTrack] = artistTracks
 
@@ -17,17 +18,18 @@ export function valuate(valuation, [label, tagKit]) {
   } = tagKit
 
   const didSetByArtist = state[antiAdoptionStateKey]
-  const didSet = didSetByArtist && didSetByArtist[artist]
+  const didSet = didSetByArtist?.[artist]
 
   const doesTrackHaveTagValue = track => {
     const data = track.properties()
-    const value = getTagValue.call({data}, label)
-    if (!value) return
-    /// const isEditable = getIsEditable.call({data, track}, true)
-    const isEditable = getIsEditable.call({data, track})
+    const this_ = {data}
+    const tagValue = getTagValue.call({data}, label)
+    if (!tagValue) return
+    /// const isEditable = getIsEditable.call(this_, track, true)
+    const isEditable = getIsEditable.call(this_, track)
     if (!isEditable) return
-    trackValuation.fieldValue = getFieldValue.call({data}, label)
-    trackValuation.value = value
+    trackValuation.fieldValue = getFieldValue.call(this_, label)
+    trackValuation.tagValue = tagValue
     return true
   }
 
@@ -35,24 +37,24 @@ export function valuate(valuation, [label, tagKit]) {
 
   artistTracks.some(doesTrackHaveTagValue)
 
-  const {value, fieldValue} = trackValuation
-  const fieldValue_ = fieldValue !== '-' && fieldValue
+  const {tagValue, fieldValue} = trackValuation
+  const fieldValue_ = fieldValue !== nil && fieldValue
   const track = firstArtistTrack
   const data = {}
 
-  const value_ =
-       value
+  const tagValue_ =
+       tagValue
     || defaultValue
     || getDefaultValue(track, data, label)
 
   const fieldValue__ =
        fieldValue_
     || defaultAdoptionFieldValue
-    || getDefaultAdoptionFieldValue(value)
-    || '-'
+    || getDefaultAdoptionFieldValue(tagValue)
+    || nil
 
-  value_ && (valueByLabel[label] = value_)
+  tagValue_ && (tagValueByLabel[label] = tagValue_)
   fieldValue__ && (fieldValueByLabel[label] = fieldValue__)
 
-  return {valueByLabel, fieldValueByLabel}
+  return {tagValueByLabel, fieldValueByLabel}
 }

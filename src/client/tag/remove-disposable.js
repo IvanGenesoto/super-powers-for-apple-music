@@ -1,6 +1,6 @@
 import {disposableLabels} from '..'
 
-export function removeDisposableTag(fieldText, index) {
+export const removeDisposableTag = (fieldText, index) => {
 
   const {length: characterCount} = fieldText
   const label = disposableLabels[index]

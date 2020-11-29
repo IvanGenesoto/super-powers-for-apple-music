@@ -25,14 +25,14 @@ export function handleLove(track) {
   ///   : rating + 20
 
   /// const addToFavorite = () => {
-  ///   const getFavorites = () => playlist && playlist.tracks()
+  ///   const getFavorites = () => _playlist && _playlist.tracks()
   ///   const getDatabaseIds = () => favorites && favorites.map(getDatabaseId)
   ///   const getDatabaseId = track => track.databaseID()
-  ///   const playlist = _getPlaylist('Favorite')
+  ///   const _playlist = _getPlaylist('Favorite')
   ///   const favorites = getFavorites()
   ///   const databaseIds = getDatabaseIds()
   ///   const isInPlaylist = databaseIds && databaseIds.includes(databaseId)
-  ///   isInPlaylist || track.duplicate({to: playlist})
+  ///   isInPlaylist || track.duplicate({to: _playlist})
   /// }
 
   /// try {

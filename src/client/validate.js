@@ -9,8 +9,8 @@ export function validate(track, antiLabel) { // #mustBeCalledInTryBlock, #mustPa
   const antiValidate = () => {
     const tagKit = tagKitByLabel[antiLabel]
     const wrappedLabelKit = {tagKit}
-    const validateWithThis = validateEntry.bind({isAnti: true})
-    const validatedEntries = Object.entries(wrappedLabelKit).filter(validateWithThis)
+    const validateEntryWithThis = validateEntry.bind({isAnti: true})
+    const validatedEntries = Object.entries(wrappedLabelKit).filter(validateEntryWithThis)
     const [hasValidatedEntry] = validatedEntries
     return hasValidatedEntry
   }
@@ -18,9 +18,9 @@ export function validate(track, antiLabel) { // #mustBeCalledInTryBlock, #mustPa
   const validateEntry = function ([label, tagKit]) {
     const {isAnti} = this
     const {validationWordsArrays, validationValues} = tagKit
-    const filterWithThis = validateName.bind({label, tagKit, validationValues, isAnti})
+    const validateNameWithThis = validateName.bind({label, tagKit, validationValues, isAnti})
     if (!validationWordsArrays) return
-    return validationWordsArrays.filter(filterWithThis)
+    return validationWordsArrays.filter(validateNameWithThis)
   }
 
   const validateName = function (validationWords, index) {

@@ -8,7 +8,8 @@ import {
 
 export function handleSmartPlaylists() {
 
-  const {_allTracks} = this
+  const {state} = this
+  const {_allTracks} = state
   const this_ = {...this, isDisliked: true}
 
   _getPlaylist('Added Post-Rejection').tracks().forEach(deleteFromLibrary, this) // #smart-playlist: Tracks whose Artist Status is "Rejected" or "Dismissed", yet does not have an "Original Genre" tag, nor a rating or love.

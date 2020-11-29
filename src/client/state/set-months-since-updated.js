@@ -18,11 +18,11 @@ export function setMonthsSinceUpdated(track) {
 
   const callExecuteCommand = track => {
     const data = track.properties()
-    const this_ = {track, data}
+    const this_ = {...this, data}
     try {
-      setField.call(this_, label, value)
+      setField.call(this_, track, label, value)
     }
-    catch { }
+    catch {}
   }
 
   if (didUpdate || value === previousValue) return

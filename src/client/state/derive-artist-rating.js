@@ -1,4 +1,4 @@
-import {getIsEditable, getFieldValue, getTagValue, removeTag, executeCommand} from '..'
+import {getIsEditable, getFieldValue, removeTag, executeCommand} from '..'
 
 export function deriveArtistRating(artist) {
 
@@ -22,13 +22,13 @@ export function deriveArtistRating(artist) {
     const data = track.properties()
     const this_ = {data}
     const {enabled: isEnabled, rating} = data
-    const isEditable = getIsEditable.call(this_) // #note: Does not pass true (i.e. isParanoid) as an inaccurate value will only count as one "vote".
-    const isDisregarded = getTagValue.call(this_, 'Disregarded')
+    const isEditable = getIsEditable.call(this_, track) // #note: Does not pass true (i.e. isParanoid) as an inaccurate value will only count as one "vote".
+    const isRegarded = getFieldValue.call(this_, 'Regarded')
     rating || unratedTracks.push(track)
     if (!isEditable) return
     editableTracks.push(track)
     editableDatas.push(data)
-    removeTag.call({track, data}, proxyLabel)
+    removeTag.call(this, track, proxyLabel)
     editableTrack || (editableTrack = track)
     if (!isEnabled) return
     enabledTrack || (enabledTrack = track)
@@ -37,7 +37,7 @@ export function deriveArtistRating(artist) {
     ratedCount++
     const rating_ = simplify(rating)
     rating_ > highestTrackRating && (highestTrackRating = rating)
-    if (isDisregarded) return
+    if (!isRegarded) return
     const exponent = rating_ - 1
     const points = exponent + 1 && 4 ** exponent
     const isHighest = rating_ > highestRegardedTrackRating
@@ -125,7 +125,7 @@ export function deriveArtistRating(artist) {
     try {
       executeCommand.call({...this, label, value, data}, track)
     }
-    catch { }
+    catch {}
   }
 
   let trackCount = 0

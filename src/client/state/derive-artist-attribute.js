@@ -1,4 +1,10 @@
-import {getTagValue, getIsEditable, executeCommand, tagKitByLabel} from '..'
+import {
+  getTagValue,
+  getFieldValue,
+  getIsEditable,
+  executeCommand,
+  tagKitByLabel,
+} from '..'
 
 export function deriveArtistAttribute(artist) {
 
@@ -12,11 +18,12 @@ export function deriveArtistAttribute(artist) {
   const vote = (voteCountByValue, track) => {
     const data = track.properties()
     const {enabled: isEnabled} = data
-    const isDisregarded = getTagValue.call({data}, 'Disregarded')
-    const isEditable = getIsEditable.call({data}) // #note: Does not pass true (i.e. isParanoid) as an inaccurate value will only count as one "vote".
-    const value = getTagValue.call({data}, songLabel)
+    const this_ = {data}
+    const isRegarded = getFieldValue.call(this_, 'Regarded')
+    const isEditable = getIsEditable.call(this_, track) // #note: Does not pass true (i.e. isParanoid) as an inaccurate value will only count as one "vote".
+    const value = getTagValue.call(this_, songLabel)
     const {[value]: voteCount = 0} = voteCountByValue
-    if (!isEnabled || isDisregarded || !isEditable || !value) return voteCountByValue
+    if (!isEnabled || !isRegarded || !isEditable || !value) return voteCountByValue
     voteCountByValue[value] = voteCount + 1
     return voteCountByValue
   }
@@ -29,8 +36,9 @@ export function deriveArtistAttribute(artist) {
 
   const callExecuteCommand = track => {
     const data = track.properties()
+    const this_ = {...this, label: artistLabel, value, data}
     try {
-      executeCommand.call({...this, label: artistLabel, value, data}, track)
+      executeCommand.call(this_, track)
     }
     catch {}
   }

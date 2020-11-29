@@ -1,8 +1,8 @@
 import {tagKitByLabel, removeDisposableTag} from '..'
 
-export function addTag(label, value) { // #mustBeCalledInTryBlock, #mustPassData
+export function addTag(track, label, value) { // #mustBeCalledInTryBlock, #mustPassData
 
-  const {track, data} = this
+  const {data} = this
   const tagKit = tagKitByLabel[label]
   const {tagField, shouldPrefix} = tagKit || {}
   const fieldText = data[tagField] || ''

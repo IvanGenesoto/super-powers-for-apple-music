@@ -1,7 +1,7 @@
-/// export function getIsEditable(isParanoid) { // #mustPassData
-export function getIsEditable() { // #mustPassData
+/// export function getIsEditable(track, isParanoid) { // #mustPassData
+export function getIsEditable(track) { // #mustPassData
 
-  const {data, track} = this
+  const {data} = this
   const {cloudStatus, enabled} = data
   const isUneditable = cloudStatus === 'error' || cloudStatus === 'no longer available'
 

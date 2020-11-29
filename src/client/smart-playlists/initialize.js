@@ -1,10 +1,18 @@
-import {validate} from '..'
+import {tagKitByLabel, validate} from '..'
 
 export function initialize(track) {
 
   const {state} = this
-  const {shouldDeriveRatingByArtist, tracksToAdoptValuesByArtist} = state
+  const {nil, shouldDeriveRatingByArtist, tracksToAdoptValuesByArtist} = state
+  const genreTagKit = tagKitByLabel['Song Genre']
+  const {field: genreField} = genreTagKit
+  const vocalsTagKit = tagKitByLabel['Song Vocals']
+  const {field: vocalsField} = vocalsTagKit
+  const isComprised = vocalsField === genreField
+  const regardedTagKit = tagKitByLabel['Regarded']
+  const {field: regardedField, fieldValue: regardedFieldValue} = regardedTagKit
   const data = track.properties()
+  const this_ = {...this, data}
   const {genre, rating, composer, artist} = data
   const composerText = composer ? `Composer: ${composer}` : ''
   const delimiter = composer ? ', ' : ''
@@ -13,13 +21,14 @@ export function initialize(track) {
 
   try {
     track.composer.set(`${composerText}${delimiter}Original Genre: ${genre}`)
-    track.genre.set('-')
-    track.movementNumber.set(0)
+    track[genreField].set(nil)
+    isComprised || track[vocalsField].set(nil)
+    track[regardedField].set(regardedFieldValue)
     rating && (shouldDeriveRatingByArtist[artist] = true)
     tracks.push(track)
-    validate.call({...this, data}, track)
+    validate.call(this_, track)
     track.delete()
   }
 
-  catch { }
+  catch {}
 }

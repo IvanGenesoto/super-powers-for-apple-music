@@ -1,18 +1,24 @@
 import {tagKitByLabel, executeCommand} from '..'
-/// import {getChildPlaylists} from '..'
+/// import {_getChildPlaylists} from '..'
 
-export function executeCommands(playlist) {
+export function executeCommands(_playlist) {
 
-  const {state, folderName} = this
+  /// const {state, folderName} = this
+  const {state} = this
   const {getArtistTracks} = state
-  const playlistData = playlist.properties()
+  const playlistData = _playlist.properties()
   const {tracks, name: playlistName} = playlistData
   /// const this_ = {...this, folderName: playlistName}
   const [hasTrack] = tracks
+  const sequencingCharacters = [' ', '.']
 
-  const denumber = string =>
-        Number.isInteger(+string[0]) || string[0] === ' ' ? denumber(string.slice(1))
+  const desequence = string =>
+        isCharacterSequencing(string[0]) ? desequence(string.slice(1))
       : string
+
+  const isCharacterSequencing = character =>
+       Number.isInteger(+character)
+    || sequencingCharacters.includes(character)
 
   const callAndDelete = track => {
     const wrappedDidThrow = {}
@@ -39,12 +45,12 @@ export function executeCommands(playlist) {
 
   if (!hasTrack) return
 
-  /// const children = getChildPlaylists.call(this, playlistName)
-  const label = denumber(folderName)
+  /// const _children = _getChildPlaylists.call(this, playlistName)
+  const label = desequence(playlistName)
   const label_ = 'Song ' + label
   const isArtistCommand = label.startsWith('Artist')
   const tagKit = tagKitByLabel[label] || tagKitByLabel[label_]
 
   tagKit && tracks.forEach(callAndDelete)
-  /// !tagKit && children && children.forEach(executeCommands, this_)
+  /// !tagKit && _children && _children.forEach(executeCommands, this_)
 }

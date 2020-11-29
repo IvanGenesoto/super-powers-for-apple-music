@@ -30,13 +30,12 @@ export function executeCommand(track) { // #mustBeCalledInTryBlock, #mustPassDat
   const isWarranted = didValidate || !shouldAntiValidate || validate.call(this, track, antiLabel)
   const value__ = shouldUseDefault ? defaultValue : value_
   const fieldValue_ = shouldUseDefault ? defaultFieldValue : fieldValue
-  const this_ = {track, data}
   const this__ = {...this, label: triggeredLabel, tagKit: undefined}
 
   trueByArtist && (trueByArtist[artist] = true)
   shouldDeriveAutomatically && (shouldDeriveAutomaticallyByArtist[artist] = true)
-  labels.forEach(removeTag, this_)
-  field && setField.call(this_, label, fieldValue_)
-  isWarranted && addTag.call(this_, label, value__)
+  labels.forEach(label => removeTag.call(this, track, label))
+  field && setField.call(this, track, label, fieldValue_)
+  isWarranted && addTag.call(this, track, label, value__)
   triggeredLabel && executeCommand.call(this__, track)
 }

@@ -89,32 +89,35 @@ export const tagKitByLabel = {
   ///   fieldValue: 0,
   ///   defaultFieldValue: 600
   /// },
-  'Disabled': { // #note: Folder is nested in the "Set Attribute" folder.
+  'Disabled': { // #note: Possible values are "Alternate", "Duplicate", "Not Artist" and "Replaced".
     validationWordsArrays: [['alternate', 'alternative', 'version', 'acoustic', 'mix', 'edition']], // #note: "mix" also covers "remix".
-    validationValues: ['Alternate'], // #note: Additional values are "Duplicate", "Replaced" and "Not Artist".
+    validationValues: ['Alternate'],
     tagField: 'grouping',
     antiLabel: 'Enabled',
     field: 'enabled',
     fieldValue: false,
   },
-  'Enabled': { // #note: Possible values are "Replacement," "Not Alternate" and "Available".
+  'Enabled': { // #note: Possible values are "Available", "Not Alternate" and "Replacement".
     tagField: 'grouping',
     antiLabel: 'Disabled',
     shouldAntiValidate: true,
     field: 'enabled',
     fieldValue: true,
   },
-  'Disregarded': {
+  'Disregarded': { // #note: Possible values are "Atypical", "Featuring" and "Interlude".
     validationWordsArrays: [['interlude', 'intro', 'outro'], ['feat.'], ['instrumental']],
     validationValues: ['Interlude', 'Featuring', 'Atypical'],
     tagField: 'grouping',
     antiLabel: 'Regarded',
     field: 'movement',
+    fieldValue: '',
   },
-  'Regarded': { // #note: Possible values are "Not Interlude," "Not Featuring" and "Not Atypical".
+  'Regarded': { // #note: Possible values are "Interlude", "Not Featuring" and "Not Interlude".
     tagField: 'grouping',
     antiLabel: 'Disregarded',
     shouldAntiValidate: true,
+    field: 'movement',
+    fieldValue: '✓',
   },
   'Proxy': {
     tagField: 'composer',

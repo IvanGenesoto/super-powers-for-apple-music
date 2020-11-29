@@ -25,6 +25,7 @@ export function createState(shouldProcessAll, isTest) {
     parentNameByPlaylistName: {},
     tracksToAdoptValuesByArtist: {},
     tracksByArtist: {},
+    nil: '-',
     _allTracks,
     artists,
     shouldProcessAll,

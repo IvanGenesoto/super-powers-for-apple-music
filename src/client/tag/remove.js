@@ -1,8 +1,8 @@
 import {tagKitByLabel} from '..'
 
-export function removeTag(label) { // #mustBeCalledInTryBlock, #mustPassData
+export function removeTag(track, label) { // #mustBeCalledInTryBlock, #mustPassData
 
-  const {track, data} = this
+  const {data} = this
   const {tagField} = tagKitByLabel[label] || {}
   const fieldText = data[tagField] || ''
   const {length: characterCount} = fieldText
