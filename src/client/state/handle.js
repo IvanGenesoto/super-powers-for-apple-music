@@ -1,5 +1,6 @@
 import {
-  _getPlaylist,
+  getFieldValue,
+  getTagValue,
   deriveArtistAttribute,
   deriveArtistRating,
   adoptValues,
@@ -14,28 +15,33 @@ export function handleState() {
     shouldDeriveVocalsByArtist,
     shouldDeriveGenreByArtist,
     shouldDeriveRatingByArtist,
-    tracksToAdoptValuesByArtist,
+    songsToAdoptValuesByArtist,
     shouldProcessAll,
-    artists,
+    allArtists,
+    allSongs,
   } = state
 
-  const vocalArtists = shouldProcessAll ? artists : Object.keys(shouldDeriveVocalsByArtist)
-  const genreArtists = shouldProcessAll ? artists : Object.keys(shouldDeriveGenreByArtist)
-  const ratingArtists = shouldProcessAll ? artists : Object.keys(shouldDeriveRatingByArtist)
+  const isSongUpdatable = song => {
+    const isProxy = getTagValue(song, 'Proxy')
+    const status = getFieldValue(song, 'Artist Status')
+    const statuses = ['Rejected', 'Dismissed', 'Retired']
+    return isProxy && !statuses.includes(status)
+  }
+
+  const vocalArtists = shouldProcessAll ? allArtists : Object.keys(shouldDeriveVocalsByArtist)
+  const genreArtists = shouldProcessAll ? allArtists : Object.keys(shouldDeriveGenreByArtist)
+  const ratingArtists = shouldProcessAll ? allArtists : Object.keys(shouldDeriveRatingByArtist)
+  const vocalThis = {...this, artistLabel: 'Artist Vocals', songLabel: 'Song Vocals'}
+  const genreThis = {...this, artistLabel: 'Artist Genre', songLabel: 'Song Genre'}
+  const updatableSongs = allSongs.filter(isSongUpdatable)
 
   const adoptionArtistEntries =
-      shouldProcessAll ? artists.map(artist => [artist])
-    : Object.entries(tracksToAdoptValuesByArtist)
+      shouldProcessAll ? allArtists.map(artist => [artist])
+    : Object.entries(songsToAdoptValuesByArtist)
 
-  vocalArtists.forEach(deriveArtistAttribute, {
-    ...this, artistLabel: 'Artist Vocals', songLabel: 'Song Vocals',
-  })
-
-  genreArtists.forEach(deriveArtistAttribute, {
-    ...this, artistLabel: 'Artist Genre', songLabel: 'Song Genre',
-  })
-
+  vocalArtists.forEach(deriveArtistAttribute, vocalThis)
+  genreArtists.forEach(deriveArtistAttribute, genreThis)
   ratingArtists.forEach(deriveArtistRating, this)
   adoptionArtistEntries.forEach(adoptValues, this)
-  _getPlaylist('Updatable Artists').tracks().forEach(setMonthsSinceUpdated, this) // #smart-playlist: Proxy tracks of artists with a status other than rejected, dismissed or retired.
+  updatableSongs.forEach(setMonthsSinceUpdated, this)
 }

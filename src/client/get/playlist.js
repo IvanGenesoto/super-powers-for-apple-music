@@ -1,5 +1,3 @@
 import {app} from '..'
 
-const {playlists: _playlists} = app
-
-export const _getPlaylist = playlistName => _playlists[playlistName]
+export const getPlaylist = playlistName => app.playlists[playlistName]

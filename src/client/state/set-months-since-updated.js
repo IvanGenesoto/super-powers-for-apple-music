@@ -1,31 +1,28 @@
 import {getTagValue, getFieldValue, setField} from '..'
 
-export function setMonthsSinceUpdated(track) {
+export function setMonthsSinceUpdated(song) {
 
   const {state} = this
-  const {getArtistTracks, didUpdateByArtist} = state
+  const {getArtistSongs, didUpdateByArtist, nil} = state
   const label = 'Artist Updated'
-  const data = track.properties()
-  const {artist} = data
+  const {artist} = song
   const didUpdate = didUpdateByArtist[artist]
-  const previousValue = getFieldValue.call({data}, label)
-  const dateString = getTagValue.call({data}, label) || null
+  const previousValue = getFieldValue(song, label)
+  const dateString = getTagValue(song, label) || null
   const date = new Date(dateString)
   const milliseconds = new Date() - date
   const years = milliseconds / 1000 / 60 / 60 / 24 / 365
   const months = years * 12
   const value = Math.round(months)
 
-  const callExecuteCommand = track => {
-    const data = track.properties()
-    const this_ = {...this, data}
+  const callExecuteCommand = song => {
     try {
-      setField.call(this_, track, label, value)
+      setField(song, label, value, nil)
     }
     catch {}
   }
 
   if (didUpdate || value === previousValue) return
 
-  getArtistTracks(artist).forEach(callExecuteCommand)
+  getArtistSongs(artist, state).forEach(callExecuteCommand)
 }

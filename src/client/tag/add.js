@@ -1,11 +1,11 @@
 import {tagKitByLabel, removeDisposableTag} from '..'
 
-export function addTag(track, label, value) { // #mustBeCalledInTryBlock, #mustPassData
+export function addTag(song, label, value) { // #mustBeCalledInTryBlock, #mustPassSong
 
-  const {data} = this
+  const {track} = song
   const tagKit = tagKitByLabel[label]
   const {tagField, shouldPrefix} = tagKit || {}
-  const fieldText = data[tagField] || ''
+  const fieldText = song[tagField] || ''
   const delimiter = fieldText ? ', ' : ''
   const isInvalid = !value && value !== 0
 
@@ -26,5 +26,5 @@ export function addTag(track, label, value) { // #mustBeCalledInTryBlock, #mustP
   }
 
   track[tagField].set(fieldText_)
-  data[tagField] = fieldText_
+  song[tagField] = fieldText_
 }

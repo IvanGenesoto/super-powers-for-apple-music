@@ -51,7 +51,7 @@ export const tagKitByLabel = {
   },
   'Artist Discovered': {
     tagField: 'composer',
-    getDefaultValue: track => getDateString(track.dateAdded()),
+    getDefaultValue: song => getDateString(song.dateAdded),
     shouldPrefix: true,
     isAdoptable: true,
   },
@@ -123,7 +123,11 @@ export const tagKitByLabel = {
     tagField: 'composer',
     value: 'Yes',
   },
-  'Total Songs': {
+  'Enabled Songs': {
+    tagField: 'composer',
+    isAdoptable: true,
+  },
+  'Regarded Songs': {
     tagField: 'composer',
     isAdoptable: true,
   },
@@ -135,7 +139,7 @@ export const tagKitByLabel = {
     tagField: 'composer',
     isAdoptable: true,
   },
-  'Highest Rated Song': {
+  'Highest Rating': {
     tagField: 'composer',
     isAdoptable: true,
   },

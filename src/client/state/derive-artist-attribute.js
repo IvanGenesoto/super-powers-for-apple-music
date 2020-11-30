@@ -9,20 +9,18 @@ import {
 export function deriveArtistAttribute(artist) {
 
   const {state, artistLabel, songLabel} = this
-  const {getArtistTracks} = state
+  const {getArtistSongs} = state
   const artistTagKit = tagKitByLabel[artistLabel]
   const {antiAdoptionStateKey} = artistTagKit
   const didSetByArtist = state[antiAdoptionStateKey]
-  const artistTracks = getArtistTracks(artist)
+  const artistSongs = getArtistSongs(artist, state)
 
-  const vote = (voteCountByValue, track) => {
-    const data = track.properties()
-    const {enabled: isEnabled} = data
-    const this_ = {data}
-    const isRegarded = getFieldValue.call(this_, 'Regarded')
-    const isEditable = getIsEditable.call(this_, track) // #note: Does not pass true (i.e. isParanoid) as an inaccurate value will only count as one "vote".
-    const value = getTagValue.call(this_, songLabel)
-    const {[value]: voteCount = 0} = voteCountByValue
+  const vote = (voteCountByValue, song) => {
+    const {enabled: isEnabled} = song
+    const isRegarded = getFieldValue(song, 'Regarded')
+    const isEditable = getIsEditable(song) // #note: Does not pass true (i.e. isParanoid) as an inaccurate value will only count as one "vote".
+    const value = getTagValue(song, songLabel)
+    const voteCount = voteCountByValue[value] || 0
     if (!isEnabled || !isRegarded || !isEditable || !value) return voteCountByValue
     voteCountByValue[value] = voteCount + 1
     return voteCountByValue
@@ -34,21 +32,19 @@ export function deriveArtistAttribute(artist) {
     return {winningVoteCount: voteCount, winner: value}
   }
 
-  const callExecuteCommand = track => {
-    const data = track.properties()
-    const this_ = {...this, label: artistLabel, value, data}
+  const callExecuteCommand = song => {
     try {
-      executeCommand.call(this_, track)
+      executeCommand.call(this, song, artistLabel, value)
     }
     catch {}
   }
 
-  const voteCountByValue = artistTracks.reduce(vote, {})
+  const voteCountByValue = artistSongs.reduce(vote, {})
 
   const {winner: value} = Object
     .entries(voteCountByValue)
     .reduce(tally, {winningVoteCount: 0})
 
-  artistTracks.forEach(callExecuteCommand)
+  artistSongs.forEach(callExecuteCommand)
   didSetByArtist[artist] = true
 }

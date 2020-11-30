@@ -1,35 +1,34 @@
 import {tagKitByLabel, valuate, addTag, setField} from '..'
 
-export function adoptValues([artist, tracks]) {
+export function adoptValues([artist, songs]) {
 
   const {state} = this
-  const {getArtistTracks, shouldProcessAll} = state
+  const {getArtistSongs, shouldProcessAll, nil} = state
   const adoptableTagKitByLabel = tagKitByLabel.filter(({isAdoptable}) => isAdoptable)
-  const artistTracks = shouldProcessAll && getArtistTracks(artist)
-  const tracks_ = shouldProcessAll ? artistTracks : tracks
+  const artistSongs = shouldProcessAll && getArtistSongs(artist, state)
+  const songs_ = shouldProcessAll ? artistSongs : songs
 
-  const adopt = track => {
-    const data = track.properties()
-    adoptValue(track, data, tagValueByLabel)
-    adoptValue(track, data, fieldValueByLabel, true)
+  const adopt = song => {
+    adoptValue(song, tagValueByLabel)
+    adoptValue(song, fieldValueByLabel, true)
   }
 
-  const adoptValue = (track, data, valueByLabel, isField) => Object
+  const adoptValue = (song, valueByLabel, isField) => Object
     .entries(valueByLabel)
-    .forEach(set.bind({state, track, data, isField}))
+    .forEach(set, {state, song, isField})
 
   const set = function ([label, value]) {
-    const {track, isField} = this
+    const {song, isField} = this
     const set = isField ? setField : addTag
     try {
-      set.call(this, track, label, value)
+      set(song, label, value, nil)
     }
     catch {}
   }
 
   const {tagValueByLabel, fieldValueByLabel} = Object
     .entries(adoptableTagKitByLabel)
-    .reduce(valuate.bind({state, artist, artistTracks}), {})
+    .reduce(valuate.bind({state, artist, artistSongs}), {})
 
-  tracks_.forEach(adopt)
+  songs_.forEach(adopt)
 }

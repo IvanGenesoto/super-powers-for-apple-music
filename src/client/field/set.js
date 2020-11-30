@@ -1,9 +1,8 @@
 import {tagKitByLabel, comprisingLabelsByField, getTagValue} from '..'
 
-export function setField(track, label, value) { // #mustBeCalledInTryBlock, #mustPassData
+export function setField(song, label, value, nil) { // #mustBeCalledInTryBlock, #mustPassSong
 
-  const {data, state} = this
-  const {nil} = state
+  const {track} = song
   const value_ = value || nil
   const {field} = tagKitByLabel[label]
   const comprisingLabels = comprisingLabelsByField[field]
@@ -11,7 +10,7 @@ export function setField(track, label, value) { // #mustBeCalledInTryBlock, #mus
   const [beginningLabel, endingLabel] = comprisingLabels || []
   const isBeginningLabel = label === beginningLabel
   const otherLabel = isBeginningLabel ? endingLabel : beginningLabel
-  const otherValue_ = shouldComprise && getTagValue.call(this, otherLabel)
+  const otherValue_ = shouldComprise && getTagValue(song, otherLabel)
   const otherValue = otherValue_ || ''
   const comprisedValue = isBeginningLabel ? value_ + otherValue : otherValue + value_
   const value__ = shouldComprise ? comprisedValue : value_
@@ -21,5 +20,5 @@ export function setField(track, label, value) { // #mustBeCalledInTryBlock, #mus
   if (!field) return
 
   track[field].set(value___)
-  data[field] = value___
+  song[field] = value___
 }

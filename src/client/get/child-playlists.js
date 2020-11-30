@@ -1,26 +1,23 @@
-import {app} from '..'
-
-export function _getChildPlaylists(playlistName) {
+export function getChildLists(name) {
 
   const {state} = this
-  const {hasNoParentByPlaylistName, parentNameByPlaylistName} = state
-  const _playlists = app.playlists()
-  const _childPlaylists = []
+  const {allLists, hasNoParentByListName, parentNameByListName} = state
+  const childLists = []
 
-  _playlists.forEach(_playlist => {
-    const childName = _playlist.name()
-    const hasNoParent = hasNoParentByPlaylistName[childName]
+  allLists.forEach(list => {
+    const {name: childName, playlist} = list
+    const hasNoParent = hasNoParentByListName[childName]
     if (hasNoParent) return
-    let parentName = parentNameByPlaylistName[childName]
-    if (parentName) return parentName === playlistName && _childPlaylists.push(_playlist)
+    let parentName = parentNameByListName[childName]
+    if (parentName) return parentName === name && childLists.push(list)
     try {
-      parentName = parentNameByPlaylistName[childName] = _playlist.parent.name()
+      parentName = parentNameByListName[childName] = playlist.parent.name()
     }
     catch {
-      hasNoParentByPlaylistName[childName] = true
+      hasNoParentByListName[childName] = true
     }
-    if (parentName === playlistName) _childPlaylists.push(_playlist)
+    if (parentName === name) childLists.push(list)
   })
 
-  return _childPlaylists.length && _childPlaylists
+  return childLists
 }

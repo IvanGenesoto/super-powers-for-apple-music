@@ -1,10 +1,9 @@
 export function deleteFromLibrary(track) {
 
   const {state} = this
-  const {_allTracks} = state
-  const data = track.properties()
-  const {databaseID} = data
-  const [libraryTrack] = _allTracks.whose({databaseID})() || []
+  const {songById} = state
+  const databaseId = track.databaseID()
+  const librarySong = songById[databaseId]
 
-  libraryTrack && libraryTrack.delete()
+  librarySong?.track.delete()
 }

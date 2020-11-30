@@ -1,10 +1,10 @@
 import {tagKitByLabel} from '..'
 
-export function removeTag(track, label) { // #mustBeCalledInTryBlock, #mustPassData
+export const removeTag = (song, label) => { // #mustBeCalledInTryBlock, #mustPassSong
 
-  const {data} = this
+  const {track} = song
   const {tagField} = tagKitByLabel[label] || {}
-  const fieldText = data[tagField] || ''
+  const fieldText = song[tagField] || ''
   const {length: characterCount} = fieldText
   const beginningIndex = fieldText.indexOf(label + ':')
   const hasLabel = beginningIndex + 1
@@ -16,5 +16,5 @@ export function removeTag(track, label) { // #mustBeCalledInTryBlock, #mustPassD
   const fieldText_ = fieldText.slice(0, beginningIndex) + fieldText.slice(endingIndex)
 
   track[tagField].set(fieldText_)
-  data[tagField] = fieldText_
+  song[tagField] = fieldText_
 }

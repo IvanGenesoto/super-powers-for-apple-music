@@ -1,41 +1,40 @@
-import {tagKitByLabel, executeCommand} from '.'
+import {tagKitByLabel, executeCommand} from '..'
 
-export function validate(track, antiLabel) { // #mustBeCalledInTryBlock, #mustPassData
+export function validate(song, antiLabel) { // #mustBeCalledInTryBlock, #mustPassSong
 
-  const {data} = this
-  const {name} = data
+  const {name} = song
   const lowerCaseName = name.toLowerCase()
 
   const antiValidate = () => {
     const tagKit = tagKitByLabel[antiLabel]
     const wrappedLabelKit = {tagKit}
-    const validateEntryWithThis = validateEntry.bind({isAnti: true})
+    const validateEntryWithThis = validateEntry.bind({...this, isAnti: true})
     const validatedEntries = Object.entries(wrappedLabelKit).filter(validateEntryWithThis)
     const [hasValidatedEntry] = validatedEntries
     return hasValidatedEntry
   }
 
   const validateEntry = function ([label, tagKit]) {
-    const {isAnti} = this
     const {validationWordsArrays, validationValues} = tagKit
-    const validateNameWithThis = validateName.bind({label, tagKit, validationValues, isAnti})
+    const this_ = {...this, label, tagKit, validationValues}
     if (!validationWordsArrays) return
-    return validationWordsArrays.filter(validateNameWithThis)
+    return validationWordsArrays.filter(validateName, this_)
   }
 
   const validateName = function (validationWords, index) {
-    const {label, tagKit, validationValues, isAnti} = this
+    const {validationValues, label, isAnti} = this
     const find = word => lowerCaseName.includes(word.toLowerCase())
     const match = validationWords.find(find)
     const value = validationValues[index]
+    const this_ = {...this, didValidate: true}
     if (!match) return
     if (isAnti) return true
-    executeCommand.call({...this, label, tagKit, value, didValidate: true}, track)
+    executeCommand.call(this_, song, label, value)
   }
 
   if (antiLabel) return antiValidate()
 
   Object
     .entries(tagKitByLabel)
-    .forEach(validateEntry)
+    .forEach(validateEntry, this)
 }

@@ -1,19 +1,17 @@
-/// export function getIsEditable(track, isParanoid) { // #mustPassData
-export function getIsEditable(track) { // #mustPassData
+/// export const getIsEditable = (song, isParanoid) => { // #mustPassSong
+export const getIsEditable = song => { // #mustPassSong
 
-  const {data} = this
-  const {cloudStatus, enabled} = data
-  const isUneditable = cloudStatus === 'error' || cloudStatus === 'no longer available'
+  const {cloudStatus, enabled: isEnabled, track} = song
+  const cloudStatuses = ['error', 'no longer available']
+  const isUneditable = cloudStatuses.includes(cloudStatus)
 
   if (isUneditable) return false
   /// if (!isParanoid) return true
 
   try {
-    track.enabled.set(enabled)
+    track.enabled.set(isEnabled)
     return true
   }
 
-  catch {
-    return false
-  }
+  catch {}
 }

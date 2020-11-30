@@ -1,56 +1,55 @@
 import {tagKitByLabel, executeCommand} from '..'
-/// import {_getChildPlaylists} from '..'
+/// import {getChildLists} from '..'
 
-export function executeCommands(_playlist) {
+export function executeCommands(list) {
 
   /// const {state, folderName} = this
   const {state} = this
-  const {getArtistTracks} = state
-  const playlistData = _playlist.properties()
-  const {tracks, name: playlistName} = playlistData
-  /// const this_ = {...this, folderName: playlistName}
-  const [hasTrack] = tracks
+  const {getArtistSongs} = state
+  const {name: listName, playlist} = list
+  const tracks_ = playlist.tracks()
+  const tracks = Array.from(tracks_)
+  const songs = tracks.map(track => ({...track.properties(), track}))
+  const [hasSong] = songs
   const sequencingCharacters = [' ', '.']
+  /// const this_ = {...this, folderName: listName}
 
   const desequence = string =>
-        isCharacterSequencing(string[0]) ? desequence(string.slice(1))
-      : string
+      isCharacterSequencing(string[0]) ? desequence(string.slice(1))
+    : string
 
   const isCharacterSequencing = character =>
        Number.isInteger(+character)
     || sequencingCharacters.includes(character)
 
-  const callAndDelete = track => {
+  const callAndDelete = song => {
     const wrappedDidThrow = {}
-    const data = track.properties()
-    const {artist} = data
-    isArtistCommand && getArtistTracks(artist).forEach(
-      track => callExecuteCommand(track, wrappedDidThrow),
-    )
-    isArtistCommand || callExecuteCommand(track, wrappedDidThrow, data)
+    const {artist, track} = song
+    const artistSongs = isArtistCommand && getArtistSongs(artist, state)
+    const call = songs => callExecuteCommand(songs, wrappedDidThrow)
+    isArtistCommand && artistSongs.forEach(call)
+    isArtistCommand || callExecuteCommand(song, wrappedDidThrow)
     const {didThrow} = wrappedDidThrow
     didThrow || track.delete()
   }
 
-  const callExecuteCommand = (track, wrappedDidThrow, data_) => {
-    const data = data_ || track.properties()
-    const value = playlistName
+  const callExecuteCommand = (song, wrappedDidThrow) => {
     try {
-      executeCommand.call({...this, label, tagKit, value, data}, track)
+      executeCommand.call({...this, tagKit}, song, label, listName)
     }
     catch {
       wrappedDidThrow.didThrow = true
     }
   }
 
-  if (!hasTrack) return
+  if (!hasSong) return
 
-  /// const _children = _getChildPlaylists.call(this, playlistName)
-  const label = desequence(playlistName)
+  /// const _children = getChildLists.call(this, listName)
+  const label = desequence(listName)
   const label_ = 'Song ' + label
   const isArtistCommand = label.startsWith('Artist')
   const tagKit = tagKitByLabel[label] || tagKitByLabel[label_]
 
-  tagKit && tracks.forEach(callAndDelete)
-  /// !tagKit && _children && _children.forEach(executeCommands, this_)
+  tagKit && songs.forEach(callAndDelete)
+  /// !tagKit && _children.length && _children.forEach(executeCommands, this_)
 }

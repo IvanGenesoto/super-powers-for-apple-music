@@ -3,11 +3,11 @@ import {getTagValue, getFieldValue, getIsEditable} from '..'
 
 export function valuate(valuation, [label, tagKit]) {
 
-  const {state, artist, artistTracks} = this
+  const {state, artist, artistSongs} = this
   const {nil} = state
   const {tagValueByLabel = {}, fieldValueByLabel = {}} = valuation
-  const trackValuation = {}
-  const [firstArtistTrack] = artistTracks
+  const songValuation = {}
+  const [firstArtistSong] = artistSongs
 
   const {
     antiAdoptionStateKey,
@@ -20,32 +20,28 @@ export function valuate(valuation, [label, tagKit]) {
   const didSetByArtist = state[antiAdoptionStateKey]
   const didSet = didSetByArtist?.[artist]
 
-  const doesTrackHaveTagValue = track => {
-    const data = track.properties()
-    const this_ = {data}
-    const tagValue = getTagValue.call({data}, label)
+  const doesSongHaveTagValue = song => {
+    const tagValue = getTagValue(song, label)
     if (!tagValue) return
-    /// const isEditable = getIsEditable.call(this_, track, true)
-    const isEditable = getIsEditable.call(this_, track)
+    /// const isEditable = getIsEditable(song, true)
+    const isEditable = getIsEditable(song)
     if (!isEditable) return
-    trackValuation.fieldValue = getFieldValue.call(this_, label)
-    trackValuation.tagValue = tagValue
+    songValuation.fieldValue = getFieldValue(song, label)
+    songValuation.tagValue = tagValue
     return true
   }
 
   if (didSet) return valuation
 
-  artistTracks.some(doesTrackHaveTagValue)
+  artistSongs.some(doesSongHaveTagValue)
 
-  const {tagValue, fieldValue} = trackValuation
+  const {tagValue, fieldValue} = songValuation
   const fieldValue_ = fieldValue !== nil && fieldValue
-  const track = firstArtistTrack
-  const data = {}
 
   const tagValue_ =
        tagValue
     || defaultValue
-    || getDefaultValue(track, data, label)
+    || getDefaultValue(firstArtistSong, label)
 
   const fieldValue__ =
        fieldValue_

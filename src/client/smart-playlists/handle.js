@@ -1,6 +1,6 @@
 import {
-  _getPlaylist,
-  deleteFromLibrary,
+  getPlaylist,
+  /// deleteFromLibrary,
   disambiguate,
   handleLove,
   initialize,
@@ -9,15 +9,12 @@ import {
 export function handleSmartPlaylists() {
 
   const {state} = this
-  const {_allTracks} = state
+  const {allSongs} = state
   const this_ = {...this, isDisliked: true}
 
-  _getPlaylist('Added Post-Rejection').tracks().forEach(deleteFromLibrary, this) // #smart-playlist: Tracks whose Artist Status is "Rejected" or "Dismissed", yet does not have an "Original Genre" tag, nor a rating or love.
-  _getPlaylist('Ambiguous Love').tracks().forEach(disambiguate) // #smart-playlist: Tracks whose love is not "loved," "disliked," nor "none."
-  _allTracks.whose({loved: true})().forEach(handleLove, this)
-  _allTracks.whose({disliked: true})().forEach(handleLove, this_)
-  /// _getPlaylist('Uprate').tracks().forEach(handleLove, this)
-  /// _getPlaylist('Downrate').tracks().forEach(handleLove, {...this, isDisliked: true})
-  /// _getPlaylist('Uninitialized').tracks().forEach(initialize, this) // #smart-playlist: Tracks without an "Original Genre" tag.
-  _allTracks.whose({episodeNumber: 0})().forEach(initialize, this)
+  /// getPlaylist('Added Post-Rejection').tracks().forEach(deleteFromLibrary, this) // #smart-playlist: Tracks whose Artist Status is "Rejected" or "Dismissed", yet does not have an "Original Genre" tag, nor a rating or love. // #fix: Pass tracks() to Array.from().
+  getPlaylist('Ambiguous Love').tracks().forEach(disambiguate) // #smart-playlist: Tracks whose love is not "loved," "disliked," nor "none."
+  allSongs.map(({loved}) => loved).forEach(handleLove, this)
+  allSongs.map(({disliked}) => disliked).forEach(handleLove, this_)
+  allSongs.map(({episodeNumber}) => !episodeNumber).forEach(initialize, this)
 }

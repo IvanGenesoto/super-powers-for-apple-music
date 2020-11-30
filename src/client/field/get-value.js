@@ -1,10 +1,9 @@
-import {tagKitByLabel} from '../static/tag-kit-by-label'
+import {tagKitByLabel} from '..'
 
-export function getFieldValue(label) { // #mustPassData
+export function getFieldValue(song, label) { // #mustPassSong
 
-  const {data} = this
   const tagKit = tagKitByLabel[label]
   const {field} = tagKit
 
-  return data[field]
+  return song[field]
 }

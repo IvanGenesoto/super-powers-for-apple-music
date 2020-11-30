@@ -1,11 +1,10 @@
 import {tagKitByLabel} from '..'
 
-export function getTagValue(label) { // #mustPassData
+export function getTagValue(song, label) { // #mustPassSong
 
-  const {data} = this
   const tagKit = tagKitByLabel[label]
   const {tagField} = tagKit || {}
-  const fieldText = data[tagField] || ''
+  const fieldText = song[tagField] || ''
   const {length: fieldTextLength} = fieldText
   const beginningIndex = fieldText.indexOf(label + ':')
 
