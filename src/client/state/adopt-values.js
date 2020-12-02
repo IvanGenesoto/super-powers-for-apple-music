@@ -1,10 +1,10 @@
-import {tagKitByLabel, valuate, addTag, setField} from '..'
+import {fieldKitByLabel, valuate, addTag, setField} from '..'
 
 export function adoptValues([artist, songs]) {
 
   const {state} = this
   const {getArtistSongs, shouldProcessAll, nil} = state
-  const adoptableTagKitByLabel = tagKitByLabel.filter(({isAdoptable}) => isAdoptable)
+  const adoptableTagKitByLabel = fieldKitByLabel.filter(({isAdoptable}) => isAdoptable)
   const artistSongs = shouldProcessAll && getArtistSongs(artist, state)
   const songs_ = shouldProcessAll ? artistSongs : songs
 

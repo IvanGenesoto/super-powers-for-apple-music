@@ -1,13 +1,13 @@
 /// import {getDateString, getInteger} from '..'
 import {getDateString} from '..'
 
-export const tagKitByLabel = {
+export const fieldKitByLabel = {
   'Artist Status': { // #note: Playlist name (and hence value) is "Protected", "Rejected", "Retired" or "Automatic".
     stateKey: 'didSetStatusByArtist',
     antiAdoptionStateKey: 'didSetStatusByArtist',
     automaticStateKey: 'shouldDeriveRatingByArtist',
     tagField: 'grouping',
-    defaultValue: 'Trialing',
+    defaultTagValue: 'Trialing',
     defaultAdoptionFieldValue: 'Trialing',
     field: 'comment',
     isAdoptable: true,
@@ -16,8 +16,8 @@ export const tagKitByLabel = {
     stateKey: 'didUpdateByArtist',
     antiAdoptionStateKey: 'didUpdateByArtist',
     tagField: 'composer',
-    value: getDateString(),
-    defaultValue: '1970/01/01',
+    tagValue: getDateString(),
+    defaultTagValue: '1970/01/01',
     field: 'movementNumber',
     fieldValue: 0,
     defaultFieldValue: 600,
@@ -51,7 +51,7 @@ export const tagKitByLabel = {
   },
   'Artist Discovered': {
     tagField: 'composer',
-    getDefaultValue: song => getDateString(song.dateAdded),
+    getDefaultTagValue: song => getDateString(song.dateAdded),
     shouldPrefix: true,
     isAdoptable: true,
   },
@@ -74,8 +74,8 @@ export const tagKitByLabel = {
   },
   /// 'Plays': {
   ///   tagField: 'grouping',
-  ///   getValue: getInteger,
-  ///   getDefaultValue: getInteger.bind({isDefault: true}),
+  ///   getTagValue: getInteger,
+  ///   getDefaultTagValue: getInteger.bind({isDefault: true}),
   ///   field: 'bpm',
   ///   getFieldValue: getInteger,
   ///   getDefaultFieldValue: getInteger.bind({isDefault: true})
@@ -83,8 +83,8 @@ export const tagKitByLabel = {
   /// 'Played': { // #note: Playlist name (and hence value) is "Yes" or "No".
   ///   tagField: 'grouping',
   ///   triggeredLabel: 'Plays',
-  ///   value: getDateString(),
-  ///   defaultValue: '1970/01/01',
+  ///   tagValue: getDateString(),
+  ///   defaultTagValue: '1970/01/01',
   ///   field: 'year',
   ///   fieldValue: 0,
   ///   defaultFieldValue: 600
@@ -121,7 +121,7 @@ export const tagKitByLabel = {
   },
   'Proxy': {
     tagField: 'composer',
-    value: 'Yes',
+    tagValue: 'Yes',
   },
   'Enabled Songs': {
     tagField: 'composer',

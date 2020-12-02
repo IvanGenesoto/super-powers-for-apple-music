@@ -3,14 +3,14 @@ import {
   getFieldValue,
   getIsEditable,
   executeCommand,
-  tagKitByLabel,
+  fieldKitByLabel,
 } from '..'
 
 export function deriveArtistAttribute(artist) {
 
   const {state, artistLabel, songLabel} = this
   const {getArtistSongs} = state
-  const artistTagKit = tagKitByLabel[artistLabel]
+  const artistTagKit = fieldKitByLabel[artistLabel]
   const {antiAdoptionStateKey} = artistTagKit
   const didSetByArtist = state[antiAdoptionStateKey]
   const artistSongs = getArtistSongs(artist, state)

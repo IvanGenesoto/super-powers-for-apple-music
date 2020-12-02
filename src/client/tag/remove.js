@@ -1,9 +1,9 @@
-import {tagKitByLabel} from '..'
+import {fieldKitByLabel} from '..'
 
-export const removeTag = (song, label) => { // #mustBeCalledInTryBlock, #mustPassSong
+export const removeTag = (song, label) => { // #mustBeCalledInTryBlock
 
   const {track} = song
-  const {tagField} = tagKitByLabel[label] || {}
+  const {tagField} = fieldKitByLabel[label] || {}
   const fieldText = song[tagField] || ''
   const {length: characterCount} = fieldText
   const beginningIndex = fieldText.indexOf(label + ':')

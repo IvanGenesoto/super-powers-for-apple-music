@@ -1,9 +1,9 @@
-import {tagKitByLabel} from '..'
+import {fieldKitByLabel} from '..'
 
-export function getFieldValue(song, label) { // #mustPassSong
+export function getFieldValue(song, label) {
 
-  const tagKit = tagKitByLabel[label]
-  const {field} = tagKit
+  const fieldKit = fieldKitByLabel[label]
+  const {field} = fieldKit
 
   return song[field]
 }

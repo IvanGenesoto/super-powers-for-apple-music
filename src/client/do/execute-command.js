@@ -1,8 +1,8 @@
-import {addTag, removeTag, setField, validate, tagKitByLabel} from '..'
+import {addTag, removeTag, setField, validate, fieldKitByLabel} from '..'
 
-export function executeCommand(song, label, value) { // #mustBeCalledInTryBlock, #mustPassSong
+export function executeCommand(song, label, value) { // #mustBeCalledInTryBlock
 
-  const {state, didValidate, tagKit = tagKitByLabel[label]} = this
+  const {state, didValidate, fieldKit = fieldKitByLabel[label]} = this
   const {nil} = state
   const {artist} = song
   const shouldUseDefault = value === 'No' // #note: Must check value for "No" instead of "Yes" due to "No" being a validation value of "Song Vocals".
@@ -13,30 +13,30 @@ export function executeCommand(song, label, value) { // #mustBeCalledInTryBlock,
     automaticStateKey,
     antiLabel,
     shouldAntiValidate,
-    getValue = () => value,
-    value: value_ = shouldUseDefault || getValue(song, label),
-    getDefaultValue = () => value,
-    defaultValue = shouldUseDefault && getDefaultValue(song, label),
+    getTagValue = () => value,
+    tagValue = shouldUseDefault || getTagValue(song, label),
+    getDefaultTagValue = () => value,
+    defaultTagValue = shouldUseDefault && getDefaultTagValue(song, label),
     field,
     getFieldValue = () => value,
     fieldValue = shouldUseDefault || getFieldValue(song, label),
     getDefaultFieldValue = () => value,
     defaultFieldValue = shouldUseDefault && getDefaultFieldValue(song, label),
     triggeredLabel,
-  } = tagKit
+  } = fieldKit
 
   const labels = [label, antiLabel]
   const trueByArtist = state[stateKey]
   const shouldDeriveAutomaticallyByArtist = state[automaticStateKey]
   const isWarranted = didValidate || !shouldAntiValidate || validate.call(this, song, antiLabel)
-  const value__ = shouldUseDefault ? defaultValue : value_
+  const tagValue_ = shouldUseDefault ? defaultTagValue : tagValue
   const fieldValue_ = shouldUseDefault ? defaultFieldValue : fieldValue
-  const this_ = {...this, tagKit: undefined}
+  const this_ = {...this, fieldKit: undefined}
 
   trueByArtist && (trueByArtist[artist] = true)
   shouldDeriveAutomatically && (shouldDeriveAutomaticallyByArtist[artist] = true)
   labels.forEach(label => removeTag(song, label))
   field && setField(song, label, fieldValue_, nil)
-  isWarranted && addTag(song, label, value__)
+  isWarranted && addTag(song, label, tagValue_)
   triggeredLabel && executeCommand.call(this_, song, triggeredLabel, value)
 }

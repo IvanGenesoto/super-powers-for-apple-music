@@ -1,16 +1,13 @@
 {
   "ignores": [
-    "dotenv",
+    "chai",
     "esm",
     "esmify",
     "express",
-    "ioredis",
-    "ioredis-mock",
     "mapstraction",
     "mock-require",
     "performance-now",
     "socket.io",
     "stylelint-config-standard",
-    "uglifyify",
   ],
 }

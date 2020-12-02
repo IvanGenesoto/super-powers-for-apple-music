@@ -1,10 +1,10 @@
-import {tagKitByLabel, comprisingLabelsByField, getTagValue} from '..'
+import {fieldKitByLabel, comprisingLabelsByField, getTagValue} from '..'
 
-export function setField(song, label, value, nil) { // #mustBeCalledInTryBlock, #mustPassSong
+export function setField(song, label, value, nil) { // #mustBeCalledInTryBlock
 
   const {track} = song
   const value_ = value || nil
-  const {field} = tagKitByLabel[label]
+  const {field} = fieldKitByLabel[label]
   const comprisingLabels = comprisingLabelsByField[field]
   const shouldComprise = comprisingLabels
   const [beginningLabel, endingLabel] = comprisingLabels || []

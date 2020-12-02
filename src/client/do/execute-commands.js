@@ -1,4 +1,4 @@
-import {tagKitByLabel, executeCommand} from '..'
+import {fieldKitByLabel, executeCommand} from '..'
 /// import {getChildLists} from '..'
 
 export function executeCommands(list) {
@@ -35,7 +35,7 @@ export function executeCommands(list) {
 
   const callExecuteCommand = (song, wrappedDidThrow) => {
     try {
-      executeCommand.call({...this, tagKit}, song, label, listName)
+      executeCommand.call({...this, fieldKit}, song, label, listName)
     }
     catch {
       wrappedDidThrow.didThrow = true
@@ -48,8 +48,8 @@ export function executeCommands(list) {
   const label = desequence(listName)
   const label_ = 'Song ' + label
   const isArtistCommand = label.startsWith('Artist')
-  const tagKit = tagKitByLabel[label] || tagKitByLabel[label_]
+  const fieldKit = fieldKitByLabel[label] || fieldKitByLabel[label_]
 
-  tagKit && songs.forEach(callAndDelete)
-  /// !tagKit && _children.length && _children.forEach(executeCommands, this_)
+  fieldKit && songs.forEach(callAndDelete)
+  /// !fieldKit && _children.length && _children.forEach(executeCommands, this_)
 }

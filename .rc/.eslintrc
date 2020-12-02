@@ -12,6 +12,7 @@
   },
   "plugins": [
     "@babel",
+    "filenames",
     "no-block-comments",
     "unicorn",
   ],
@@ -48,7 +49,7 @@
     "multiline-ternary": "off",
     "no-console": ["error", {"allow": ["info", "warn", "error"]}],
     "no-inline-comments": ["error", {
-      "ignorePattern": "^ html $|^ #due \\[[1-2][0-9][0-9][0-9]-[0-1][1-9]-[0-3][0-9]\\]: .+$|^ #note: .+$|^ #fix: .+$|^ #implement: .+$|^ #improve: .+$|^ #change: .+$|^ #backfill: .+$|^ #smart-playlist: .+$|^ #do: .+$|^ #hardcoded$|^ #hardcoded, #.+$|^ #mustPassSong$|^ #mustPassSong, #.+$|^ #mustBeCalledInTryBlock$|^ #mustBeCalledInTryBlock, #.+$",
+      "ignorePattern": "^ html $|^ #due \\[[1-2][0-9][0-9][0-9]-[0-1][1-9]-[0-3][0-9]\\]: .+$|^ #note: .+$|^ #fix: .+$|^ #implement: .+$|^ #improve: .+$|^ #change: .+$|^ #backfill: .+$|^ #smart-playlist: .+$|^ #do: .+$|^ #hardcoded$|^ #hardcoded, #.+$|^ #mustBeCalledInTryBlock$|^ #mustBeCalledInTryBlock, #.+$",
     }],
     "no-multi-str": "off",
     "no-restricted-syntax": ["error", "SequenceExpression", "SwitchStatement"],
@@ -89,6 +90,8 @@
       "exported",
       "global",
     ]}],
+    "filenames/match-regex": ["error", "^(([a-z]+)|([0-9]+))+((-[a-z]+)|(-[0-9]+))*(|\\.[a-z]+)$"],
+    "import/no-amd": "error",
     "import/no-commonjs": "error",
     "import/no-default-export": "error",
     "import/no-unresolved": ["error", { "commonjs": true, "amd": true }],
@@ -103,7 +106,6 @@
       "allowWarningComments": false,
       "terms": ["#due"]
     }],
-    "unicorn/filename-case": "error",
     "unicorn/import-index": "error",
     "unicorn/prefer-optional-catch-binding": "error",
     "unicorn/prefer-negative-index": "error",

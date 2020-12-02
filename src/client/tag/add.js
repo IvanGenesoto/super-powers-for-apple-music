@@ -1,10 +1,10 @@
-import {tagKitByLabel, removeDisposableTag} from '..'
+import {fieldKitByLabel, removeDisposableTag} from '..'
 
-export function addTag(song, label, value) { // #mustBeCalledInTryBlock, #mustPassSong
+export function addTag(song, label, value) { // #mustBeCalledInTryBlock
 
   const {track} = song
-  const tagKit = tagKitByLabel[label]
-  const {tagField, shouldPrefix} = tagKit || {}
+  const fieldKit = fieldKitByLabel[label]
+  const {tagField, shouldPrefix} = fieldKit || {}
   const fieldText = song[tagField] || ''
   const delimiter = fieldText ? ', ' : ''
   const isInvalid = !value && value !== 0

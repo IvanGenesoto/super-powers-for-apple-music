@@ -1,5 +1,5 @@
-/// export const getIsEditable = (song, isParanoid) => { // #mustPassSong
-export const getIsEditable = song => { // #mustPassSong
+/// export const getIsEditable = (song, isParanoid) => {
+export const getIsEditable = song => {
 
   const {cloudStatus, enabled: isEnabled, track} = song
   const cloudStatuses = ['error', 'no longer available']

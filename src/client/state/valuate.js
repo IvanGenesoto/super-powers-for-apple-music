@@ -1,7 +1,7 @@
 /// import {getTagValue, getFieldValue, getIsEditable, columnBrowserFields} from '..'
 import {getTagValue, getFieldValue, getIsEditable} from '..'
 
-export function valuate(valuation, [label, tagKit]) {
+export function valuate(valuation, [label, fieldKit]) {
 
   const {state, artist, artistSongs} = this
   const {nil} = state
@@ -11,11 +11,11 @@ export function valuate(valuation, [label, tagKit]) {
 
   const {
     antiAdoptionStateKey,
-    defaultValue,
-    getDefaultValue = () => {},
+    defaultTagValue,
+    getDefaultTagValue = () => {},
     defaultAdoptionFieldValue,
     getDefaultAdoptionFieldValue = () => {},
-  } = tagKit
+  } = fieldKit
 
   const didSetByArtist = state[antiAdoptionStateKey]
   const didSet = didSetByArtist?.[artist]
@@ -40,8 +40,8 @@ export function valuate(valuation, [label, tagKit]) {
 
   const tagValue_ =
        tagValue
-    || defaultValue
-    || getDefaultValue(firstArtistSong, label)
+    || defaultTagValue
+    || getDefaultTagValue(firstArtistSong, label)
 
   const fieldValue__ =
        fieldValue_

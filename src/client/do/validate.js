@@ -1,22 +1,22 @@
-import {tagKitByLabel, executeCommand} from '..'
+import {fieldKitByLabel, executeCommand} from '..'
 
-export function validate(song, antiLabel) { // #mustBeCalledInTryBlock, #mustPassSong
+export function validate(song, antiLabel) { // #mustBeCalledInTryBlock
 
   const {name} = song
   const lowerCaseName = name.toLowerCase()
 
   const antiValidate = () => {
-    const tagKit = tagKitByLabel[antiLabel]
-    const wrappedLabelKit = {tagKit}
+    const fieldKit = fieldKitByLabel[antiLabel]
+    const wrappedFieldKit = {fieldKit}
     const validateEntryWithThis = validateEntry.bind({...this, isAnti: true})
-    const validatedEntries = Object.entries(wrappedLabelKit).filter(validateEntryWithThis)
+    const validatedEntries = Object.entries(wrappedFieldKit).filter(validateEntryWithThis)
     const [hasValidatedEntry] = validatedEntries
     return hasValidatedEntry
   }
 
-  const validateEntry = function ([label, tagKit]) {
-    const {validationWordsArrays, validationValues} = tagKit
-    const this_ = {...this, label, tagKit, validationValues}
+  const validateEntry = function ([label, fieldKit]) {
+    const {validationWordsArrays, validationValues} = fieldKit
+    const this_ = {...this, label, fieldKit, validationValues}
     if (!validationWordsArrays) return
     return validationWordsArrays.filter(validateName, this_)
   }
@@ -35,6 +35,6 @@ export function validate(song, antiLabel) { // #mustBeCalledInTryBlock, #mustPas
   if (antiLabel) return antiValidate()
 
   Object
-    .entries(tagKitByLabel)
+    .entries(fieldKitByLabel)
     .forEach(validateEntry, this)
 }
