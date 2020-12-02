@@ -1,6 +1,6 @@
 import {fieldKitByLabel, executeCommand} from '..'
 
-export function validate(song, antiLabel) { // #mustBeCalledInTryBlock
+export const validate = function (song, antiLabel) { // #mustBeCalledInTryBlock
 
   const {name} = song
   const lowerCaseName = name.toLowerCase()

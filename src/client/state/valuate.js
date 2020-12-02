@@ -1,7 +1,7 @@
 /// import {getTagValue, getFieldValue, getIsEditable, columnBrowserFields} from '..'
 import {getTagValue, getFieldValue, getIsEditable} from '..'
 
-export function valuate(valuation, [label, fieldKit]) {
+export const valuate = function (valuation, [label, fieldKit]) {
 
   const {state, artist, artistSongs} = this
   const {nil} = state

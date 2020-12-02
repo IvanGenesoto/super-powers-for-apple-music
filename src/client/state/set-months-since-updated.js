@@ -1,6 +1,6 @@
 import {getTagValue, getFieldValue, setField} from '..'
 
-export function setMonthsSinceUpdated(song) {
+export const setMonthsSinceUpdated = function (song) {
 
   const {state} = this
   const {getArtistSongs, didUpdateByArtist, nil} = state

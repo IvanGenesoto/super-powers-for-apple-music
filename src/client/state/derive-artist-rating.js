@@ -1,6 +1,6 @@
 import {getIsEditable, getFieldValue, removeTag, executeCommand} from '..'
 
-export function deriveArtistRating(artist) {
+export const deriveArtistRating = function (artist) {
 
   const {state} = this
   const {getArtistSongs, didSetRatingByArtist, didSetStatusByArtist} = state

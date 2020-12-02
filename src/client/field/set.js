@@ -1,6 +1,6 @@
 import {fieldKitByLabel, comprisingLabelsByField, getTagValue} from '..'
 
-export function setField(song, label, value, nil) { // #mustBeCalledInTryBlock
+export const setField = (song, label, value, nil) => { // #mustBeCalledInTryBlock
 
   const {track} = song
   const value_ = value || nil

@@ -6,7 +6,7 @@ import {
   fieldKitByLabel,
 } from '..'
 
-export function deriveArtistAttribute(artist) {
+export const deriveArtistAttribute = function (artist) {
 
   const {state, artistLabel, songLabel} = this
   const {getArtistSongs} = state

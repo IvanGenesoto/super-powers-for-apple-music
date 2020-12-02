@@ -1,6 +1,6 @@
 /// import {getPlaylist} from '..'
 
-export function handleLove(song) {
+export const handleLove = song => {
 
   const {state, isDisliked} = this
   const {shouldDeriveRatingByArtist} = state

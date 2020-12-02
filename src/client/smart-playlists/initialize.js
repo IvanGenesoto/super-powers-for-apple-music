@@ -1,6 +1,6 @@
 import {fieldKitByLabel, validate} from '..'
 
-export function initialize(song) {
+export const initialize = function (song) {
 
   const {state} = this
   const {nil, shouldDeriveRatingByArtist, songsToAdoptValuesByArtist} = state

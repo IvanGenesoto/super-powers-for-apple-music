@@ -1,6 +1,6 @@
 import {app, getPlaylist} from '..'
 
-export function createState(shouldProcessAll, isTest) {
+export const createState = (shouldProcessAll, isTest) => {
 
   const appendSong = (songById, song) => {
     const {databaseID: databaseId} = song

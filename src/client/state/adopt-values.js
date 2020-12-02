@@ -1,6 +1,6 @@
 import {fieldKitByLabel, valuate, addTag, setField} from '..'
 
-export function adoptValues([artist, songs]) {
+export const adoptValues = function ([artist, songs]) {
 
   const {state} = this
   const {getArtistSongs, shouldProcessAll, nil} = state

@@ -7,9 +7,7 @@ import {
   setMonthsSinceUpdated,
 } from '..'
 
-export function handleState() {
-
-  const {state} = this
+export const handleState = state => {
 
   const {
     shouldDeriveVocalsByArtist,
@@ -28,12 +26,13 @@ export function handleState() {
     return isProxy && !statuses.includes(status)
   }
 
+  const updatableSongs = allSongs.filter(isSongUpdatable)
   const vocalArtists = shouldProcessAll ? allArtists : Object.keys(shouldDeriveVocalsByArtist)
   const genreArtists = shouldProcessAll ? allArtists : Object.keys(shouldDeriveGenreByArtist)
   const ratingArtists = shouldProcessAll ? allArtists : Object.keys(shouldDeriveRatingByArtist)
-  const vocalThis = {...this, artistLabel: 'Artist Vocals', songLabel: 'Song Vocals'}
-  const genreThis = {...this, artistLabel: 'Artist Genre', songLabel: 'Song Genre'}
-  const updatableSongs = allSongs.filter(isSongUpdatable)
+  const vocalThis = {state, artistLabel: 'Artist Vocals', songLabel: 'Song Vocals'}
+  const genreThis = {state, artistLabel: 'Artist Genre', songLabel: 'Song Genre'}
+  const this_ = {state}
 
   const adoptionArtistEntries =
       shouldProcessAll ? allArtists.map(artist => [artist])
@@ -41,7 +40,7 @@ export function handleState() {
 
   vocalArtists.forEach(deriveArtistAttribute, vocalThis)
   genreArtists.forEach(deriveArtistAttribute, genreThis)
-  ratingArtists.forEach(deriveArtistRating, this)
-  adoptionArtistEntries.forEach(adoptValues, this)
-  updatableSongs.forEach(setMonthsSinceUpdated, this)
+  ratingArtists.forEach(deriveArtistRating, this_)
+  adoptionArtistEntries.forEach(adoptValues, this_)
+  updatableSongs.forEach(setMonthsSinceUpdated, this_)
 }

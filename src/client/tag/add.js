@@ -1,6 +1,6 @@
 import {fieldKitByLabel, removeDisposableTag} from '..'
 
-export function addTag(song, label, value) { // #mustBeCalledInTryBlock
+export const addTag = (song, label, value) => { // #mustBeCalledInTryBlock
 
   const {track} = song
   const fieldKit = fieldKitByLabel[label]

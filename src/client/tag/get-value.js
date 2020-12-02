@@ -1,6 +1,6 @@
 import {fieldKitByLabel} from '..'
 
-export function getTagValue(song, label) {
+export const getTagValue = (song, label) => {
 
   const fieldKit = fieldKitByLabel[label]
   const {tagField} = fieldKit || {}

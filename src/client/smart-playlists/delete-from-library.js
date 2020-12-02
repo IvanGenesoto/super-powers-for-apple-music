@@ -1,4 +1,4 @@
-export function deleteFromLibrary(track) {
+export const deleteFromLibrary = function (track) {
 
   const {state} = this
   const {songById} = state

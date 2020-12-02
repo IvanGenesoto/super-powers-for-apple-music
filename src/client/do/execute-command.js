@@ -1,6 +1,6 @@
 import {addTag, removeTag, setField, validate, fieldKitByLabel} from '..'
 
-export function executeCommand(song, label, value) { // #mustBeCalledInTryBlock
+export const executeCommand = function (song, label, value) { // #mustBeCalledInTryBlock
 
   const {state, didValidate, fieldKit = fieldKitByLabel[label]} = this
   const {nil} = state

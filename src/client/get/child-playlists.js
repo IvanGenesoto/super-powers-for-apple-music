@@ -1,6 +1,5 @@
-export function getChildLists(name) {
+export const getChildLists = (name, state) => {
 
-  const {state} = this
   const {allLists, hasNoParentByListName, parentNameByListName} = state
   const childLists = []
 

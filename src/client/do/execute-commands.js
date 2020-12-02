@@ -1,7 +1,7 @@
 import {fieldKitByLabel, executeCommand} from '..'
 /// import {getChildLists} from '..'
 
-export function executeCommands(list) {
+export const executeCommands = function (list) {
 
   /// const {state, folderName} = this
   const {state} = this
@@ -44,7 +44,7 @@ export function executeCommands(list) {
 
   if (!hasSong) return
 
-  /// const _children = getChildLists.call(this, listName)
+  /// const _children = getChildLists(listName, state)
   const label = desequence(listName)
   const label_ = 'Song ' + label
   const isArtistCommand = label.startsWith('Artist')

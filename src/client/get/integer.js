@@ -1,6 +1,6 @@
 import {getFieldValue} from '..'
 
-export function getInteger(song, label) {
+export const getInteger = function (song, label) {
 
   const {isDefault} = this
   const previousValue = getFieldValue(song, label) || 0
