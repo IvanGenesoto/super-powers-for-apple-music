@@ -6,6 +6,7 @@ export const fieldKitByLabel = {
     stateKey: 'didSetStatusByArtist',
     antiAdoptionStateKey: 'didSetStatusByArtist',
     automaticStateKey: 'shouldDeriveRatingByArtist',
+    enumStateKey: 'artistStatusEnum',
     tagField: 'grouping',
     defaultTagValue: 'Trialing',
     defaultAdoptionFieldValue: 'Trialing',

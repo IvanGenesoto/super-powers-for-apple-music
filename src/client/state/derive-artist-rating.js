@@ -3,15 +3,21 @@ import {getIsEditable, getFieldValue, removeTag, executeCommand} from '..'
 export const deriveArtistRating = function (artist) {
 
   const {state} = this
-  const {getArtistSongs, didSetRatingByArtist, didSetStatusByArtist} = state
-  const didSetStatus = didSetStatusByArtist[artist]
+
+  const {
+    getArtistSongs,
+    didSetRatingByArtist,
+    didSetStatusByArtist,
+    artistStatusEnum,
+  } = state
+
+  const {
+    'Trialing': trialing,
+    'Following': following,
+    'Dismissed': dismissed,
+  } = artistStatusEnum
+
   const validRatings = [20, 40, 60, 80, 100]
-  const immutableStatuses = ['Protected', 'Rejected', 'Retired']
-  const trialingStatus = 'Trialing'
-  const followingStatus = 'Following'
-  const dismissedStatus = 'Dismissed'
-  const rejectedStatus = 'Rejected'
-  const badStatuses = [dismissedStatus, rejectedStatus]
   const proxyLabel = 'Proxy'
   const artistSongs = getArtistSongs(artist, state)
   const unratedSongs = []
@@ -78,20 +84,21 @@ export const deriveArtistRating = function (artist) {
   ///   return zeros
   /// }
 
-  const getStatus = () =>
-      !isTrialing && artistRating > 1 ? followingStatus
-    : !isTrialing && artistRating === 1 && hasGoodSong ? followingStatus
-    : !isTrialing ? dismissedStatus
-    : hasGoodSong ? followingStatus
-    : regardedRatedCount === 1 ? trialingStatus
-    : artistRating < 0.5 ? dismissedStatus // #note: More than one rating is 0-stars.
-    : artistRating === 0.5 && regardedRatedCount > 2 ? dismissedStatus // #note: More than one rating is 0-stars.
-    : trialingStatus
+  const deriveArtistStatus = () =>
+      !isTrialing && artistRating > 1 ? following
+    : !isTrialing && artistRating === 1 && hasGoodSong ? following
+    : !isTrialing ? dismissed
+    : hasGoodSong ? following
+    : regardedRatedCount === 1 ? trialing
+    : artistRating < 0.5 ? dismissed // #note: More than one rating is 0-stars.
+    : artistRating === 0.5 && regardedRatedCount > 2 ? dismissed // #note: More than one rating is 0-stars.
+    : trialing
 
   /// const getArtistStarRating = (artistRating, artistStatus) => {
+  ///   const {isBad} = artistStatus
   ///   const isFavorite = artistRating >= 6
   ///   let stars = ''
-  ///   if (badStatuses.includes(artistStatus)) return stars
+  ///   if (isBad) return stars
   ///   let count = isFavorite ? 5 : Math.floor(artistRating)
   ///   for (; count; count--) stars += '\u2605'
   ///   isFavorite && (stars += ' \u2661')
@@ -99,8 +106,9 @@ export const deriveArtistRating = function (artist) {
   /// }
 
   const getArtistStarRating = (artistRating, artistStatus) => {
+    const {isBad} = artistStatus
     let stars = ''
-    if (badStatuses.includes(artistStatus)) return stars
+    if (isBad) return stars
     let count = Math.floor(artistRating)
     while (count) (stars += '\u2605') && --count
     return stars
@@ -149,18 +157,18 @@ export const deriveArtistRating = function (artist) {
   const artistRating = getArtistRating(artistPointTotal)
   /// const artistRatingString = stringify(artistRating)
   const proxySong_ = proxySong || regardedSong || enabledSong || editableSong
-  const previousArtistStatus = getFieldValue(proxySong, 'Artist Status')
-  const isImmutableStatus = immutableStatuses.includes(previousArtistStatus)
-  const artistStatus = isImmutableStatus ? previousArtistStatus : getStatus()
+  const previousArtistStatusKey = getFieldValue(proxySong, 'Artist Status')
+  const isValid = Object.keys(artistStatusEnum).includes(previousArtistStatusKey)
+  const previousArtistStatus = isValid && artistStatusEnum[previousArtistStatusKey]
+  const {isImmutable} = previousArtistStatus
+  const artistStatus = isImmutable ? previousArtistStatus : deriveArtistStatus()
   const artistStarRating = getArtistStarRating(artistRating, artistStatus)
   const willChangeStatus = artistStatus !== previousArtistStatus
-  const didDismiss = willChangeStatus && artistStatus === dismissedStatus
-  const didReject = didSetStatus && artistStatus === rejectedStatus
-  const shouldPurgeUnrated = didDismiss || didReject
+  const {isBad} = artistStatus
 
   editableSongs.forEach(callExecuteCommand_)
   callExecuteCommand.call(proxySong_, proxyLabel)
   didSetRatingByArtist[artist] = true
   willChangeStatus && (didSetStatusByArtist[artist] = true)
-  shouldPurgeUnrated && unratedSongs.forEach(({track}) => track.delete())
+  isBad && unratedSongs.forEach(({track}) => track.delete())
 }

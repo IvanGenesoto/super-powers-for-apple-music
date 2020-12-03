@@ -11,6 +11,7 @@ export const executeCommand = function (song, label, value) { // #mustBeCalledIn
   const {
     stateKey,
     automaticStateKey,
+    enumStateKey,
     antiLabel,
     shouldAntiValidate,
     getTagValue = () => value,
@@ -28,11 +29,13 @@ export const executeCommand = function (song, label, value) { // #mustBeCalledIn
   const labels = [label, antiLabel]
   const trueByArtist = state[stateKey]
   const shouldDeriveAutomaticallyByArtist = state[automaticStateKey]
+  const enum_ = state[enumStateKey]
   const isWarranted = didValidate || !shouldAntiValidate || validate.call(this, song, antiLabel)
   const tagValue_ = shouldUseDefault ? defaultTagValue : tagValue
   const fieldValue_ = shouldUseDefault ? defaultFieldValue : fieldValue
   const this_ = {...this, fieldKit: undefined}
 
+  field && enum_ && void enum_[fieldValue_]
   trueByArtist && (trueByArtist[artist] = true)
   shouldDeriveAutomatically && (shouldDeriveAutomaticallyByArtist[artist] = true)
   labels.forEach(label => removeTag(song, label))

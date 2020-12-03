@@ -1,4 +1,4 @@
-import {app, getPlaylist} from '..'
+import {app, getPlaylist, createEnum, artistStatusDefinition} from '..'
 
 export const createState = (shouldProcessAll, isTest) => {
 
@@ -24,6 +24,7 @@ export const createState = (shouldProcessAll, isTest) => {
   const songById = allSongs.reduce(appendSong, {})
   const trueByArtist = shouldProcessAll && allSongs.reduce(appendArtist, {})
   const allArtists = shouldProcessAll && Object.keys(trueByArtist)
+  const artistStatusEnum = createEnum(artistStatusDefinition, '"Artist Status"')
 
   const state = {
     shouldDeriveRatingByArtist: {},
@@ -38,6 +39,7 @@ export const createState = (shouldProcessAll, isTest) => {
     songsToAdoptValuesByArtist: {},
     songsByArtist: {},
     nil: '-',
+    artistStatusEnum,
     songById,
     allLists,
     allSongs,

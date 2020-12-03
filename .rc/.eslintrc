@@ -61,6 +61,7 @@
       "varsIgnorePattern": "^unused",
     }],
     "no-var": "off",
+    "no-void": "off",
     "object-curly-newline": ["error", {"consistent": true}],
     "object-curly-spacing": ["error", "never"],
     "object-shorthand": "error",
