@@ -1,4 +1,4 @@
-import {fieldKitByLabel, executeCommand} from '..'
+import {fieldKitEnum, executeCommand} from '..'
 
 export const validate = function (song, antiLabel) { // #mustBeCalledInTryBlock
 
@@ -6,7 +6,7 @@ export const validate = function (song, antiLabel) { // #mustBeCalledInTryBlock
   const lowerCaseName = name.toLowerCase()
 
   const antiValidate = () => {
-    const fieldKit = fieldKitByLabel[antiLabel]
+    const fieldKit = fieldKitEnum[antiLabel]
     const wrappedFieldKit = {fieldKit}
     const validateEntryWithThis = validateEntry.bind({...this, isAnti: true})
     const validatedEntries = Object.entries(wrappedFieldKit).filter(validateEntryWithThis)
@@ -35,6 +35,6 @@ export const validate = function (song, antiLabel) { // #mustBeCalledInTryBlock
   if (antiLabel) return antiValidate()
 
   Object
-    .entries(fieldKitByLabel)
+    .entries(fieldKitEnum)
     .forEach(validateEntry, this)
 }

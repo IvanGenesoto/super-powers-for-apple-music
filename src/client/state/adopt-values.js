@@ -1,10 +1,10 @@
-import {fieldKitByLabel, valuate, addTag, setField} from '..'
+import {fieldKitEnum, valuate, addTag, setField} from '..'
 
 export const adoptValues = function ([artist, songs]) {
 
   const {state} = this
-  const {getArtistSongs, shouldProcessAll, nil} = state
-  const adoptableTagKitByLabel = fieldKitByLabel.filter(({isAdoptable}) => isAdoptable)
+  const {getArtistSongs, shouldProcessAll} = state
+  const adoptableTagKitByLabel = fieldKitEnum.filter(({isAdoptable}) => isAdoptable)
   const artistSongs = shouldProcessAll && getArtistSongs(artist, state)
   const songs_ = shouldProcessAll ? artistSongs : songs
 
@@ -21,7 +21,7 @@ export const adoptValues = function ([artist, songs]) {
     const {song, isField} = this
     const set = isField ? setField : addTag
     try {
-      set(song, label, value, nil)
+      set(song, label, value)
     }
     catch {}
   }

@@ -1,12 +1,13 @@
-/// import {getDateString, getInteger} from '..'
-import {getDateString} from '..'
+/// import {getDateString, thrower, getInteger} from '..'
+import {getDateString, thrower, artistStatusEnum} from '..'
 
-export const fieldKitByLabel = {
+export const fieldKitEnum = Object.freeze({
+  __proto__: thrower,
   'Artist Status': { // #note: Playlist name (and hence value) is "Protected", "Rejected", "Retired" or "Automatic".
     stateKey: 'didSetStatusByArtist',
     antiAdoptionStateKey: 'didSetStatusByArtist',
     automaticStateKey: 'shouldDeriveRatingByArtist',
-    enumStateKey: 'artistStatusEnum',
+    enum_: artistStatusEnum,
     tagField: 'grouping',
     defaultTagValue: 'Trialing',
     defaultAdoptionFieldValue: 'Trialing',
@@ -150,4 +151,4 @@ export const fieldKitByLabel = {
   'Original Genre': {
     tagField: 'composer',
   },
-}
+})

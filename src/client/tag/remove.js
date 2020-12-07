@@ -1,9 +1,9 @@
-import {fieldKitByLabel} from '..'
+import {fieldKitEnum} from '..'
 
 export const removeTag = (song, label) => { // #mustBeCalledInTryBlock
 
   const {track} = song
-  const {tagField} = fieldKitByLabel[label] || {}
+  const {tagField} = fieldKitEnum[label] || {}
   const fieldText = song[tagField] || ''
   const {length: characterCount} = fieldText
   const beginningIndex = fieldText.indexOf(label + ':')

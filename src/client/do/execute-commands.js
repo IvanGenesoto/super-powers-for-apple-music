@@ -1,4 +1,4 @@
-import {fieldKitByLabel, executeCommand} from '..'
+import {fieldKitEnum, executeCommand} from '..'
 /// import {getChildLists} from '..'
 
 export const executeCommands = function (list) {
@@ -48,7 +48,7 @@ export const executeCommands = function (list) {
   const label = desequence(listName)
   const label_ = 'Song ' + label
   const isArtistCommand = label.startsWith('Artist')
-  const fieldKit = fieldKitByLabel[label] || fieldKitByLabel[label_]
+  const fieldKit = fieldKitEnum[label] || fieldKitEnum[label_]
 
   fieldKit && songs.forEach(callAndDelete)
   /// !fieldKit && _children.length && _children.forEach(executeCommands, this_)

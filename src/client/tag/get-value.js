@@ -1,8 +1,8 @@
-import {fieldKitByLabel} from '..'
+import {fieldKitEnum} from '..'
 
 export const getTagValue = (song, label) => {
 
-  const fieldKit = fieldKitByLabel[label]
+  const fieldKit = fieldKitEnum[label]
   const {tagField} = fieldKit || {}
   const fieldText = song[tagField] || ''
   const {length: fieldTextLength} = fieldText

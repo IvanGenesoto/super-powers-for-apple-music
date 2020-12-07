@@ -1,15 +1,15 @@
-import {fieldKitByLabel, validate} from '..'
+import {fieldKitEnum, validate, nil} from '..'
 
 export const initialize = function (song) {
 
   const {state} = this
-  const {nil, shouldDeriveRatingByArtist, songsToAdoptValuesByArtist} = state
-  const genreTagKit = fieldKitByLabel['Song Genre']
+  const {shouldDeriveRatingByArtist, songsToAdoptValuesByArtist} = state
+  const genreTagKit = fieldKitEnum['Song Genre']
   const {field: genreField} = genreTagKit
-  const vocalsTagKit = fieldKitByLabel['Song Vocals']
+  const vocalsTagKit = fieldKitEnum['Song Vocals']
   const {field: vocalsField} = vocalsTagKit
   const isComprised = vocalsField === genreField
-  const regardedTagKit = fieldKitByLabel['Regarded']
+  const regardedTagKit = fieldKitEnum['Regarded']
   const {field: regardedField, fieldValue: regardedFieldValue} = regardedTagKit
   const {genre, rating, composer, artist, track} = song
   const composerText = composer ? `Composer: ${composer}` : ''

@@ -1,4 +1,4 @@
-import {getIsEditable, getFieldValue, removeTag, executeCommand} from '..'
+import {getIsEditable, getFieldValue, removeTag, executeCommand, artistStatusEnum} from '..'
 
 export const deriveArtistRating = function (artist) {
 
@@ -8,7 +8,6 @@ export const deriveArtistRating = function (artist) {
     getArtistSongs,
     didSetRatingByArtist,
     didSetStatusByArtist,
-    artistStatusEnum,
   } = state
 
   const {

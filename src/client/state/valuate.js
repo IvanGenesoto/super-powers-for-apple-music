@@ -1,10 +1,9 @@
 /// import {getTagValue, getFieldValue, getIsEditable, columnBrowserFields} from '..'
-import {getTagValue, getFieldValue, getIsEditable} from '..'
+import {getTagValue, getFieldValue, getIsEditable, nil} from '..'
 
 export const valuate = function (valuation, [label, fieldKit]) {
 
   const {state, artist, artistSongs} = this
-  const {nil} = state
   const {tagValueByLabel = {}, fieldValueByLabel = {}} = valuation
   const songValuation = {}
   const [firstArtistSong] = artistSongs

@@ -3,7 +3,7 @@ import {getTagValue, getFieldValue, setField} from '..'
 export const setMonthsSinceUpdated = function (song) {
 
   const {state} = this
-  const {getArtistSongs, didUpdateByArtist, nil} = state
+  const {getArtistSongs, didUpdateByArtist} = state
   const label = 'Artist Updated'
   const {artist} = song
   const didUpdate = didUpdateByArtist[artist]
@@ -17,7 +17,7 @@ export const setMonthsSinceUpdated = function (song) {
 
   const callExecuteCommand = song => {
     try {
-      setField(song, label, value, nil)
+      setField(song, label, value)
     }
     catch {}
   }

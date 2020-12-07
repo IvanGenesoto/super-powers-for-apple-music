@@ -1,9 +1,9 @@
-import {fieldKitByLabel, removeDisposableTag} from '..'
+import {fieldKitEnum, removeDisposableTag} from '..'
 
 export const addTag = (song, label, value) => { // #mustBeCalledInTryBlock
 
   const {track} = song
-  const fieldKit = fieldKitByLabel[label]
+  const fieldKit = fieldKitEnum[label]
   const {tagField, shouldPrefix} = fieldKit || {}
   const fieldText = song[tagField] || ''
   const delimiter = fieldText ? ', ' : ''

@@ -2,8 +2,8 @@ export const deleteFromLibrary = function (track) {
 
   const {state} = this
   const {songById} = state
-  const databaseId = track.databaseID()
-  const librarySong = songById[databaseId]
+  const id = track.databaseID()
+  const librarySong = songById[id]
 
   librarySong?.track.delete()
 }

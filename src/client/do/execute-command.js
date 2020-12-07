@@ -1,9 +1,8 @@
-import {addTag, removeTag, setField, validate, fieldKitByLabel} from '..'
+import {addTag, removeTag, setField, validate, fieldKitEnum} from '..'
 
 export const executeCommand = function (song, label, value) { // #mustBeCalledInTryBlock
 
-  const {state, didValidate, fieldKit = fieldKitByLabel[label]} = this
-  const {nil} = state
+  const {state, didValidate, fieldKit = fieldKitEnum[label]} = this
   const {artist} = song
   const shouldUseDefault = value === 'No' // #note: Must check value for "No" instead of "Yes" due to "No" being a validation value of "Song Vocals".
   const shouldDeriveAutomatically = value === 'Automatic'
@@ -11,7 +10,7 @@ export const executeCommand = function (song, label, value) { // #mustBeCalledIn
   const {
     stateKey,
     automaticStateKey,
-    enumStateKey,
+    enum_,
     antiLabel,
     shouldAntiValidate,
     getTagValue = () => value,
@@ -29,7 +28,6 @@ export const executeCommand = function (song, label, value) { // #mustBeCalledIn
   const labels = [label, antiLabel]
   const trueByArtist = state[stateKey]
   const shouldDeriveAutomaticallyByArtist = state[automaticStateKey]
-  const enum_ = state[enumStateKey]
   const isWarranted = didValidate || !shouldAntiValidate || validate.call(this, song, antiLabel)
   const tagValue_ = shouldUseDefault ? defaultTagValue : tagValue
   const fieldValue_ = shouldUseDefault ? defaultFieldValue : fieldValue
@@ -39,7 +37,7 @@ export const executeCommand = function (song, label, value) { // #mustBeCalledIn
   trueByArtist && (trueByArtist[artist] = true)
   shouldDeriveAutomatically && (shouldDeriveAutomaticallyByArtist[artist] = true)
   labels.forEach(label => removeTag(song, label))
-  field && setField(song, label, fieldValue_, nil)
+  field && setField(song, label, fieldValue_)
   isWarranted && addTag(song, label, tagValue_)
   triggeredLabel && executeCommand.call(this_, song, triggeredLabel, value)
 }
