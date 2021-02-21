@@ -4,13 +4,13 @@ export const initialize = function (song) {
 
   const {state} = this
   const {shouldDeriveRatingByArtist, songsToAdoptValuesByArtist} = state
-  const genreTagKit = fieldKitEnum['Song Genre']
-  const {field: genreField} = genreTagKit
-  const vocalsTagKit = fieldKitEnum['Song Vocals']
-  const {field: vocalsField} = vocalsTagKit
+  const genreFieldKit = fieldKitEnum['Song Genre']
+  const {field: genreField} = genreFieldKit
+  const vocalsFieldKit = fieldKitEnum['Song Vocals']
+  const {field: vocalsField} = vocalsFieldKit
   const isComprised = vocalsField === genreField
-  const regardedTagKit = fieldKitEnum['Regarded']
-  const {field: regardedField, fieldValue: regardedFieldValue} = regardedTagKit
+  const regardedFieldKit = fieldKitEnum['Regarded']
+  const {field: regardedField, fieldValue: regardedFieldValue} = regardedFieldKit
   const {genre, rating, composer, artist, track} = song
   const composerText = composer ? `Composer: ${composer}` : ''
   const delimiter = composer ? ', ' : ''

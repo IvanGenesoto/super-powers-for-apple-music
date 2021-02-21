@@ -10,8 +10,8 @@ export const deriveArtistAttribute = function (artist) {
 
   const {state, artistLabel, songLabel} = this
   const {getArtistSongs} = state
-  const artistTagKit = fieldKitEnum[artistLabel]
-  const {antiAdoptionStateKey} = artistTagKit
+  const artistFieldKit = fieldKitEnum[artistLabel]
+  const {antiAdoptionStateKey} = artistFieldKit
   const didSetByArtist = state[antiAdoptionStateKey]
   const artistSongs = getArtistSongs(artist, state)
 

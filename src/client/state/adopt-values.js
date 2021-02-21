@@ -4,9 +4,10 @@ export const adoptValues = function ([artist, songs]) {
 
   const {state} = this
   const {getArtistSongs, shouldProcessAll} = state
-  const adoptableTagKitByLabel = fieldKitEnum.filter(({isAdoptable}) => isAdoptable)
   const artistSongs = shouldProcessAll && getArtistSongs(artist, state)
   const songs_ = shouldProcessAll ? artistSongs : songs
+  const valuateWithThis = valuate.bind({state, artist, artistSongs})
+  const isEntryAdoptable = ([unusedKey, {isAdoptable}]) => isAdoptable
 
   const adopt = song => {
     adoptValue(song, tagValueByLabel)
@@ -27,8 +28,9 @@ export const adoptValues = function ([artist, songs]) {
   }
 
   const {tagValueByLabel, fieldValueByLabel} = Object
-    .entries(adoptableTagKitByLabel)
-    .reduce(valuate.bind({state, artist, artistSongs}), {})
+    .entries(fieldKitEnum)
+    .filter(isEntryAdoptable)
+    .reduce(valuateWithThis, {})
 
   songs_.forEach(adopt)
 }
