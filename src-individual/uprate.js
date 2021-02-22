@@ -3,8 +3,7 @@ const display = require('../src/dialog/display')
 const selection = app.selection()
 
 const uprate = track => {
-  const data = track.properties()
-  const {rating} = data
+  const rating = track.rating()
   const isFavorite = rating === 100
   const rating_ =
       isFavorite ? 100

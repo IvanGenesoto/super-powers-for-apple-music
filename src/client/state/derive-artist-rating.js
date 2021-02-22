@@ -16,7 +16,7 @@ export const deriveArtistRating = function (artist) {
     'Dismissed': dismissed,
   } = artistStatusEnum
 
-  const validRatings = [20, 40, 60, 80, 100]
+  const validRatings = [0, 20, 40, 60, 80, 100]
   const proxyLabel = 'Proxy'
   const artistSongs = getArtistSongs(artist, state)
   const unratedSongs = []
